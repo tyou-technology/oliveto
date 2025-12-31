@@ -1,6 +1,6 @@
-"use client"
+"use client";
 
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useRef, useState } from "react";
 
 const partners = [
   { name: "Banco do Brasil", initials: "BB" },
@@ -13,43 +13,46 @@ const partners = [
   { name: "OAB", initials: "OAB" },
   { name: "CRC", initials: "CRC" },
   { name: "SESCAP", initials: "SESC" },
-]
+];
 
 export function PartnersSection() {
-  const scrollRef = useRef<HTMLDivElement>(null)
-  const [isHovered, setIsHovered] = useState(false)
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [isHovered, setIsHovered] = useState(false);
 
   useEffect(() => {
-    const scrollContainer = scrollRef.current
-    if (!scrollContainer) return
+    const scrollContainer = scrollRef.current;
+    if (!scrollContainer) return;
 
-    let animationId: number
-    let scrollPosition = 0
-    const scrollSpeed = 0.5
+    let animationId: number;
+    let scrollPosition = 0;
+    const scrollSpeed = 0.5;
 
     const animate = () => {
       if (!isHovered) {
-        scrollPosition += scrollSpeed
+        scrollPosition += scrollSpeed;
         if (scrollPosition >= scrollContainer.scrollWidth / 2) {
-          scrollPosition = 0
+          scrollPosition = 0;
         }
-        scrollContainer.scrollLeft = scrollPosition
+        scrollContainer.scrollLeft = scrollPosition;
       }
-      animationId = requestAnimationFrame(animate)
-    }
+      animationId = requestAnimationFrame(animate);
+    };
 
-    animationId = requestAnimationFrame(animate)
+    animationId = requestAnimationFrame(animate);
 
-    return () => cancelAnimationFrame(animationId)
-  }, [isHovered])
+    return () => cancelAnimationFrame(animationId);
+  }, [isHovered]);
 
   return (
     <section className="py-16 bg-[#0a0a0a] border-y border-white/10">
       <div className="max-w-6xl mx-auto px-6">
         <div className="text-center mb-10">
-          <span className="text-[#00ff00] text-sm tracking-wider uppercase">Parceiros & Instituições</span>
+          <span className="text-[#00FF90] text-sm tracking-wider uppercase">
+            Parceiros & Instituições
+          </span>
           <h2 className="text-2xl md:text-3xl font-bold mt-2">
-            Trabalhamos com as <span className="text-[#00ff00]">principais instituições</span>
+            Trabalhamos com as{" "}
+            <span className="text-[#00FF90]">principais instituições</span>
           </h2>
         </div>
 
@@ -63,10 +66,10 @@ export function PartnersSection() {
           {[...partners, ...partners].map((partner, index) => (
             <div
               key={index}
-              className="flex-shrink-0 w-32 h-20 bg-white/5 border border-white/10 rounded-lg flex items-center justify-center hover:border-[#00ff00]/50 transition-colors group"
+              className="flex-shrink-0 w-32 h-20 bg-white/5 border border-white/10 rounded-lg flex items-center justify-center hover:border-[#00FF90]/50 transition-colors group"
             >
               <div className="text-center">
-                <span className="text-xl font-bold text-gray-400 group-hover:text-[#00ff00] transition-colors">
+                <span className="text-xl font-bold text-gray-400 group-hover:text-[#00FF90] transition-colors">
                   {partner.initials}
                 </span>
                 <p className="text-xs text-gray-500 mt-1 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -78,5 +81,5 @@ export function PartnersSection() {
         </div>
       </div>
     </section>
-  )
+  );
 }

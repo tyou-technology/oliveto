@@ -1,4 +1,4 @@
-import Link from "next/link"
+import Link from "next/link";
 
 export function Footer() {
   return (
@@ -26,7 +26,7 @@ export function Footer() {
             <p className="text-sm text-gray-500 mb-4">Fale agora.</p>
             <a
               href="tel:+5543991231726"
-              className="inline-block border border-[#00ff00] text-[#00ff00] px-4 py-2 text-sm hover:bg-[#00ff00] hover:text-black transition-colors"
+              className="inline-block border border-[#00FF90] text-[#00FF90] px-4 py-2 text-sm hover:bg-[#00FF90] hover:text-black transition-colors"
             >
               +55 (43) 99123.1726
             </a>
@@ -35,13 +35,22 @@ export function Footer() {
           <div>
             <p className="text-sm text-gray-500 mb-4">Siga.</p>
             <div className="flex flex-col gap-2">
-              <a href="#" className="text-sm text-gray-400 hover:text-white transition-colors">
+              <a
+                href="#"
+                className="text-sm text-gray-400 hover:text-white transition-colors"
+              >
                 Instagram
               </a>
-              <a href="#" className="text-sm text-gray-400 hover:text-white transition-colors">
+              <a
+                href="#"
+                className="text-sm text-gray-400 hover:text-white transition-colors"
+              >
                 Linkedin
               </a>
-              <a href="#" className="text-sm text-gray-400 hover:text-white transition-colors">
+              <a
+                href="#"
+                className="text-sm text-gray-400 hover:text-white transition-colors"
+              >
                 Tiktok
               </a>
             </div>
@@ -54,5 +63,5 @@ export function Footer() {
         </div>
       </div>
     </footer>
-  )
+  );
 }

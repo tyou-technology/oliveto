@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { ChevronDown } from "lucide-react"
+import { useState } from "react";
+import { ChevronDown } from "lucide-react";
 
 const faqs = [
   {
@@ -34,21 +34,24 @@ const faqs = [
     answer:
       "Disponibilizamos uma área exclusiva para clientes em nosso site, onde é possível acompanhar o andamento de processos, acessar documentos, visualizar relatórios e se comunicar diretamente com nossa equipe.",
   },
-]
+];
 
 export function FaqSection() {
-  const [openIndex, setOpenIndex] = useState<number | null>(0)
+  const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
     <section className="py-20 bg-white">
       <div className="max-w-4xl mx-auto px-6">
         <div className="text-center mb-12">
-          <span className="text-[#00ff00] text-sm tracking-wider uppercase">Dúvidas Frequentes</span>
+          <span className="text-[#00FF90] text-sm tracking-wider uppercase">
+            Dúvidas Frequentes
+          </span>
           <h2 className="text-3xl md:text-4xl font-bold mt-2 text-[#0a0a0a]">
-            Perguntas <span className="text-[#00ff00]">Frequentes</span>
+            Perguntas <span className="text-[#00FF90]">Frequentes</span>
           </h2>
           <p className="text-gray-600 mt-4 max-w-2xl mx-auto">
-            Tire suas principais dúvidas sobre nossos serviços de contabilidade, perícia e auditoria.
+            Tire suas principais dúvidas sobre nossos serviços de contabilidade,
+            perícia e auditoria.
           </p>
         </div>
 
@@ -56,15 +59,17 @@ export function FaqSection() {
           {faqs.map((faq, index) => (
             <div
               key={index}
-              className="border border-gray-200 rounded-lg overflow-hidden bg-gray-50 hover:border-[#00ff00]/50 transition-colors"
+              className="border border-gray-200 rounded-lg overflow-hidden bg-gray-50 hover:border-[#00FF90]/50 transition-colors"
             >
               <button
                 onClick={() => setOpenIndex(openIndex === index ? null : index)}
                 className="w-full px-6 py-4 flex items-center justify-between text-left"
               >
-                <span className="font-medium text-[#0a0a0a] pr-4">{faq.question}</span>
+                <span className="font-medium text-[#0a0a0a] pr-4">
+                  {faq.question}
+                </span>
                 <ChevronDown
-                  className={`w-5 h-5 text-[#00ff00] flex-shrink-0 transition-transform duration-300 ${
+                  className={`w-5 h-5 text-[#00FF90] flex-shrink-0 transition-transform duration-300 ${
                     openIndex === index ? "rotate-180" : ""
                   }`}
                 />
@@ -74,12 +79,14 @@ export function FaqSection() {
                   openIndex === index ? "max-h-96" : "max-h-0"
                 }`}
               >
-                <p className="px-6 pb-4 text-gray-600 leading-relaxed">{faq.answer}</p>
+                <p className="px-6 pb-4 text-gray-600 leading-relaxed">
+                  {faq.answer}
+                </p>
               </div>
             </div>
           ))}
         </div>
       </div>
     </section>
-  )
+  );
 }

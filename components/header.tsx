@@ -1,5 +1,5 @@
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
 
 export function Header({ pathname = "/" }: { pathname?: string }) {
   return (
@@ -11,25 +11,41 @@ export function Header({ pathname = "/" }: { pathname?: string }) {
       <nav className="hidden md:flex items-center gap-8">
         <Link
           href="/sobre"
-          className={`text-sm transition-colors ${pathname === "/sobre" ? "text-[#00ff00]" : "text-gray-300 hover:text-white"}`}
+          className={`text-sm transition-colors ${
+            pathname === "/sobre"
+              ? "text-[#00FF90]"
+              : "text-gray-300 hover:text-white"
+          }`}
         >
           Sobre
         </Link>
         <Link
           href="/servicos"
-          className={`text-sm transition-colors ${pathname === "/servicos" ? "text-[#00ff00]" : "text-gray-300 hover:text-white"}`}
+          className={`text-sm transition-colors ${
+            pathname === "/servicos"
+              ? "text-[#00FF90]"
+              : "text-gray-300 hover:text-white"
+          }`}
         >
           Serviços
         </Link>
         <Link
           href="/artigos"
-          className={`text-sm transition-colors ${pathname === "/artigos" ? "text-[#00ff00]" : "text-gray-300 hover:text-white"}`}
+          className={`text-sm transition-colors ${
+            pathname === "/artigos"
+              ? "text-[#00FF90]"
+              : "text-gray-300 hover:text-white"
+          }`}
         >
           Artigos
         </Link>
         <Link
           href="/contatos"
-          className={`text-sm transition-colors ${pathname === "/contatos" ? "text-[#00ff00]" : "text-gray-300 hover:text-white"}`}
+          className={`text-sm transition-colors ${
+            pathname === "/contatos"
+              ? "text-[#00FF90]"
+              : "text-gray-300 hover:text-white"
+          }`}
         >
           Contatos
         </Link>
@@ -42,5 +58,5 @@ export function Header({ pathname = "/" }: { pathname?: string }) {
         Login
       </Button>
     </header>
-  )
+  );
 }

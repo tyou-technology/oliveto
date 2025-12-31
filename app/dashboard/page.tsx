@@ -1,7 +1,7 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import Link from "next/link"
+import { useState } from "react";
+import Link from "next/link";
 import {
   LayoutDashboard,
   FileText,
@@ -25,26 +25,65 @@ import {
   User,
   Plus,
   Newspaper,
-} from "lucide-react"
+} from "lucide-react";
 
 const navigationItems = [
-  { icon: LayoutDashboard, label: "Visão Geral", href: "/dashboard", active: true },
+  {
+    icon: LayoutDashboard,
+    label: "Visão Geral",
+    href: "/dashboard",
+    active: true,
+  },
   { icon: FileText, label: "Documentos", href: "/dashboard/documentos" },
   { icon: Scale, label: "Perícias", href: "/dashboard/pericias" },
-  { icon: FolderOpen, label: "Contabilidade", href: "/dashboard/contabilidade" },
+  {
+    icon: FolderOpen,
+    label: "Contabilidade",
+    href: "/dashboard/contabilidade",
+  },
   { icon: ClipboardCheck, label: "Auditorias", href: "/dashboard/auditorias" },
   { icon: Newspaper, label: "Artigos", href: "/dashboard/artigos" },
-  { icon: MessageSquare, label: "Mensagens", href: "/dashboard/mensagens", badge: 3 },
-  { icon: Bell, label: "Notificações", href: "/dashboard/notificacoes", badge: 5 },
+  {
+    icon: MessageSquare,
+    label: "Mensagens",
+    href: "/dashboard/mensagens",
+    badge: 3,
+  },
+  {
+    icon: Bell,
+    label: "Notificações",
+    href: "/dashboard/notificacoes",
+    badge: 5,
+  },
   { icon: Settings, label: "Configurações", href: "/dashboard/configuracoes" },
-]
+];
 
 const recentDocuments = [
-  { name: "Balanço Patrimonial Q3 2025", type: "PDF", date: "20 Dez 2025", status: "novo" },
-  { name: "DRE Consolidado", type: "XLSX", date: "18 Dez 2025", status: "visualizado" },
-  { name: "Laudo Pericial - Processo 0012345", type: "PDF", date: "15 Dez 2025", status: "visualizado" },
-  { name: "Relatório de Auditoria Interna", type: "PDF", date: "12 Dez 2025", status: "novo" },
-]
+  {
+    name: "Balanço Patrimonial Q3 2025",
+    type: "PDF",
+    date: "20 Dez 2025",
+    status: "novo",
+  },
+  {
+    name: "DRE Consolidado",
+    type: "XLSX",
+    date: "18 Dez 2025",
+    status: "visualizado",
+  },
+  {
+    name: "Laudo Pericial - Processo 0012345",
+    type: "PDF",
+    date: "15 Dez 2025",
+    status: "visualizado",
+  },
+  {
+    name: "Relatório de Auditoria Interna",
+    type: "PDF",
+    date: "12 Dez 2025",
+    status: "novo",
+  },
+];
 
 const activeProcesses = [
   {
@@ -68,22 +107,25 @@ const activeProcesses = [
     progress: 100,
     deadline: "10 Jan 2026",
   },
-]
+];
 
 const upcomingTasks = [
   { title: "Reunião de alinhamento", date: "22 Dez", time: "14:00" },
   { title: "Entrega de documentos fiscais", date: "28 Dez", time: "18:00" },
   { title: "Prazo IRPJ", date: "31 Dez", time: "23:59" },
-]
+];
 
 export default function DashboardPage() {
-  const [sidebarOpen, setSidebarOpen] = useState(false)
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white flex">
       {/* Mobile sidebar overlay */}
       {sidebarOpen && (
-        <div className="fixed inset-0 bg-black/60 z-40 lg:hidden" onClick={() => setSidebarOpen(false)} />
+        <div
+          className="fixed inset-0 bg-black/60 z-40 lg:hidden"
+          onClick={() => setSidebarOpen(false)}
+        />
       )}
 
       {/* Sidebar */}
@@ -97,7 +139,7 @@ export default function DashboardPage() {
           <div className="p-6 border-b border-white/10">
             <div className="flex items-center justify-between">
               <Link href="/" className="text-2xl font-bold tracking-tight">
-                OLI<span className="text-[#00ff00]">\</span>VETO
+                OLI<span className="text-[#00FF90]">\</span>VETO
               </Link>
               <button
                 onClick={() => setSidebarOpen(false)}
@@ -111,12 +153,14 @@ export default function DashboardPage() {
           {/* User info */}
           <div className="p-4 border-b border-white/10">
             <div className="flex items-center gap-3 p-3 bg-white/5 rounded-xl">
-              <div className="w-10 h-10 bg-[#00ff00]/20 rounded-full flex items-center justify-center">
-                <User className="w-5 h-5 text-[#00ff00]" />
+              <div className="w-10 h-10 bg-[#00FF90]/20 rounded-full flex items-center justify-center">
+                <User className="w-5 h-5 text-[#00FF90]" />
               </div>
               <div className="flex-1 min-w-0">
                 <p className="font-medium truncate">João Silva</p>
-                <p className="text-sm text-neutral-400 truncate">joao@empresa.com.br</p>
+                <p className="text-sm text-neutral-400 truncate">
+                  joao@empresa.com.br
+                </p>
               </div>
             </div>
           </div>
@@ -128,13 +172,17 @@ export default function DashboardPage() {
                 key={item.label}
                 href={item.href}
                 className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group ${
-                  item.active ? "bg-[#00ff00]/10 text-[#00ff00]" : "text-neutral-400 hover:bg-white/5 hover:text-white"
+                  item.active
+                    ? "bg-[#00FF90]/10 text-[#00FF90]"
+                    : "text-neutral-400 hover:bg-white/5 hover:text-white"
                 }`}
               >
-                <item.icon className={`w-5 h-5 ${item.active ? "text-[#00ff00]" : ""}`} />
+                <item.icon
+                  className={`w-5 h-5 ${item.active ? "text-[#00FF90]" : ""}`}
+                />
                 <span className="flex-1">{item.label}</span>
                 {item.badge && (
-                  <span className="px-2 py-0.5 text-xs bg-[#00ff00] text-black rounded-full font-medium">
+                  <span className="px-2 py-0.5 text-xs bg-[#00FF90] text-black rounded-full font-medium">
                     {item.badge}
                   </span>
                 )}
@@ -165,8 +213,12 @@ export default function DashboardPage() {
                 <Menu className="w-5 h-5" />
               </button>
               <div>
-                <h1 className="text-xl lg:text-2xl font-bold">Bem-vindo, João</h1>
-                <p className="text-sm text-neutral-400">Aqui está o resumo da sua conta</p>
+                <h1 className="text-xl lg:text-2xl font-bold">
+                  Bem-vindo, João
+                </h1>
+                <p className="text-sm text-neutral-400">
+                  Aqui está o resumo da sua conta
+                </p>
               </div>
             </div>
 
@@ -184,12 +236,12 @@ export default function DashboardPage() {
               {/* Notifications */}
               <button className="relative p-2 hover:bg-white/10 rounded-xl transition-colors">
                 <Bell className="w-5 h-5" />
-                <span className="absolute top-1 right-1 w-2 h-2 bg-[#00ff00] rounded-full" />
+                <span className="absolute top-1 right-1 w-2 h-2 bg-[#00FF90] rounded-full" />
               </button>
 
               {/* Profile */}
-              <div className="w-10 h-10 bg-[#00ff00]/20 rounded-full flex items-center justify-center">
-                <User className="w-5 h-5 text-[#00ff00]" />
+              <div className="w-10 h-10 bg-[#00FF90]/20 rounded-full flex items-center justify-center">
+                <User className="w-5 h-5 text-[#00FF90]" />
               </div>
             </div>
           </div>
@@ -199,45 +251,57 @@ export default function DashboardPage() {
         <div className="p-4 lg:p-8 space-y-6">
           {/* Stats cards */}
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            <div className="bg-[#111111] border border-white/10 rounded-2xl p-6 hover:border-[#00ff00]/30 transition-colors">
+            <div className="bg-[#111111] border border-white/10 rounded-2xl p-6 hover:border-[#00FF90]/30 transition-colors">
               <div className="flex items-center justify-between mb-4">
-                <div className="p-3 bg-[#00ff00]/10 rounded-xl">
-                  <Scale className="w-6 h-6 text-[#00ff00]" />
+                <div className="p-3 bg-[#00FF90]/10 rounded-xl">
+                  <Scale className="w-6 h-6 text-[#00FF90]" />
                 </div>
-                <span className="text-xs text-[#00ff00] bg-[#00ff00]/10 px-2 py-1 rounded-full">+2 este mês</span>
+                <span className="text-xs text-[#00FF90] bg-[#00FF90]/10 px-2 py-1 rounded-full">
+                  +2 este mês
+                </span>
               </div>
               <p className="text-3xl font-bold">12</p>
               <p className="text-sm text-neutral-400 mt-1">Perícias Ativas</p>
             </div>
 
-            <div className="bg-[#111111] border border-white/10 rounded-2xl p-6 hover:border-[#00ff00]/30 transition-colors">
+            <div className="bg-[#111111] border border-white/10 rounded-2xl p-6 hover:border-[#00FF90]/30 transition-colors">
               <div className="flex items-center justify-between mb-4">
                 <div className="p-3 bg-blue-500/10 rounded-xl">
                   <FolderOpen className="w-6 h-6 text-blue-400" />
                 </div>
-                <span className="text-xs text-blue-400 bg-blue-400/10 px-2 py-1 rounded-full">Em dia</span>
+                <span className="text-xs text-blue-400 bg-blue-400/10 px-2 py-1 rounded-full">
+                  Em dia
+                </span>
               </div>
               <p className="text-3xl font-bold">8</p>
-              <p className="text-sm text-neutral-400 mt-1">Obrigações Contábeis</p>
+              <p className="text-sm text-neutral-400 mt-1">
+                Obrigações Contábeis
+              </p>
             </div>
 
-            <div className="bg-[#111111] border border-white/10 rounded-2xl p-6 hover:border-[#00ff00]/30 transition-colors">
+            <div className="bg-[#111111] border border-white/10 rounded-2xl p-6 hover:border-[#00FF90]/30 transition-colors">
               <div className="flex items-center justify-between mb-4">
                 <div className="p-3 bg-amber-500/10 rounded-xl">
                   <ClipboardCheck className="w-6 h-6 text-amber-400" />
                 </div>
-                <span className="text-xs text-amber-400 bg-amber-400/10 px-2 py-1 rounded-full">1 pendente</span>
+                <span className="text-xs text-amber-400 bg-amber-400/10 px-2 py-1 rounded-full">
+                  1 pendente
+                </span>
               </div>
               <p className="text-3xl font-bold">3</p>
-              <p className="text-sm text-neutral-400 mt-1">Auditorias em Curso</p>
+              <p className="text-sm text-neutral-400 mt-1">
+                Auditorias em Curso
+              </p>
             </div>
 
-            <div className="bg-[#111111] border border-white/10 rounded-2xl p-6 hover:border-[#00ff00]/30 transition-colors">
+            <div className="bg-[#111111] border border-white/10 rounded-2xl p-6 hover:border-[#00FF90]/30 transition-colors">
               <div className="flex items-center justify-between mb-4">
                 <div className="p-3 bg-purple-500/10 rounded-xl">
                   <FileText className="w-6 h-6 text-purple-400" />
                 </div>
-                <span className="text-xs text-purple-400 bg-purple-400/10 px-2 py-1 rounded-full">4 novos</span>
+                <span className="text-xs text-purple-400 bg-purple-400/10 px-2 py-1 rounded-full">
+                  4 novos
+                </span>
               </div>
               <p className="text-3xl font-bold">47</p>
               <p className="text-sm text-neutral-400 mt-1">Documentos</p>
@@ -249,23 +313,30 @@ export default function DashboardPage() {
             {/* Processes */}
             <div className="lg:col-span-2 bg-[#111111] border border-white/10 rounded-2xl overflow-hidden">
               <div className="flex items-center justify-between p-6 border-b border-white/10">
-                <h2 className="text-lg font-semibold">Processos em Andamento</h2>
+                <h2 className="text-lg font-semibold">
+                  Processos em Andamento
+                </h2>
                 <Link
                   href="/dashboard/processos"
-                  className="text-sm text-[#00ff00] hover:underline flex items-center gap-1"
+                  className="text-sm text-[#00FF90] hover:underline flex items-center gap-1"
                 >
                   Ver todos <ChevronRight className="w-4 h-4" />
                 </Link>
               </div>
               <div className="divide-y divide-white/5">
                 {activeProcesses.map((process) => (
-                  <div key={process.id} className="p-6 hover:bg-white/5 transition-colors">
+                  <div
+                    key={process.id}
+                    className="p-6 hover:bg-white/5 transition-colors"
+                  >
                     <div className="flex items-start justify-between mb-3">
                       <div>
                         <div className="flex items-center gap-2 mb-1">
-                          <span className="text-xs text-neutral-500 font-mono">{process.id}</span>
+                          <span className="text-xs text-neutral-500 font-mono">
+                            {process.id}
+                          </span>
                           {process.status === "concluido" ? (
-                            <span className="text-xs text-[#00ff00] bg-[#00ff00]/10 px-2 py-0.5 rounded-full flex items-center gap-1">
+                            <span className="text-xs text-[#00FF90] bg-[#00FF90]/10 px-2 py-0.5 rounded-full flex items-center gap-1">
                               <CheckCircle2 className="w-3 h-3" /> Concluído
                             </span>
                           ) : (
@@ -284,12 +355,16 @@ export default function DashboardPage() {
                     <div className="relative h-2 bg-white/10 rounded-full overflow-hidden">
                       <div
                         className={`absolute inset-y-0 left-0 rounded-full transition-all duration-500 ${
-                          process.status === "concluido" ? "bg-[#00ff00]" : "bg-amber-400"
+                          process.status === "concluido"
+                            ? "bg-[#00FF90]"
+                            : "bg-amber-400"
                         }`}
                         style={{ width: `${process.progress}%` }}
                       />
                     </div>
-                    <p className="text-xs text-neutral-500 mt-2">{process.progress}% concluído</p>
+                    <p className="text-xs text-neutral-500 mt-2">
+                      {process.progress}% concluído
+                    </p>
                   </div>
                 ))}
               </div>
@@ -310,8 +385,12 @@ export default function DashboardPage() {
                       className="flex items-center gap-4 p-3 bg-white/5 rounded-xl hover:bg-white/10 transition-colors"
                     >
                       <div className="text-center min-w-[50px]">
-                        <p className="text-lg font-bold text-[#00ff00]">{task.date.split(" ")[0]}</p>
-                        <p className="text-xs text-neutral-500">{task.date.split(" ")[1]}</p>
+                        <p className="text-lg font-bold text-[#00FF90]">
+                          {task.date.split(" ")[0]}
+                        </p>
+                        <p className="text-xs text-neutral-500">
+                          {task.date.split(" ")[1]}
+                        </p>
                       </div>
                       <div className="flex-1">
                         <p className="font-medium text-sm">{task.title}</p>
@@ -326,21 +405,29 @@ export default function DashboardPage() {
               <div className="bg-[#111111] border border-white/10 rounded-2xl p-6">
                 <h2 className="text-lg font-semibold mb-4">Ações Rápidas</h2>
                 <div className="grid grid-cols-2 gap-3">
-                  <button className="flex flex-col items-center gap-2 p-4 bg-white/5 hover:bg-[#00ff00]/10 hover:border-[#00ff00]/30 border border-transparent rounded-xl transition-all group">
-                    <Plus className="w-6 h-6 text-neutral-400 group-hover:text-[#00ff00]" />
-                    <span className="text-xs text-neutral-400 group-hover:text-white">Enviar Doc</span>
+                  <button className="flex flex-col items-center gap-2 p-4 bg-white/5 hover:bg-[#00FF90]/10 hover:border-[#00FF90]/30 border border-transparent rounded-xl transition-all group">
+                    <Plus className="w-6 h-6 text-neutral-400 group-hover:text-[#00FF90]" />
+                    <span className="text-xs text-neutral-400 group-hover:text-white">
+                      Enviar Doc
+                    </span>
                   </button>
-                  <button className="flex flex-col items-center gap-2 p-4 bg-white/5 hover:bg-[#00ff00]/10 hover:border-[#00ff00]/30 border border-transparent rounded-xl transition-all group">
-                    <MessageSquare className="w-6 h-6 text-neutral-400 group-hover:text-[#00ff00]" />
-                    <span className="text-xs text-neutral-400 group-hover:text-white">Nova Mensagem</span>
+                  <button className="flex flex-col items-center gap-2 p-4 bg-white/5 hover:bg-[#00FF90]/10 hover:border-[#00FF90]/30 border border-transparent rounded-xl transition-all group">
+                    <MessageSquare className="w-6 h-6 text-neutral-400 group-hover:text-[#00FF90]" />
+                    <span className="text-xs text-neutral-400 group-hover:text-white">
+                      Nova Mensagem
+                    </span>
                   </button>
-                  <button className="flex flex-col items-center gap-2 p-4 bg-white/5 hover:bg-[#00ff00]/10 hover:border-[#00ff00]/30 border border-transparent rounded-xl transition-all group">
-                    <FileText className="w-6 h-6 text-neutral-400 group-hover:text-[#00ff00]" />
-                    <span className="text-xs text-neutral-400 group-hover:text-white">Relatórios</span>
+                  <button className="flex flex-col items-center gap-2 p-4 bg-white/5 hover:bg-[#00FF90]/10 hover:border-[#00FF90]/30 border border-transparent rounded-xl transition-all group">
+                    <FileText className="w-6 h-6 text-neutral-400 group-hover:text-[#00FF90]" />
+                    <span className="text-xs text-neutral-400 group-hover:text-white">
+                      Relatórios
+                    </span>
                   </button>
-                  <button className="flex flex-col items-center gap-2 p-4 bg-white/5 hover:bg-[#00ff00]/10 hover:border-[#00ff00]/30 border border-transparent rounded-xl transition-all group">
-                    <TrendingUp className="w-6 h-6 text-neutral-400 group-hover:text-[#00ff00]" />
-                    <span className="text-xs text-neutral-400 group-hover:text-white">Análises</span>
+                  <button className="flex flex-col items-center gap-2 p-4 bg-white/5 hover:bg-[#00FF90]/10 hover:border-[#00FF90]/30 border border-transparent rounded-xl transition-all group">
+                    <TrendingUp className="w-6 h-6 text-neutral-400 group-hover:text-[#00FF90]" />
+                    <span className="text-xs text-neutral-400 group-hover:text-white">
+                      Análises
+                    </span>
                   </button>
                 </div>
               </div>
@@ -353,7 +440,7 @@ export default function DashboardPage() {
               <h2 className="text-lg font-semibold">Documentos Recentes</h2>
               <Link
                 href="/dashboard/documentos"
-                className="text-sm text-[#00ff00] hover:underline flex items-center gap-1"
+                className="text-sm text-[#00FF90] hover:underline flex items-center gap-1"
               >
                 Ver todos <ChevronRight className="w-4 h-4" />
               </Link>
@@ -371,7 +458,10 @@ export default function DashboardPage() {
                 </thead>
                 <tbody className="divide-y divide-white/5">
                   {recentDocuments.map((doc, idx) => (
-                    <tr key={idx} className="hover:bg-white/5 transition-colors">
+                    <tr
+                      key={idx}
+                      className="hover:bg-white/5 transition-colors"
+                    >
                       <td className="px-6 py-4">
                         <div className="flex items-center gap-3">
                           <div className="p-2 bg-white/5 rounded-lg">
@@ -381,12 +471,16 @@ export default function DashboardPage() {
                         </div>
                       </td>
                       <td className="px-6 py-4">
-                        <span className="text-xs bg-white/10 px-2 py-1 rounded">{doc.type}</span>
+                        <span className="text-xs bg-white/10 px-2 py-1 rounded">
+                          {doc.type}
+                        </span>
                       </td>
                       <td className="px-6 py-4 text-neutral-400">{doc.date}</td>
                       <td className="px-6 py-4">
                         {doc.status === "novo" ? (
-                          <span className="text-xs text-[#00ff00] bg-[#00ff00]/10 px-2 py-1 rounded-full">Novo</span>
+                          <span className="text-xs text-[#00FF90] bg-[#00FF90]/10 px-2 py-1 rounded-full">
+                            Novo
+                          </span>
                         ) : (
                           <span className="text-xs text-neutral-500 bg-white/5 px-2 py-1 rounded-full">
                             Visualizado
@@ -412,5 +506,5 @@ export default function DashboardPage() {
         </div>
       </main>
     </div>
-  )
+  );
 }

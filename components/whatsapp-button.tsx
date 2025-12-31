@@ -1,20 +1,23 @@
-"use client"
+"use client";
 
-import { useState } from "react"
-import { MessageCircle, X } from "lucide-react"
+import { useState } from "react";
+import { MessageCircle, X } from "lucide-react";
 
 export function WhatsAppButton() {
-  const [isOpen, setIsOpen] = useState(false)
+  const [isOpen, setIsOpen] = useState(false);
 
-  const phoneNumber = "5543991231726"
-  const message = "Olá! Gostaria de mais informações sobre os serviços da Oliveto."
+  const phoneNumber = "5543991231726";
+  const message =
+    "Olá! Gostaria de mais informações sobre os serviços da Oliveto.";
 
   return (
     <div className="fixed bottom-6 right-6 z-50">
       {/* Popup */}
       <div
         className={`absolute bottom-20 right-0 w-72 bg-white rounded-2xl shadow-2xl overflow-hidden transition-all duration-300 ${
-          isOpen ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4 pointer-events-none"
+          isOpen
+            ? "opacity-100 translate-y-0"
+            : "opacity-0 translate-y-4 pointer-events-none"
         }`}
       >
         {/* Header */}
@@ -29,7 +32,10 @@ export function WhatsAppButton() {
                 <p className="text-white/80 text-xs">Online agora</p>
               </div>
             </div>
-            <button onClick={() => setIsOpen(false)} className="text-white/80 hover:text-white transition-colors">
+            <button
+              onClick={() => setIsOpen(false)}
+              className="text-white/80 hover:text-white transition-colors"
+            >
               <X className="w-5 h-5" />
             </button>
           </div>
@@ -39,13 +45,16 @@ export function WhatsAppButton() {
         <div className="p-4">
           <div className="bg-gray-100 rounded-lg p-3 mb-4">
             <p className="text-gray-700 text-sm">
-              Olá! 👋 Como podemos ajudar você hoje? Nossa equipe está pronta para atender.
+              Olá! 👋 Como podemos ajudar você hoje? Nossa equipe está pronta
+              para atender.
             </p>
             <span className="text-gray-400 text-xs mt-1 block">Agora</span>
           </div>
 
           <a
-            href={`https://wa.me/${phoneNumber}?text=${encodeURIComponent(message)}`}
+            href={`https://wa.me/${phoneNumber}?text=${encodeURIComponent(
+              message
+            )}`}
             target="_blank"
             rel="noopener noreferrer"
             className="block w-full bg-[#25D366] text-white text-center py-3 rounded-lg font-medium hover:bg-[#20BD5A] transition-colors"
@@ -66,8 +75,8 @@ export function WhatsAppButton() {
         <span className="absolute w-full h-full rounded-full bg-[#25D366] animate-ping opacity-30" />
 
         {/* Online Badge */}
-        <span className="absolute top-0 right-0 w-4 h-4 bg-green-400 rounded-full border-2 border-white" />
+        <span className="absolute top-0 right-0 w-4 h-4 bg-primary rounded-full border-2 border-white" />
       </button>
     </div>
-  )
+  );
 }
