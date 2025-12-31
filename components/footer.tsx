@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 
 export function Footer() {
@@ -7,7 +8,7 @@ export function Footer() {
         <div className="grid md:grid-cols-4 gap-8 mb-16">
           <div>
             <Link href="/" className="text-2xl font-bold tracking-wider">
-              <span className="font-light">\\</span>VI
+              <Image src="/logo-min.png" alt="Logo" width={80} height={80} />
             </Link>
           </div>
 
@@ -59,7 +60,7 @@ export function Footer() {
 
         <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between text-xs text-gray-600">
           <p>BRANDING E LAYOUT - KOU59 STUDIO</p>
-          <p>PROGRAMAÇÃO - XXX</p>
+          <p>DESENVOLVIMENTO - T_YOU</p>
         </div>
       </div>
     </footer>
