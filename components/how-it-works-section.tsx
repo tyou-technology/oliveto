@@ -43,7 +43,7 @@ const steps = [
 
 export function HowItWorksSection() {
   return (
-    <section className="py-20 bg-[#0a0a0a]">
+    <section className="py-20 bg-black">
       <div className="max-w-6xl mx-auto px-6">
         <div className="text-center mb-16">
           <span className="text-[#00FF90] text-sm tracking-wider uppercase">

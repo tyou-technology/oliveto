@@ -40,16 +40,16 @@ export function FaqSection() {
   const [openIndex, setOpenIndex] = useState<number | null>(0);
 
   return (
-    <section className="py-20 bg-white">
+    <section className="py-20 bg-secondary">
       <div className="max-w-4xl mx-auto px-6">
         <div className="text-center mb-12">
           <span className="text-[#00FF90] text-sm tracking-wider uppercase">
             Dúvidas Frequentes
           </span>
-          <h2 className="text-3xl md:text-4xl font-bold mt-2 text-[#0a0a0a]">
+          <h2 className="text-3xl md:text-4xl font-bold mt-2 text-white">
             Perguntas <span className="text-[#00FF90]">Frequentes</span>
           </h2>
-          <p className="text-gray-600 mt-4 max-w-2xl mx-auto">
+          <p className="text-white mt-4 max-w-2xl mx-auto">
             Tire suas principais dúvidas sobre nossos serviços de contabilidade,
             perícia e auditoria.
           </p>

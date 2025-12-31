@@ -11,9 +11,9 @@
   --card-foreground: oklch(0.141 0.005 285.823);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.141 0.005 285.823);
-  --primary: oklch(0.87 0.29 142); /* #00FF90 - Brand Green */
+  --primary: #00ff90; /* #00FF90 - Brand Green */
   --primary-foreground: oklch(0.141 0.005 285.823); /* Dark text for contrast */
-  --secondary: oklch(0.967 0.001 286.375);
+  --secondary: #2e2e2e;
   --secondary-foreground: oklch(0.21 0.034 264.665);
   --muted: oklch(0.967 0.001 286.375);
   --muted-foreground: oklch(0.552 0.016 285.938);

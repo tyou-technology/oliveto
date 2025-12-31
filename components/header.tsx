@@ -1,11 +1,12 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import Image from "next/image";
 
 export function Header({ pathname = "/" }: { pathname?: string }) {
   return (
-    <header className="flex items-center justify-between px-8 py-6 md:px-16">
+    <header className="flex items-center justify-evenly px-8 py-6 md:px-16">
       <Link href="/" className="text-xl font-bold tracking-wider">
-        OLI<span className="font-light">V</span>ETO
+        <Image src="/logo.png" alt="Logo" width={150} height={150} />
       </Link>
 
       <nav className="hidden md:flex items-center gap-8">

@@ -13,11 +13,11 @@ const testimonials = [
       "A organização, a atenção aos detalhes e a agilidade no atendimento fazem toda a diferença. Desde o início vocês me auxiliaram e tiraram todas as minhas dúvidas.",
     ],
   },
-]
+];
 
 export function TestimonialsSection() {
   return (
-    <section className="px-8 py-16 md:px-16 md:py-24 border-t border-gray-800">
+    <section className="px-8 py-16 md:px-16 md:py-24 border-t border-gray-800 bg-black">
       <div className="max-w-6xl mx-auto">
         <div className="flex items-center gap-2 mb-8">
           <p className="text-sm text-gray-500">Depoimentos.</p>
@@ -32,7 +32,10 @@ export function TestimonialsSection() {
             <div key={testimonial.name}>
               <h4 className="text-sm font-medium mb-4">{testimonial.name}</h4>
               {testimonial.content.map((paragraph, index) => (
-                <p key={index} className="text-gray-400 text-sm leading-relaxed mb-4">
+                <p
+                  key={index}
+                  className="text-gray-400 text-sm leading-relaxed mb-4"
+                >
                   {paragraph}
                 </p>
               ))}
@@ -41,5 +44,5 @@ export function TestimonialsSection() {
         </div>
       </div>
     </section>
-  )
+  );
 }

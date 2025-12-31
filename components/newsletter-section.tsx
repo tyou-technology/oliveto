@@ -22,7 +22,7 @@ export function NewsletterSection() {
   };
 
   return (
-    <section className="py-20 bg-[#0a0a0a]">
+    <section className="py-20 bg-black">
       <div className="max-w-6xl mx-auto px-6">
         <div className="relative bg-gradient-to-br from-[#00FF90]/10 to-transparent border border-[#00FF90]/30 rounded-2xl p-8 md:p-12 overflow-hidden">
           {/* Background decoration */}

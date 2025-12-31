@@ -1,13 +1,18 @@
 "use client";
 
+import Image from "next/image";
+
 export function HeroSection() {
   return (
-    <section className="relative px-8 py-16 md:px-16 md:py-24 overflow-hidden">
+    <section className="min-h-[55dvh] relative px-8 pt-16 md:px-16 md:pt-24 overflow-hidden">
       {/* Background large text */}
-      <div className="absolute inset-0 flex items-center justify-center pointer-events-none select-none">
-        <span className="text-[12vw] font-bold tracking-wider text-transparent stroke-text opacity-10">
-          OLIVETO
-        </span>
+      <div className="absolute bottom-[-35dvh] inset-0 pointer-events-none select-none">
+        <Image
+          src="/banner-words.png"
+          alt="Banner Words"
+          fill
+          className="object-contain"
+        />
       </div>
 
       <div className="relative z-10 text-center max-w-4xl mx-auto">

@@ -5,7 +5,7 @@ import { Calculator, ArrowRight, CheckCircle } from "lucide-react";
 
 export function CalculatorBanner() {
   return (
-    <section className="py-16 bg-[#0a0a0a]">
+    <section className="py-16 bg-secondary">
       <div className="max-w-6xl mx-auto px-6">
         <div className="relative overflow-hidden rounded-2xl border border-[#1a1a1a] bg-gradient-to-br from-[#0f0f0f] to-[#141414]">
           {/* Decorative elements */}

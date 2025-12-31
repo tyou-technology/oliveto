@@ -10,7 +10,7 @@ export function ServicesSection() {
   return (
     <section
       id="servicos"
-      className="px-8 py-16 md:px-16 md:py-24 border-t border-gray-800"
+      className="px-8 py-16 md:px-16 md:py-24 border-t border-gray-800 bg-secondary"
     >
       <div className="max-w-6xl mx-auto">
         <p className="text-sm text-gray-500 mb-8">Serviços.</p>

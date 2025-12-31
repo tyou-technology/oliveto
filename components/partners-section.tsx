@@ -44,7 +44,7 @@ export function PartnersSection() {
   }, [isHovered]);
 
   return (
-    <section className="py-16 bg-[#0a0a0a] border-y border-white/10">
+    <section className="py-16 bg-secondary border-y border-white/10">
       <div className="max-w-6xl mx-auto px-6">
         <div className="text-center mb-10">
           <span className="text-[#00FF90] text-sm tracking-wider uppercase">

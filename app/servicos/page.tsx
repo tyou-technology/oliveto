@@ -1,5 +1,5 @@
-import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
+import { Header } from "@/components/header";
+import { Footer } from "@/components/footer";
 
 export default function ServicosPage() {
   const periciaServices = [
@@ -18,7 +18,7 @@ export default function ServicosPage() {
     "Penhora sobre faturamento",
     "Cálculos Trabalhistas",
     "Defesa em execução, embargos e busca e apreensão;",
-  ]
+  ];
 
   const contabilidadeServices = [
     "Contabilidade Integrada (todas as operações do negócio)",
@@ -38,7 +38,7 @@ export default function ServicosPage() {
     "Reestruturação de empresas ou departamentos",
     "Valluation: definição do valor da empresa por métricas de mercado ou financeiras",
     "Estudos em: formação de preço, análise de investimentos, viabilidade, finanças e ponto de equilíbrio.",
-  ]
+  ];
 
   const auditoriaServices = [
     "Auditoria das demonstrações contábeis",
@@ -47,7 +47,7 @@ export default function ServicosPage() {
     "Auditoria trabalhista e previdenciária",
     "Auditoria de Gestão (desempenho)",
     "Auditoria operacional em áreas específicas",
-  ]
+  ];
 
   return (
     <main className="min-h-screen bg-background text-foreground">
@@ -62,7 +62,9 @@ export default function ServicosPage() {
         <div className="absolute top-12 right-12 w-32 h-32 border border-primary/30 hidden lg:block" />
         <div className="absolute top-24 right-24 w-16 h-16 border border-primary/20 hidden lg:block" />
 
-        <h1 className="text-4xl md:text-5xl font-bold text-primary">SERVIÇOS</h1>
+        <h1 className="text-4xl md:text-5xl font-bold text-primary">
+          SERVIÇOS
+        </h1>
       </section>
 
       {/* Services Grid */}
@@ -71,11 +73,16 @@ export default function ServicosPage() {
           {/* Perícia */}
           <div>
             <div className="border border-muted-foreground/30 p-6 mb-6">
-              <h2 className="text-xl font-bold text-primary text-center tracking-wider">PERÍCIA</h2>
+              <h2 className="text-xl font-bold text-primary text-center tracking-wider">
+                PERÍCIA
+              </h2>
             </div>
             <ul className="space-y-4">
               {periciaServices.map((service, index) => (
-                <li key={index} className="text-sm text-muted-foreground leading-relaxed">
+                <li
+                  key={index}
+                  className="text-sm text-muted-foreground leading-relaxed"
+                >
                   {service}
                 </li>
               ))}
@@ -85,11 +92,16 @@ export default function ServicosPage() {
           {/* Contabilidade */}
           <div>
             <div className="border border-muted-foreground/30 p-6 mb-6">
-              <h2 className="text-xl font-bold text-primary text-center tracking-wider">CONTABILIDADE</h2>
+              <h2 className="text-xl font-bold text-primary text-center tracking-wider">
+                CONTABILIDADE
+              </h2>
             </div>
             <ul className="space-y-4">
               {contabilidadeServices.map((service, index) => (
-                <li key={index} className="text-sm text-muted-foreground leading-relaxed">
+                <li
+                  key={index}
+                  className="text-sm text-muted-foreground leading-relaxed"
+                >
                   {service}
                 </li>
               ))}
@@ -99,11 +111,16 @@ export default function ServicosPage() {
           {/* Auditoria */}
           <div>
             <div className="border border-muted-foreground/30 p-6 mb-6">
-              <h2 className="text-xl font-bold text-primary text-center tracking-wider">AUDITORIA</h2>
+              <h2 className="text-xl font-bold text-primary text-center tracking-wider">
+                AUDITORIA
+              </h2>
             </div>
             <ul className="space-y-4">
               {auditoriaServices.map((service, index) => (
-                <li key={index} className="text-sm text-muted-foreground leading-relaxed">
+                <li
+                  key={index}
+                  className="text-sm text-muted-foreground leading-relaxed"
+                >
                   {service}
                 </li>
               ))}
@@ -114,5 +131,5 @@ export default function ServicosPage() {
 
       <Footer />
     </main>
-  )
+  );
 }
