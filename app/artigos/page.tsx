@@ -24,7 +24,7 @@ export default function ArtigosPage() {
 
       {/* Filters */}
       <section className="container mx-auto px-6 py-8 text-white">
-        <FilterBar availableCount={articlesPageContent.availableArticlesText} />
+        <FilterBar availableCount={articlesPageData.length} />
 
         {/* Articles Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 py-12">

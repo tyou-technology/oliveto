@@ -3,7 +3,7 @@
 import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
-import { articles } from "@/lib/constants/articles";
+import { articlesPageData } from "@/lib/constants/articles-page-data";
 import { articlesCarouselContent } from "@/lib/constants/articles-carousel";
 import { ArticleCard } from "@/components/molecules/article-card";
 
@@ -15,13 +15,13 @@ export function ArticlesCarousel() {
 
   const nextSlide = useCallback(() => {
     setCurrentIndex((prev) =>
-      prev + 1 >= articles.length - itemsPerView + 1 ? 0 : prev + 1
+      prev + 1 >= articlesPageData.length - itemsPerView + 1 ? 0 : prev + 1
     );
   }, [itemsPerView]);
 
   const prevSlide = () => {
     setCurrentIndex((prev) =>
-      prev === 0 ? articles.length - itemsPerView : prev - 1
+      prev === 0 ? articlesPageData.length - itemsPerView : prev - 1
     );
   };
 
@@ -98,7 +98,7 @@ export function ArticlesCarousel() {
               }%)`,
             }}
           >
-            {articles.map((article) => (
+            {articlesPageData.map((article) => (
               <ArticleCard key={article.id} article={article} />
             ))}
           </div>
@@ -106,23 +106,23 @@ export function ArticlesCarousel() {
 
         {/* Progress indicators */}
         <div className="flex justify-center gap-2 mt-8">
-          {Array.from({ length: articles.length - itemsPerView + 1 }).map(
-            (_, index) => (
-              <button
-                key={index}
-                onClick={() => {
-                  setCurrentIndex(index);
-                  setIsAutoPlaying(false);
-                }}
-                className={`h-1 transition-all duration-300 ${
-                  index === currentIndex
-                    ? "w-8 bg-[#00FF90]"
-                    : "w-4 bg-neutral-700 hover:bg-neutral-600"
-                }`}
-                aria-label={`Ir para slide ${index + 1}`}
-              />
-            )
-          )}
+          {Array.from({
+            length: articlesPageData.length - itemsPerView + 1,
+          }).map((_, index) => (
+            <button
+              key={index}
+              onClick={() => {
+                setCurrentIndex(index);
+                setIsAutoPlaying(false);
+              }}
+              className={`h-1 transition-all duration-300 ${
+                index === currentIndex
+                  ? "w-8 bg-[#00FF90]"
+                  : "w-4 bg-neutral-700 hover:bg-neutral-600"
+              }`}
+              aria-label={`Ir para slide ${index + 1}`}
+            />
+          ))}
         </div>
 
         {/* Mobile: Ver todos */}

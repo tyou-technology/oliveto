@@ -1,53 +1,31 @@
 import type { Article } from "../types/article";
 
-// Mock data for articles page - this would typically come from a CMS or API
+// Real articles data - centralized repository for article previews
 export const articlesPageData: Article[] = [
   {
     id: 1,
-    slug: "agro-deducao-despesas",
-    category: "Agro.",
+    slug: "reforma-tributaria-2026-iva-pratica",
+    category: "Tributária.",
     title:
-      "A dedução das despesas a título de Juros sobre o Capital Próprio (JCP) é crucial para a diminuição da carga tributária...",
-    image: "/business-meeting-office.png",
+      "2026 na Reforma Tributária: o ano em que o IVA começa a aparecer na prática (mesmo antes de cobrar)",
+    excerpt:
+      "Muita gente ouviu que 2026 será um 'ano de teste' da Reforma Tributária e concluiu: 'então não muda nada'. Essa leitura é perigosa.",
+    image: "/artigos/artigo1.jpg",
+    author: "Oliveto Consultoria",
+    publishDate: "09 de janeiro de 2026",
+    readTime: "8 min",
   },
   {
     id: 2,
-    slug: "deducao-despesas-jcp-carga-tributaria",
+    slug: "documentos-fiscais-2026-ibs-cbs",
     category: "Tributária.",
     title:
-      "A dedução das despesas a título de Juros sobre o Capital Próprio (JCP) é crucial para a diminuição da carga tributária...",
-    image: "/man-working-laptop-coffee.jpg",
-  },
-  {
-    id: 3,
-    slug: "brasil-deducao-despesas",
-    category: "Brasil.",
-    title:
-      "A dedução das despesas a título de Juros sobre o Capital Próprio (JCP) é crucial para a diminuição da carga tributária...",
-    image: "/barista-coffee-shop.jpg",
-  },
-  {
-    id: 4,
-    slug: "politica-deducao-despesas",
-    category: "Política.",
-    title:
-      "A dedução das despesas a título de Juros sobre o Capital Próprio (JCP) é crucial para a diminuição da carga tributária...",
-    image: "/modern-architecture-building.png",
-  },
-  {
-    id: 5,
-    slug: "londrina-deducao-despesas",
-    category: "Londrina.",
-    title:
-      "A dedução das despesas a título de Juros sobre o Capital Próprio (JCP) é crucial para a diminuição da carga tributária...",
-    image: "/photographer-camera.jpg",
-  },
-  {
-    id: 6,
-    slug: "agro-deducao-despesas-2",
-    category: "Agro.",
-    title:
-      "A dedução das despesas a título de Juros sobre o Capital Próprio (JCP) é crucial para a diminuição da carga tributária...",
-    image: "/person-working-kitchen-food.jpg",
+      "Documentos fiscais em 2026: o que muda com IBS e CBS (e como evitar rejeições, retrabalho e sustos no faturamento)",
+    excerpt:
+      "Desde 1º de janeiro de 2026, a Reforma Tributária do Consumo entrou na sua fase mais 'pé no chão': a fase operacional.",
+    image: "/artigos/artigo2.jpg",
+    author: "Oliveto Consultoria",
+    publishDate: "09 de janeiro de 2026",
+    readTime: "10 min",
   },
 ];
