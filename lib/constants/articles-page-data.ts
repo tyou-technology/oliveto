@@ -11,7 +11,7 @@ export const articlesPageData: Article[] = [
     excerpt:
       "Muita gente ouviu que 2026 será um 'ano de teste' da Reforma Tributária e concluiu: 'então não muda nada'. Essa leitura é perigosa.",
     image: "/artigos/artigo1.jpg",
-    author: "Oliveto Consultoria",
+    author: "Augusto Favareto",
     publishDate: "09 de janeiro de 2026",
     readTime: "8 min",
   },
@@ -24,7 +24,7 @@ export const articlesPageData: Article[] = [
     excerpt:
       "Desde 1º de janeiro de 2026, a Reforma Tributária do Consumo entrou na sua fase mais 'pé no chão': a fase operacional.",
     image: "/artigos/artigo2.jpg",
-    author: "Oliveto Consultoria",
+    author: "Augusto Favareto",
     publishDate: "09 de janeiro de 2026",
     readTime: "10 min",
   },
