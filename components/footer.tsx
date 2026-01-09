@@ -55,7 +55,7 @@ export function Footer() {
                 Linkedin
               </Link>
               <Link
-                href="https://www.tiktok.com/@oliveto.contabili"
+                href="https://www.tiktok.com/@olivetocont"
                 target="_blank"
                 className="text-sm text-gray-400 hover:text-white transition-colors"
               >

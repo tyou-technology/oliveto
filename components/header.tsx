@@ -136,7 +136,7 @@ export function Header({ bg = "bg-black" }: HeaderProps) {
                   Linkedin
                 </Link>
                 <Link
-                  href="https://www.tiktok.com/@oliveto.contabili"
+                  href="https://www.tiktok.com/@olivetocont"
                   target="_blank"
                   className="text-sm text-white hover:text-white"
                 >

@@ -17,26 +17,78 @@ const outfit = Outfit({
 });
 
 export const metadata: Metadata = {
-  title: "Oliveto | Perícia, Contabilidade e Auditoria",
+  metadataBase: new URL("https://olivetocontabilidade.com"),
+  title: {
+    default: "Oliveto | Perícia Contábil, Auditoria e Consultoria Empresarial",
+    template: "%s | Oliveto Contabilidade",
+  },
   description:
-    "Contabilidade especializada em perícia e auditoria contábil, com um olhar atual, técnico e estratégico.",
-  generator: "v0.app",
+    "Escritório de Contabilidade em Londrina especializado em Perícia Contábil, Auditoria, Valuation e Gestão Financeira. Soluções técnicas para advogados e empresas.",
+  keywords: [
+    "Perícia Contábil",
+    "Auditoria",
+    "Contabilidade Londrina",
+    "Consultoria Empresarial",
+    "Perito Contábil",
+    "Cálculos Judiciais",
+    "Recuperação Tributária",
+    "Valuation",
+    "Augusto Favareto",
+    "Murilo de Oliveira",
+    "Oliveto",
+  ],
+  authors: [
+    { name: "Augusto Favareto" },
+    { name: "Murilo de Oliveira" },
+    { name: "T_YOU", url: "https://www.tyou.com.br/" },
+  ],
+  creator: "Oliveto Contabilidade",
+  publisher: "Oliveto Contabilidade",
+  formatDetection: {
+    email: false,
+    address: false,
+    telephone: false,
+  },
   icons: {
-    icon: [
+    icon: "/simbolo_branco.png",
+    shortcut: "/simbolo_branco.png",
+    apple: "/simbolo_branco.png",
+  },
+  openGraph: {
+    title: "Oliveto | Perícia, Contabilidade e Auditoria",
+    description:
+      "Excelência técnica e visão estratégica em Perícia Contábil e Auditoria. Atedimento em Londrina e região.",
+    url: "https://olivetocontabilidade.com",
+    siteName: "Oliveto Contabilidade",
+    locale: "pt_BR",
+    type: "website",
+    images: [
       {
-        url: "/icon-light-32x32.png",
-        media: "(prefers-color-scheme: light)",
-      },
-      {
-        url: "/icon-dark-32x32.png",
-        media: "(prefers-color-scheme: dark)",
-      },
-      {
-        url: "/icon.svg",
-        type: "image/svg+xml",
+        url: "/logo.png",
+        width: 1200,
+        height: 630,
+        alt: "Oliveto Contabilidade",
       },
     ],
-    apple: "/apple-icon.png",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Oliveto | Perícia e Auditoria Contábil",
+    description:
+      "Soluções em Perícia, Auditoria e Contabilidade Consultiva. Transformando dados em clareza e resultados.",
+    images: ["/logo.png"],
+    creator: "@olivetocont",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: {
+      index: true,
+      follow: true,
+      "max-video-preview": -1,
+      "max-image-preview": "large",
+      "max-snippet": -1,
+    },
   },
 };
 

@@ -1,6 +1,19 @@
 {
-  "name": "my-v0-project",
+  "name": "oliveto-contabilidade",
+  "description": "Site institucional da Oliveto Contabilidade, especializado em Perícia Contábil, Auditoria e Consultoria.",
   "version": "0.1.0",
+  "author": {
+    "name": "T_YOU",
+    "url": "https://www.tyou.com.br/"
+  },
+  "keywords": [
+    "contabilidade",
+    "perícia",
+    "auditoria",
+    "consultoria",
+    "londrina",
+    "valuation"
+  ],
   "private": true,
   "scripts": {
     "build": "next build",
