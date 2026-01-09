@@ -12,17 +12,21 @@ export function Footer() {
             </Link>
           </div>
 
-          <div>
-            <p className="text-sm text-gray-400 leading-relaxed">
-              Av, Madre Leônia Milito nº1500
-              <br />
-              Sala 1311, Atsushi Yoshii Tower
-              <br />
-              Londrina - Paraná
-            </p>
-            <p className="text-sm text-gray-400 mt-4">Seg - Sex. 8h às 19h</p>
+          <div className="text-gray-400 hover:text-white transition-colors">
+            <Link
+              href="https://maps.app.goo.gl/P8RsKR8923M1Ga5H7"
+              target="_blank"
+            >
+              <p className="text-sm  leading-relaxed">
+                Av, Madre Leônia Milito nº1500
+                <br />
+                Sala 1311, Atsushi Yoshii Tower
+                <br />
+                Londrina - Paraná
+              </p>
+              <p className="text-sm  mt-4">Seg - Sex. 8h às 19h</p>
+            </Link>
           </div>
-
           <div>
             <p className="text-sm text-gray-500 mb-4">Fale agora.</p>
             <a
@@ -36,31 +40,46 @@ export function Footer() {
           <div>
             <p className="text-sm text-gray-500 mb-4">Siga.</p>
             <div className="flex flex-col gap-2">
-              <a
-                href="#"
+              <Link
+                href="https://www.instagram.com/olivetocont"
+                target="_blank"
                 className="text-sm text-gray-400 hover:text-white transition-colors"
               >
                 Instagram
-              </a>
-              <a
-                href="#"
+              </Link>
+              <Link
+                href="https://www.linkedin.com/company/olivetocont/"
+                target="_blank"
                 className="text-sm text-gray-400 hover:text-white transition-colors"
               >
                 Linkedin
-              </a>
-              <a
-                href="#"
+              </Link>
+              <Link
+                href="https://www.tiktok.com/@oliveto.contabili"
+                target="_blank"
                 className="text-sm text-gray-400 hover:text-white transition-colors"
               >
                 Tiktok
-              </a>
+              </Link>
             </div>
           </div>
         </div>
 
         <div className="border-t border-gray-800 pt-8 flex flex-col md:flex-row justify-between text-xs text-gray-600">
-          <p>BRANDING E LAYOUT - KOU59 STUDIO</p>
-          <p>DESENVOLVIMENTO - T_YOU</p>
+          <Link href="https://www.kous9.studio/" target="_blank">
+            <p>
+              BRANDING E LAYOUT -{" "}
+              <span className="text-white font-medium">KOU59 STUDIO</span>
+            </p>
+          </Link>
+          <Link href="https://www.tyou.com.br/" target="_blank">
+            <p>
+              DESENVOLVIMENTO -{" "}
+              <span className="text-white font-medium">
+                T<span className="text-[#00A5B4]">_</span>YOU
+              </span>
+            </p>
+          </Link>
         </div>
       </div>
     </footer>

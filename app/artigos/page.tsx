@@ -1,8 +1,9 @@
-import { Header } from "@/components/header"
-import { Footer } from "@/components/footer"
-import { ChevronDown } from "lucide-react"
-import Image from "next/image"
-import Link from "next/link"
+import { Header } from "@/components/header";
+import { Footer } from "@/components/footer";
+import { ChevronDown } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { PageBackgroundWords } from "@/components/page-background-words";
 
 const artigos = [
   {
@@ -53,40 +54,23 @@ const artigos = [
       "A dedução das despesas a título de Juros sobre o Capital Próprio (JCP) é crucial para a diminuição da carga tributária...",
     imagem: "/person-working-kitchen-food.jpg",
   },
-]
+];
 
 export default function ArtigosPage() {
   return (
-    <main className="min-h-screen bg-background text-foreground">
+    <main className="min-h-screen bg-secondary text-foreground">
       <Header />
 
       {/* Hero Section */}
-      <section className="relative bg-primary py-16 overflow-hidden">
-        <div className="container mx-auto px-6">
-          <h1 className="text-4xl md:text-5xl font-bold text-background">ARTIGOS.</h1>
+      <section className="relative bg-primary pt-24 pb-12 overflow-hidden">
+        <div className="container mx-auto px-6 relative z-10">
+          <h1 className="text-4xl md:text-5xl font-bold text-black">ARTIGOS</h1>
         </div>
-
-        {/* Decorative Pattern */}
-        <div className="absolute right-0 top-0 h-full w-1/2 opacity-30">
-          <svg viewBox="0 0 400 150" className="h-full w-full" preserveAspectRatio="xMidYMid slice">
-            <text
-              x="50"
-              y="120"
-              fontSize="150"
-              fontWeight="bold"
-              fill="none"
-              stroke="#000"
-              strokeWidth="2"
-              opacity="0.5"
-            >
-              OLIVETO
-            </text>
-          </svg>
-        </div>
+        <PageBackgroundWords />
       </section>
 
       {/* Filters */}
-      <section className="container mx-auto px-6 py-8">
+      <section className="container mx-auto px-6 py-8 text-white">
         <div className="flex flex-wrap items-center gap-4 pb-8 border-b border-muted">
           {/* Year Filter */}
           <div className="relative">
@@ -111,7 +95,9 @@ export default function ArtigosPage() {
             <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 pointer-events-none text-muted-foreground" />
           </div>
 
-          <span className="text-sm text-muted-foreground ml-auto">32 ARTIGOS DISPONÍVEIS</span>
+          <span className="text-sm text-muted-foreground ml-auto">
+            32 ARTIGOS DISPONÍVEIS
+          </span>
         </div>
 
         {/* Articles Grid */}
@@ -127,8 +113,12 @@ export default function ArtigosPage() {
                     className="object-cover transition-transform duration-300 group-hover:scale-105"
                   />
                 </div>
-                <span className="text-primary text-sm font-medium">{artigo.categoria}</span>
-                <p className="text-foreground text-sm mt-2 leading-relaxed">{artigo.titulo}</p>
+                <span className="text-primary text-sm font-medium">
+                  {artigo.categoria}
+                </span>
+                <p className="text-foreground text-sm text-white mt-2 leading-relaxed">
+                  {artigo.titulo}
+                </p>
               </article>
             </Link>
           ))}
@@ -136,11 +126,13 @@ export default function ArtigosPage() {
 
         {/* Load More */}
         <div className="border-t border-muted pt-8">
-          <button className="text-sm font-medium hover:text-primary transition-colors">CARREGAR MAIS ARTIGOS.</button>
+          <button className="text-sm font-medium hover:text-primary transition-colors">
+            CARREGAR MAIS ARTIGOS.
+          </button>
         </div>
       </section>
 
       <Footer />
     </main>
-  )
+  );
 }

@@ -1,27 +1,25 @@
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import Image from "next/image";
+import { PageBackgroundWords } from "@/components/page-background-words";
 
 export default function SobrePage() {
   return (
-    <div className="min-h-screen bg-background text-foreground">
-      <Header pathname="/sobre" />
+    <div className="min-h-screen bg-secondary text-foreground">
+      <Header />
 
       <main>
         {/* Hero Section */}
-        <section className="relative px-8 py-16 md:px-16 md:py-24">
-          {/* Background decorative text */}
-          <div className="absolute inset-0 flex items-start justify-end overflow-hidden pointer-events-none opacity-10">
-            <span className="text-[15vw] font-bold tracking-wider text-transparent stroke-text">
-              OLIVETO
-            </span>
-          </div>
-
-          <div className="max-w-6xl mx-auto relative z-10">
-            <h1 className="text-4xl md:text-5xl font-bold text-[#00FF90] mb-16">
+        <section className="relative bg-black pt-24 pb-12 overflow-hidden">
+          <div className="container mx-auto px-6 relative z-10">
+            <h1 className="text-4xl md:text-5xl font-bold text-primary">
               SOBRE.
             </h1>
-
+          </div>
+          <PageBackgroundWords />
+        </section>
+        <section className="container mx-auto px-6 py-16 relative bg-secondary">
+          <div className="relative z-10 ">
             <div className="grid md:grid-cols-2 gap-16">
               {/* Left column - History */}
               <div className="space-y-6">
@@ -93,13 +91,13 @@ export default function SobrePage() {
         </section>
 
         {/* Founders Section */}
-        <section className="px-8 py-16 md:px-16 md:py-24">
-          <div className="max-w-6xl mx-auto">
+        <section className="container mx-auto px-6 py-16">
+          <div className="">
             <div className="grid md:grid-cols-2 gap-12 items-start">
               {/* Founders Image */}
               <div className="relative aspect-[3/4] bg-gradient-to-b from-gray-800 to-gray-900 overflow-hidden">
                 <Image
-                  src="/two-professional-men-in-suits-business-partners-ac.jpg"
+                  src="/socios.png"
                   alt="Augusto Favareto e Murilo de Oliveira - Sócios fundadores da Oliveto"
                   fill
                   className="object-cover"

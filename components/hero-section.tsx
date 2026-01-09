@@ -4,18 +4,21 @@ import Image from "next/image";
 
 export function HeroSection() {
   return (
-    <section className="min-h-[55dvh] relative px-8 pt-16 md:px-16 md:pt-24 overflow-hidden">
+    <section className=" relative px-4 pt-10 lg:pt-20 pb-10 md:px-16 md:pt-32 flex flex-col justify-start md:justify-center overflow-hidden">
       {/* Background large text */}
-      <div className="absolute bottom-[-35dvh] inset-0 pointer-events-none select-none">
-        <Image
-          src="/banner-words.png"
-          alt="Banner Words"
-          fill
-          className="object-contain"
-        />
+      <div className="absolute inset-0 pointer-events-none select-none flex items-end justify-center overflow-hidden">
+        <div className="relative w-full h-full max-w-[1920px]">
+          <Image
+            src="/banner-words.png"
+            alt="Banner Words"
+            fill
+            className="object-contain object-bottom"
+            priority
+          />
+        </div>
       </div>
 
-      <div className="relative z-10 text-center max-w-4xl mx-auto">
+      <div className="relative z-10 text-center max-w-4xl mx-auto mb-10 md:mb-20 lg:mb-60">
         <p className="text-sm text-gray-400 mb-4">
           olhar atual, técnico e estratégico
         </p>

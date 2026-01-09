@@ -1,5 +1,7 @@
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
+import Image from "next/image";
+import { PageBackgroundWords } from "@/components/page-background-words";
 
 export default function ServicosPage() {
   const periciaServices = [
@@ -50,25 +52,21 @@ export default function ServicosPage() {
   ];
 
   return (
-    <main className="min-h-screen bg-background text-foreground">
+    <main className="min-h-screen bg-secondary text-foreground">
       <Header />
 
       {/* Hero Section */}
-      <section className="relative pt-32 pb-16 px-6 md:px-12 lg:px-24 overflow-hidden">
-        {/* Decorative background */}
-        <div className="absolute top-20 right-0 text-[200px] font-bold text-white/[0.03] leading-none tracking-tighter select-none pointer-events-none hidden lg:block">
-          OLIVETO
+      <section className="relative bg-black pt-24 pb-12 overflow-hidden">
+        <div className="container mx-auto px-6 relative z-10">
+          <h1 className="text-4xl md:text-5xl font-bold text-primary">
+            SERVIÇOS
+          </h1>
         </div>
-        <div className="absolute top-12 right-12 w-32 h-32 border border-primary/30 hidden lg:block" />
-        <div className="absolute top-24 right-24 w-16 h-16 border border-primary/20 hidden lg:block" />
-
-        <h1 className="text-4xl md:text-5xl font-bold text-primary">
-          SERVIÇOS
-        </h1>
+        <PageBackgroundWords />
       </section>
 
       {/* Services Grid */}
-      <section className="px-6 md:px-12 lg:px-24 pb-24">
+      <section className="bg-secondary container mx-auto px-6  py-16">
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 lg:gap-12">
           {/* Perícia */}
           <div>
@@ -79,10 +77,7 @@ export default function ServicosPage() {
             </div>
             <ul className="space-y-4">
               {periciaServices.map((service, index) => (
-                <li
-                  key={index}
-                  className="text-sm text-muted-foreground leading-relaxed"
-                >
+                <li key={index} className="text-sm text-white leading-relaxed">
                   {service}
                 </li>
               ))}
@@ -98,10 +93,7 @@ export default function ServicosPage() {
             </div>
             <ul className="space-y-4">
               {contabilidadeServices.map((service, index) => (
-                <li
-                  key={index}
-                  className="text-sm text-muted-foreground leading-relaxed"
-                >
+                <li key={index} className="text-sm text-white leading-relaxed">
                   {service}
                 </li>
               ))}
@@ -117,10 +109,7 @@ export default function ServicosPage() {
             </div>
             <ul className="space-y-4">
               {auditoriaServices.map((service, index) => (
-                <li
-                  key={index}
-                  className="text-sm text-muted-foreground leading-relaxed"
-                >
+                <li key={index} className="text-sm text-white leading-relaxed">
                   {service}
                 </li>
               ))}

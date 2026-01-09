@@ -1,4 +1,5 @@
 import { Button } from "@/components/ui/button";
+import Link from "next/link";
 
 export function AboutSection() {
   return (
@@ -31,12 +32,14 @@ export function AboutSection() {
             individualizada para diferentes perfis de empresários e escritórios,
             integrando três pilares: Perícia, Contabilidade e Auditoria.
           </p>
-          <Button
-            variant="outline"
-            className="border-white text-white bg-transparent hover:bg-white hover:text-black text-sm"
-          >
-            Conheça +
-          </Button>
+          <Link href="/sobre">
+            <Button
+              variant="outline"
+              className="border-white text-white bg-transparent hover:bg-white hover:text-black text-sm cursor-pointer"
+            >
+              Conheça +
+            </Button>
+          </Link>
         </div>
       </div>
     </section>

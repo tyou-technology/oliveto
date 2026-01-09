@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import {
   LayoutDashboard,
   FileText,
@@ -139,7 +140,7 @@ export default function DashboardPage() {
           <div className="p-6 border-b border-white/10">
             <div className="flex items-center justify-between">
               <Link href="/" className="text-2xl font-bold tracking-tight">
-                OLI<span className="text-[#00FF90]">\</span>VETO
+                <Image src="/logo.png" alt="Logo" width={100} height={100} />
               </Link>
               <button
                 onClick={() => setSidebarOpen(false)}

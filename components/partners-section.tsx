@@ -66,7 +66,7 @@ export function PartnersSection() {
           {[...partners, ...partners].map((partner, index) => (
             <div
               key={index}
-              className="flex-shrink-0 w-32 h-20 bg-white/5 border border-white/10 rounded-lg flex items-center justify-center hover:border-[#00FF90]/50 transition-colors group"
+              className="flex-shrink-0 w-32 h-20 bg-white/5 border border-white/10 rounded-lg flex items-center justify-center hover:border-[#00FF90]/50 transition-colors group cursor-pointer"
             >
               <div className="text-center">
                 <span className="text-xl font-bold text-gray-400 group-hover:text-[#00FF90] transition-colors">

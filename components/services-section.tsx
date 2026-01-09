@@ -1,9 +1,9 @@
 import { ArrowUpRight } from "lucide-react";
 
 const services = [
-  { title: "PERÍCIA", href: "#pericia" },
-  { title: "CONTABILIDADE", href: "#contabilidade" },
-  { title: "AUDITORIA", href: "#auditoria" },
+  { title: "PERÍCIA", href: "/servicos" },
+  { title: "CONTABILIDADE", href: "/servicos" },
+  { title: "AUDITORIA", href: "/servicos" },
 ];
 
 export function ServicesSection() {

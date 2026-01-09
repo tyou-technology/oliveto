@@ -1,3 +1,8 @@
+"use client";
+
+import { useState } from "react";
+import { cn } from "@/lib/utils";
+
 const testimonials = [
   {
     name: "DR CLEITON SAGGIN (SAGGIN ADVOCACIA)",
@@ -16,20 +21,43 @@ const testimonials = [
 ];
 
 export function TestimonialsSection() {
+  const [currentPage, setCurrentPage] = useState(0);
+  const itemsPerPage = 2;
+  const totalPages = Math.ceil(testimonials.length / itemsPerPage);
+
+  const currentTestimonials = testimonials.slice(
+    currentPage * itemsPerPage,
+    (currentPage + 1) * itemsPerPage
+  );
+
   return (
     <section className="px-8 py-16 md:px-16 md:py-24 border-t border-gray-800 bg-black">
       <div className="max-w-6xl mx-auto">
         <div className="flex items-center gap-2 mb-8">
           <p className="text-sm text-gray-500">Depoimentos.</p>
           <div className="flex gap-1">
-            <span className="w-2 h-2 rounded-full border border-gray-500"></span>
-            <span className="w-2 h-2 rounded-full bg-gray-500"></span>
+            {Array.from({ length: totalPages }).map((_, index) => (
+              <button
+                key={index}
+                onClick={() => setCurrentPage(index)}
+                className={cn(
+                  "w-2 h-2 rounded-full transition-colors",
+                  currentPage === index
+                    ? "bg-gray-500 cursor-default"
+                    : "border border-gray-500 cursor-pointer hover:bg-gray-500/50"
+                )}
+                aria-label={`Ir para página ${index + 1}`}
+              />
+            ))}
           </div>
         </div>
 
         <div className="grid md:grid-cols-2 gap-12">
-          {testimonials.map((testimonial) => (
-            <div key={testimonial.name}>
+          {currentTestimonials.map((testimonial) => (
+            <div
+              key={testimonial.name}
+              className="animate-in fade-in slide-in-from-right-4 duration-300"
+            >
               <h4 className="text-sm font-medium mb-4">{testimonial.name}</h4>
               {testimonial.content.map((paragraph, index) => (
                 <p
