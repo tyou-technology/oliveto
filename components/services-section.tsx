@@ -1,10 +1,5 @@
-import { ArrowUpRight } from "lucide-react";
-
-const services = [
-  { title: "PERÍCIA", href: "/servicos" },
-  { title: "CONTABILIDADE", href: "/servicos" },
-  { title: "AUDITORIA", href: "/servicos" },
-];
+import { services } from "@/lib/constants/services";
+import { ServiceCard } from "@/components/molecules/service-card";
 
 export function ServicesSection() {
   return (
@@ -17,18 +12,7 @@ export function ServicesSection() {
 
         <div className="grid md:grid-cols-3 gap-4">
           {services.map((service) => (
-            <a
-              key={service.title}
-              href={service.href}
-              className="group relative border border-gray-700 p-8 py-16 hover:border-[#00FF90] transition-colors"
-            >
-              <h3 className="text-lg font-medium tracking-wider text-center">
-                {service.title}
-              </h3>
-              <div className="absolute bottom-4 right-4 w-8 h-8 rounded-full border border-[#00FF90] flex items-center justify-center group-hover:bg-[#00FF90] transition-colors">
-                <ArrowUpRight className="w-4 h-4 text-[#00FF90] group-hover:text-black" />
-              </div>
-            </a>
+            <ServiceCard key={service.title} service={service} />
           ))}
         </div>
       </div>

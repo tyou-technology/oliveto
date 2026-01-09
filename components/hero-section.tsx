@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { heroContent } from "@/lib/constants/hero";
 
 export function HeroSection() {
   return (
@@ -9,7 +10,7 @@ export function HeroSection() {
       <div className="absolute inset-0 pointer-events-none select-none flex items-end justify-center overflow-hidden">
         <div className="relative w-full h-full max-w-[1920px]">
           <Image
-            src="/banner-words.png"
+            src={heroContent.backgroundImage}
             alt="Banner Words"
             fill
             className="object-contain object-bottom"
@@ -19,16 +20,14 @@ export function HeroSection() {
       </div>
 
       <div className="relative z-10 text-center max-w-4xl mx-auto mb-10 md:mb-20 lg:mb-60">
-        <p className="text-sm text-gray-400 mb-4">
-          olhar atual, técnico e estratégico
-        </p>
+        <p className="text-sm text-gray-400 mb-4">{heroContent.tagline}</p>
         <h1 className="text-2xl md:text-4xl font-light leading-tight">
-          + DE{" "}
+          {heroContent.highlightPrefix}{" "}
           <span className="text-[#00FF90] font-medium">
-            1 MILHÃO EM BENEFÍCIOS
+            {heroContent.highlight}
           </span>
           <br />
-          OBTIDOS EM FAVOR DE CLIENTES E PARCEIROS
+          {heroContent.titleSuffix}
         </h1>
       </div>
 

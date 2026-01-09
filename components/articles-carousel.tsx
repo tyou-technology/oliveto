@@ -1,61 +1,23 @@
 "use client";
 
 import { useState, useEffect, useCallback } from "react";
-import Image from "next/image";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
-
-const articles = [
-  {
-    id: 1,
-    slug: "deducao-despesas-jcp-agro",
-    category: "Agro.",
-    title:
-      "A dedução das despesas a título de Juros sobre o Capital Próprio (JCP) é crucial para a diminuição da carga tributária",
-    image: "/business-meeting-office.png",
-  },
-  {
-    id: 2,
-    slug: "deducao-despesas-jcp-tributaria",
-    category: "Tributária.",
-    title: "Principais mudanças na legislação tributária para empresas em 2025",
-    image: "/man-working-laptop-coffee.jpg",
-  },
-  {
-    id: 3,
-    slug: "deducao-despesas-jcp-brasil",
-    category: "Brasil.",
-    title: "Como a reforma tributária impacta os negócios brasileiros",
-    image: "/barista-coffee-shop.jpg",
-  },
-  {
-    id: 4,
-    slug: "deducao-despesas-jcp-politica",
-    category: "Política.",
-    title:
-      "Novas políticas fiscais e seus impactos na contabilidade empresarial",
-    image: "/modern-architecture-building.png",
-  },
-  {
-    id: 5,
-    slug: "deducao-despesas-jcp-londrina",
-    category: "Londrina.",
-    title: "Oportunidades tributárias para empresas da região de Londrina",
-    image: "/photographer-camera.jpg",
-  },
-];
+import { articles } from "@/lib/constants/articles";
+import { articlesCarouselContent } from "@/lib/constants/articles-carousel";
+import { ArticleCard } from "@/components/molecules/article-card";
 
 export function ArticlesCarousel() {
   const [currentIndex, setCurrentIndex] = useState(0);
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
 
-  const itemsPerView = 3;
+  const { itemsPerView, autoPlayInterval } = articlesCarouselContent;
 
   const nextSlide = useCallback(() => {
     setCurrentIndex((prev) =>
       prev + 1 >= articles.length - itemsPerView + 1 ? 0 : prev + 1
     );
-  }, []);
+  }, [itemsPerView]);
 
   const prevSlide = () => {
     setCurrentIndex((prev) =>
@@ -65,9 +27,9 @@ export function ArticlesCarousel() {
 
   useEffect(() => {
     if (!isAutoPlaying) return;
-    const interval = setInterval(nextSlide, 5000);
+    const interval = setInterval(nextSlide, autoPlayInterval);
     return () => clearInterval(interval);
-  }, [isAutoPlaying, nextSlide]);
+  }, [isAutoPlaying, nextSlide, autoPlayInterval]);
 
   return (
     <section className="py-20 bg-[#0a0a0a]">
@@ -76,10 +38,13 @@ export function ArticlesCarousel() {
         <div className="flex items-center justify-between mb-12">
           <div>
             <span className="text-neutral-500 text-sm tracking-wider">
-              Blog.
+              {articlesCarouselContent.sectionLabel}
             </span>
             <h2 className="text-3xl md:text-4xl font-light text-white mt-2">
-              Artigos <span className="text-[#00FF90]">recentes</span>
+              {articlesCarouselContent.title}
+              <span className="text-[#00FF90]">
+                {articlesCarouselContent.titleHighlight}
+              </span>
             </h2>
           </div>
 
@@ -92,7 +57,7 @@ export function ArticlesCarousel() {
                   setIsAutoPlaying(false);
                 }}
                 className="p-3 border border-neutral-700 hover:border-[#00FF90] hover:text-[#00FF90] transition-colors"
-                aria-label="Anterior"
+                aria-label={articlesCarouselContent.prevButtonLabel}
               >
                 <ChevronLeft className="w-5 h-5" />
               </button>
@@ -102,7 +67,7 @@ export function ArticlesCarousel() {
                   setIsAutoPlaying(false);
                 }}
                 className="p-3 border border-neutral-700 hover:border-[#00FF90] hover:text-[#00FF90] transition-colors"
-                aria-label="Próximo"
+                aria-label={articlesCarouselContent.nextButtonLabel}
               >
                 <ChevronRight className="w-5 h-5" />
               </button>
@@ -110,10 +75,10 @@ export function ArticlesCarousel() {
 
             {/* Ver todos */}
             <Link
-              href="/artigos"
+              href={articlesCarouselContent.viewAllHref}
               className="hidden md:flex items-center gap-2 text-sm text-neutral-400 hover:text-[#00FF90] transition-colors group"
             >
-              Ver todos
+              {articlesCarouselContent.viewAllText}
               <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
             </Link>
           </div>
@@ -134,38 +99,7 @@ export function ArticlesCarousel() {
             }}
           >
             {articles.map((article) => (
-              <Link
-                key={article.id}
-                href={`/artigos/${article.slug}`}
-                className="min-w-[calc(33.333%-16px)] group"
-              >
-                <article className="relative">
-                  {/* Image */}
-                  <div className="relative h-56 overflow-hidden mb-4">
-                    <Image
-                      src={article.image || "/placeholder.svg"}
-                      alt={article.title}
-                      fill
-                      className="object-cover transition-transform duration-500 group-hover:scale-110"
-                    />
-                    <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-                  </div>
-
-                  {/* Content */}
-                  <span className="text-[#00FF90] text-sm font-medium">
-                    {article.category}
-                  </span>
-                  <h3 className="text-white text-base mt-2 leading-relaxed line-clamp-3 group-hover:text-neutral-300 transition-colors">
-                    {article.title}
-                  </h3>
-
-                  {/* Read more indicator */}
-                  <div className="flex items-center gap-2 mt-4 text-neutral-500 text-sm opacity-0 group-hover:opacity-100 transition-opacity">
-                    <span>Ler artigo</span>
-                    <ArrowRight className="w-4 h-4" />
-                  </div>
-                </article>
-              </Link>
+              <ArticleCard key={article.id} article={article} />
             ))}
           </div>
         </div>
@@ -194,10 +128,10 @@ export function ArticlesCarousel() {
         {/* Mobile: Ver todos */}
         <div className="flex justify-center mt-8 md:hidden">
           <Link
-            href="/artigos"
+            href={articlesCarouselContent.viewAllHref}
             className="flex items-center gap-2 text-sm border border-neutral-700 px-6 py-3 hover:border-[#00FF90] hover:text-[#00FF90] transition-colors"
           >
-            Ver todos os artigos
+            {articlesCarouselContent.viewAllButtonText}
             <ArrowRight className="w-4 h-4" />
           </Link>
         </div>

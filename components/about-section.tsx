@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
+import { aboutContent } from "@/lib/constants/about";
 
 export function AboutSection() {
   return (
@@ -7,37 +8,27 @@ export function AboutSection() {
       <div className="grid md:grid-cols-2 gap-12 max-w-6xl mx-auto">
         <div>
           <p className="text-[#00FF90] text-lg md:text-xl leading-relaxed mb-6">
-            Somos uma contabilidade especializada em perícia e auditoria
-            contábil, com um olhar atual, técnico e estratégico.
+            {aboutContent.mainText}
           </p>
           <p className="text-gray-400 leading-relaxed">
-            Atuamos com profundidade e clareza, oferecendo soluções tecnológicas
-            e assertivas que dialogam com o presente e preparam nossos clientes
-            para o futuro.
+            {aboutContent.subText}
           </p>
         </div>
 
         <div>
-          <p className="text-sm text-gray-500 mb-4">Sobre.</p>
+          <p className="text-sm text-gray-500 mb-4">{aboutContent.label}</p>
           <p className="text-gray-300 text-sm leading-relaxed mb-4">
-            A história da Oliveto começa em 2022, quando Augusto Favareto e
-            Murilo de Oliveira decidiram transformar sua amizade e a paixão pela
-            contabilidade em uma missão maior: ajudar pessoas a resolver
-            questões judiciais com perícia, confiança e clareza, além de levar
-            uma contabilidade mais atual, direta e alinhada à realidade de cada
-            cliente.
+            {aboutContent.historyParagraph1}
           </p>
           <p className="text-gray-300 text-sm leading-relaxed mb-8">
-            Desde o início, a proposta foi unir inovação e atuação
-            individualizada para diferentes perfis de empresários e escritórios,
-            integrando três pilares: Perícia, Contabilidade e Auditoria.
+            {aboutContent.historyParagraph2}
           </p>
-          <Link href="/sobre">
+          <Link href={aboutContent.buttonHref}>
             <Button
               variant="outline"
               className="border-white text-white bg-transparent hover:bg-white hover:text-black text-sm cursor-pointer"
             >
-              Conheça +
+              {aboutContent.buttonText}
             </Button>
           </Link>
         </div>
