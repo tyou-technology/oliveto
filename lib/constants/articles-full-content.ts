@@ -11,7 +11,7 @@ export const articlesFullContent: Record<string, FullArticle> = {
     excerpt:
       "Muita gente ouviu que 2026 será um 'ano de teste' da Reforma Tributária e concluiu: 'então não muda nada'. Essa leitura é perigosa.",
     image: "/business-meeting-office.png",
-    author: "Oliveto Consultoria",
+    author: "Augusto Favareto",
     publishDate: "09 de janeiro de 2026",
     readTime: "8 min",
     content: [
@@ -85,7 +85,7 @@ export const articlesFullContent: Record<string, FullArticle> = {
     excerpt:
       "Desde 1º de janeiro de 2026, a Reforma Tributária do Consumo entrou na sua fase mais 'pé no chão': a fase operacional.",
     image: "/man-working-laptop-coffee.jpg",
-    author: "Oliveto Consultoria",
+    author: "Augusto Favareto",
     publishDate: "09 de janeiro de 2026",
     readTime: "10 min",
     content: [
@@ -161,6 +161,73 @@ export const articlesFullContent: Record<string, FullArticle> = {
         subtitle: "Fechamento",
         paragraphs: [
           "2026 não é 'o ano do imposto novo no caixa', mas é o ano em que a nota fiscal começa a falar o idioma do IBS e da CBS. Quem tratar isso como projeto (sistemas + pessoas + rotina) atravessa a transição com previsibilidade. Quem tratar como 'depois eu vejo' costuma descobrir no pior momento: no pico do faturamento.",
+        ],
+      },
+    ],
+  },
+  "lucro-real-presumido-reforma-tributaria": {
+    id: 3,
+    slug: "lucro-real-presumido-reforma-tributaria",
+    category: "Tributária.",
+    title:
+      "Lucro Real ou Presumido na Reforma Tributária? O impacto das LCs 214/224 e Lei 15.270 na decisão",
+    excerpt:
+      "A escolha do regime tributário deixou de ser apenas uma conta de IRPJ/CSLL. Com as novas leis de 2025 e 2026, o cálculo agora precisa cruzar consumo, renda, dividendos e governança.",
+    image: "/strategy-planning-board.jpg",
+    author: "Augusto Favareto",
+    publishDate: "09 de janeiro de 2026",
+    readTime: "12 min",
+    content: [
+      {
+        subtitle: "O novo cenário: por que a conta antiga não fecha mais?",
+        paragraphs: [
+          "A Reforma Tributária do Consumo (IBS/CBS) muda a lógica do imposto indireto, alterando preço, fluxo de caixa e compliance. Embora a escolha entre Lucro Real e Lucro Presumido continue sendo, tecnicamente, uma decisão de tributação direta (IRPJ/CSLL), as novas regras mudaram o ambiente operacional.",
+          "Com a publicação da LC 214/2025, LC 224/2025, LC 225/2026 e Lei 15.270/2025, a decisão agora envolve variáveis que vão além da alíquota nominal: envolve a tributação sobre distribuição de resultados e o custo financeiro do novo modelo de consumo.",
+        ],
+      },
+      {
+        subtitle: "1) O impacto do Consumo (LC 214/2025) na escolha do regime",
+        paragraphs: [
+          "A LC 214/2025 estrutura o IBS e a CBS com uma lógica de não cumulatividade plena, mas amarra isso a requisitos operacionais severos:",
+          "• Crédito condicionado ao pagamento: o debate deixa de ser 'tenho direito' e passa a ser 'quando esse crédito vira caixa'.\n• Split Payment: a segregação do imposto na liquidação financeira pressiona o capital de giro e exige conciliação total entre faturamento e recebimento.\n• Custo de adaptação 2026: a necessidade de ajustar ERP e cadastros reduz a 'vantagem de simplicidade' que o Lucro Presumido historicamente oferecia.",
+          "Na prática: o nível de controle fiscal exigido pelo IBS/CBS será alto para todos. Isso nivela o custo de conformidade, retirando um dos grandes atrativos informais do Presumido (a simplicidade operacional).",
+        ],
+      },
+      {
+        subtitle: "2) O que muda na tributação direta (LC 224 e Lei 15.270)",
+        paragraphs: [
+          "Aqui a mudança é direta no bolso. A LC 224/2025 trouxe um redutor de atratividade para o Lucro Presumido em empresas de médio porte:",
+          "• Presumido mais caro acima de R$ 5 milhões: haverá acréscimo nos percentuais de presunção sobre a parcela da receita bruta anual que exceder esse valor.\n• JCP ajustado: a mudança na regra do Juros sobre Capital Próprio exige recalcular estratégias de remuneração de sócios, afetando quem usava o Lucro Real para planejamento agressivo.",
+          "Além disso, a Lei 15.270/2025 instituiu a retenção sobre dividendos acima de R$ 50 mil/mês e tributação mínima para altas rendas. A decisão, portanto, deixa de ser 'qual empresa paga menos' e vira 'qual arranjo otimiza o resultado do grupo (empresa + sócio)'.",
+        ],
+      },
+      {
+        subtitle: "3) LC 225/2026: A era da conformidade",
+        paragraphs: [
+          "A LC 225 consolida diretrizes de conformidade e autorregularização. Não é um gatilho matemático, mas aumenta o risco de manter empresas em regimes simplificados apenas para evitar controles rígidos.",
+          "A rastreabilidade do dado fiscal e a coerência entre escrituração e financeiro tornam-se obrigatórias. Isso favorece empresas que já operam (ou migram) para modelos de governança mais robustos, típicos do Lucro Real.",
+        ],
+      },
+      {
+        subtitle: "Afinal, a Reforma empurra para Real ou Presumido?",
+        paragraphs: [
+          "Ela não empurra todos para um lado, mas recalibra o custo-benefício.",
+          "O Lucro Real ganha força quando:\n• A receita anual é relevante (acima do corte de R$ 5MM onde o Presumido encarece);\n• As margens são apertadas ou voláteis (tributar o lucro efetivo protege o caixa);\n• A empresa possui despesas dedutíveis relevantes e precisa de governança fina para o IBS/CBS.",
+          "O Lucro Presumido ainda resiste quando:\n• As margens são consistentemente altas e muito superiores à presunção;\n• A operação tem baixa volatilidade e pouca dependência de despesas dedutíveis;\n• A estrutura consegue manter simplicidade real, mesmo com os novos deveres acessórios do IVA.",
+        ],
+      },
+      {
+        subtitle: "Como decidir com método (4 simulações essenciais)",
+        paragraphs: [
+          "Para fechar essa decisão sem 'achismo', recomendamos rodar quatro cenários paralelos:",
+          "1. DRE Projetada (2026-2028): cenários base, otimista e estresse.\n2. Comparativo IRPJ/CSLL: considerando o novo 'pênalti' do excedente de R$ 5 milhões no Presumido.\n3. Política de Distribuição: simular o custo total (Empresa + Sócio) considerando as novas retenções de dividendos.\n4. Impacto no Fluxo de Caixa: projetar o efeito do Split Payment e do ciclo de aproveitamento de créditos do IBS/CBS.",
+        ],
+      },
+      {
+        subtitle: "Conclusão",
+        paragraphs: [
+          "A resposta correta para 2026 em diante é menos sobre 'o regime mais barato no papel' e mais sobre 'qual regime suporta a operação com segurança'.",
+          "Com a LC 214 tornando o consumo rastreável e as LCs 224/Lei 15.270 apertando a tributação da renda e dividendos, a inteligência tributária sai da planilha simples e entra na estratégia de negócio.",
         ],
       },
     ],

@@ -28,4 +28,17 @@ export const articlesPageData: Article[] = [
     publishDate: "09 de janeiro de 2026",
     readTime: "10 min",
   },
+  {
+    id: 3,
+    slug: "lucro-real-presumido-reforma-tributaria",
+    category: "Tributária.",
+    title:
+      "Lucro Real ou Presumido na Reforma Tributária? O impacto das LCs 214/224 e Lei 15.270 na decisão",
+    excerpt:
+      "A escolha do regime tributário deixou de ser apenas uma conta de IRPJ/CSLL. Com as novas leis de 2025 e 2026, o cálculo agora precisa cruzar consumo, renda, dividendos e governança.",
+    image: "/artigos/artigo3.jpg",
+    author: "Augusto Favareto",
+    publishDate: "09 de janeiro de 2026",
+    readTime: "12 min",
+  },
 ];
