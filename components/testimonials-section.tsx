@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 
 const testimonials = [
@@ -18,10 +18,21 @@ const testimonials = [
       "A organização, a atenção aos detalhes e a agilidade no atendimento fazem toda a diferença. Desde o início vocês me auxiliaram e tiraram todas as minhas dúvidas.",
     ],
   },
+  {
+    name: "DR PAULO AFONSO (ESTEVES E BAGGIO ADVOGADOS)",
+    content: [
+      "Tratando de confiança, celeridade e atenção aos detalhes não conheço contadores melhores do que a equipe da Oliveto em Londrina.",
+      "Nosso escritório de advocacia conta com seus serviços contábeis em diversas frentes e somos sempre atendidos com qualidade ímpar, e, principalmente, com a compreensão abrangente exigida nos serviços, considerando as peculiaridades de cada caso.",
+    ],
+  },
 ];
 
 export function TestimonialsSection() {
   const [currentPage, setCurrentPage] = useState(0);
+  const [isHovered, setIsHovered] = useState(false);
+  const timerRef = useRef<NodeJS.Timeout | null>(null);
+
+  const AUTO_PLAY_INTERVAL = 8000; // 8 segundos —
   const itemsPerPage = 2;
   const totalPages = Math.ceil(testimonials.length / itemsPerPage);
 
@@ -29,6 +40,38 @@ export function TestimonialsSection() {
     currentPage * itemsPerPage,
     (currentPage + 1) * itemsPerPage
   );
+
+  const advance = () => {
+    setCurrentPage((prev) => (prev + 1) % totalPages);
+  };
+
+  const startAutoPlay = () => {
+    if (timerRef.current) clearTimeout(timerRef.current);
+    timerRef.current = setTimeout(() => {
+      advance();
+      startAutoPlay();
+    }, AUTO_PLAY_INTERVAL);
+  };
+
+  const handleIndexChange = (index: number) => {
+    setCurrentPage(index);
+    startAutoPlay(); // reinicia o timer após clique manual
+  };
+
+  useEffect(() => {
+    startAutoPlay();
+    return () => {
+      if (timerRef.current) clearTimeout(timerRef.current);
+    };
+  }, []);
+
+  useEffect(() => {
+    if (isHovered) {
+      if (timerRef.current) clearTimeout(timerRef.current);
+    } else {
+      startAutoPlay();
+    }
+  }, [isHovered]);
 
   return (
     <section className="px-8 py-16 md:px-16 md:py-24 border-t border-gray-800 bg-black">
@@ -39,7 +82,7 @@ export function TestimonialsSection() {
             {Array.from({ length: totalPages }).map((_, index) => (
               <button
                 key={index}
-                onClick={() => setCurrentPage(index)}
+                onClick={() => handleIndexChange(index)}
                 className={cn(
                   "w-2 h-2 rounded-full transition-colors",
                   currentPage === index
@@ -52,7 +95,11 @@ export function TestimonialsSection() {
           </div>
         </div>
 
-        <div className="grid md:grid-cols-2 gap-12">
+        <div
+          className="grid md:grid-cols-2 gap-12"
+          onMouseEnter={() => setIsHovered(true)}
+          onMouseLeave={() => setIsHovered(false)}
+        >
           {currentTestimonials.map((testimonial) => (
             <div
               key={testimonial.name}

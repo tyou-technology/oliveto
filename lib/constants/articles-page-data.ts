@@ -10,7 +10,7 @@ export const articlesPageData: Article[] = [
       "2026 na Reforma Tributária: o ano em que o IVA começa a aparecer na prática (mesmo antes de cobrar)",
     excerpt:
       "Muita gente ouviu que 2026 será um 'ano de teste' da Reforma Tributária e concluiu: 'então não muda nada'. Essa leitura é perigosa.",
-    image: "/artigos/artigo1.jpg",
+    image: "/artigos/artigo1.png",
     author: "Augusto Favareto",
     publishDate: "09 de janeiro de 2026",
     readTime: "8 min",
@@ -23,7 +23,7 @@ export const articlesPageData: Article[] = [
       "Documentos fiscais em 2026: o que muda com IBS e CBS (e como evitar rejeições, retrabalho e sustos no faturamento)",
     excerpt:
       "Desde 1º de janeiro de 2026, a Reforma Tributária do Consumo entrou na sua fase mais 'pé no chão': a fase operacional.",
-    image: "/artigos/artigo2.jpg",
+    image: "/artigos/artigo2.png",
     author: "Augusto Favareto",
     publishDate: "09 de janeiro de 2026",
     readTime: "10 min",
@@ -36,7 +36,7 @@ export const articlesPageData: Article[] = [
       "Lucro Real ou Presumido na Reforma Tributária? O impacto das LCs 214/224 e Lei 15.270 na decisão",
     excerpt:
       "A escolha do regime tributário deixou de ser apenas uma conta de IRPJ/CSLL. Com as novas leis de 2025 e 2026, o cálculo agora precisa cruzar consumo, renda, dividendos e governança.",
-    image: "/artigos/artigo3.jpg",
+    image: "/artigos/artigo3.png",
     author: "Augusto Favareto",
     publishDate: "09 de janeiro de 2026",
     readTime: "12 min",

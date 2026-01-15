@@ -4,6 +4,14 @@ import Link from "next/link";
 import { articlesFullContent } from "@/lib/constants/articles-full-content";
 import { notFound } from "next/navigation";
 
+export async function generateStaticParams() {
+  const slugs = Object.keys(articlesFullContent);
+
+  return slugs.map((slug) => ({
+    slug: slug,
+  }));
+}
+
 export default async function ArtigoPage({
   params,
 }: {
@@ -12,7 +20,6 @@ export default async function ArtigoPage({
   const { slug } = await params;
   const article = articlesFullContent[slug];
 
-  // If article doesn't exist, show 404
   if (!article) {
     notFound();
   }
