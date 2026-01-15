@@ -69,7 +69,7 @@ export function Footer() {
           <Link href="https://www.kous9.studio/" target="_blank">
             <p>
               BRANDING E LAYOUT -{" "}
-              <span className="text-white font-medium">KOU59 STUDIO</span>
+              <span className="text-white font-medium">KOUS9 STUDIO</span>
             </p>
           </Link>
           <Link href="https://www.tyou.com.br/" target="_blank">
