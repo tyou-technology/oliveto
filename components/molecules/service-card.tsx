@@ -1,5 +1,6 @@
 import { ArrowUpRight } from "lucide-react";
 import type { Service } from "@/lib/types/service";
+import Link from "next/link";
 
 interface ServiceCardProps {
   service: Service;
@@ -7,7 +8,7 @@ interface ServiceCardProps {
 
 export function ServiceCard({ service }: ServiceCardProps) {
   return (
-    <a
+    <Link
       href={service.href}
       className="group relative border border-gray-700 p-8 py-16 hover:border-[#00FF90] transition-colors"
     >
@@ -17,6 +18,6 @@ export function ServiceCard({ service }: ServiceCardProps) {
       <div className="absolute bottom-4 right-4 w-8 h-8 rounded-full border border-[#00FF90] flex items-center justify-center group-hover:bg-[#00FF90] transition-colors">
         <ArrowUpRight className="w-4 h-4 text-[#00FF90] group-hover:text-black" />
       </div>
-    </a>
+    </Link>
   );
 }
