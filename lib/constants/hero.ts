@@ -1,7 +1,16 @@
 export const heroContent = {
   tagline: "olhar atual, técnico e estratégico",
-  highlightPrefix: "+ DE ",
-  highlight: "1 MILHÃO EM BENEFÍCIOS",
-  titleSuffix: "OBTIDOS EM FAVOR DE CLIENTES E PARCEIROS",
+  slides: [
+    {
+      prefix: "+ DE ",
+      highlight: "1 MILHÃO EM BENEFÍCIOS",
+      suffix: "OBTIDOS EM FAVOR DE CLIENTES E PARCEIROS",
+    },
+    {
+      prefix: "DESCOMPLICAMOS A ",
+      highlight: "CONTABILIDADE",
+      suffix: "PARA ENTREGAR RESULTADO E TRANQUILIDADE",
+    },
+  ],
   backgroundImage: "/banner-words.png",
 };

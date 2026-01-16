@@ -50,28 +50,30 @@ export function ArticlesCarousel() {
 
           <div className="flex items-center gap-4">
             {/* Navigation Buttons */}
-            <div className="flex gap-2">
-              <button
-                onClick={() => {
-                  prevSlide();
-                  setIsAutoPlaying(false);
-                }}
-                className="p-3 border border-neutral-700 hover:border-[#00FF90] hover:text-[#00FF90] transition-colors"
-                aria-label={articlesCarouselContent.prevButtonLabel}
-              >
-                <ChevronLeft className="w-5 h-5" />
-              </button>
-              <button
-                onClick={() => {
-                  nextSlide();
-                  setIsAutoPlaying(false);
-                }}
-                className="p-3 border border-neutral-700 hover:border-[#00FF90] hover:text-[#00FF90] transition-colors"
-                aria-label={articlesCarouselContent.nextButtonLabel}
-              >
-                <ChevronRight className="w-5 h-5" />
-              </button>
-            </div>
+            {articlesPageData.length > 3 && (
+              <div className="flex gap-2">
+                <button
+                  onClick={() => {
+                    prevSlide();
+                    setIsAutoPlaying(false);
+                  }}
+                  className="p-3 border border-neutral-700 hover:border-[#00FF90] hover:text-[#00FF90] transition-colors  cursor-pointer"
+                  aria-label={articlesCarouselContent.prevButtonLabel}
+                >
+                  <ChevronLeft className="w-5 h-5" />
+                </button>
+                <button
+                  onClick={() => {
+                    nextSlide();
+                    setIsAutoPlaying(false);
+                  }}
+                  className="p-3 border border-neutral-700 hover:border-[#00FF90] hover:text-[#00FF90] transition-colors  cursor-pointer"
+                  aria-label={articlesCarouselContent.nextButtonLabel}
+                >
+                  <ChevronRight className="w-5 h-5" />
+                </button>
+              </div>
+            )}
 
             {/* Ver todos */}
             <Link
@@ -115,7 +117,7 @@ export function ArticlesCarousel() {
                 setCurrentIndex(index);
                 setIsAutoPlaying(false);
               }}
-              className={`h-1 transition-all duration-300 ${
+              className={`h-1 transition-all duration-300 cursor-pointer ${
                 index === currentIndex
                   ? "w-8 bg-[#00FF90]"
                   : "w-4 bg-neutral-700 hover:bg-neutral-600"

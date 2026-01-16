@@ -8,7 +8,7 @@ export function LoadMoreButton({ text, onClick }: LoadMoreButtonProps) {
     <div className="border-t border-muted pt-8">
       <button
         onClick={onClick}
-        className="text-sm font-medium hover:text-primary transition-colors"
+        className="text-sm font-medium hover:text-primary transition-colors cursor-pointer"
       >
         {text}
       </button>

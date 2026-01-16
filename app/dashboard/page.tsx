@@ -27,6 +27,7 @@ import {
   Plus,
   Newspaper,
 } from "lucide-react";
+import EmConstrucao from "@/components/em-construcao";
 
 const navigationItems = [
   {
@@ -118,6 +119,8 @@ const upcomingTasks = [
 
 export default function DashboardPage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  return <EmConstrucao />;
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white flex">

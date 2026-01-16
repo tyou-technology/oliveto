@@ -1,3 +1,6 @@
+"use client";
+
+import { useState } from "react";
 import { Header } from "@/components/header";
 import { Footer } from "@/components/footer";
 import { PageBackgroundWords } from "@/components/page-background-words";
@@ -8,6 +11,15 @@ import { articlesPageContent } from "@/lib/constants/articles-page";
 import { articlesPageData } from "@/lib/constants/articles-page-data";
 
 export default function ArtigosPage() {
+  const [visibleCount, setVisibleCount] = useState(6);
+
+  const handleLoadMore = () => {
+    setVisibleCount((prev) => prev + 6);
+  };
+
+  const visibleArticles = articlesPageData.slice(0, visibleCount);
+  const hasMore = visibleCount < articlesPageData.length;
+
   return (
     <main className="min-h-screen bg-secondary text-foreground">
       <Header />
@@ -28,13 +40,18 @@ export default function ArtigosPage() {
 
         {/* Articles Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 py-12">
-          {articlesPageData.map((artigo) => (
+          {visibleArticles.map((artigo) => (
             <ArticleGridItem key={artigo.id} article={artigo} />
           ))}
         </div>
 
         {/* Load More */}
-        <LoadMoreButton text={articlesPageContent.loadMoreButtonText} />
+        {hasMore && (
+          <LoadMoreButton
+            text={articlesPageContent.loadMoreButtonText}
+            onClick={handleLoadMore}
+          />
+        )}
       </section>
 
       <Footer />
