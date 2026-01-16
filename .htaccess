@@ -1,8 +1,21 @@
-<IfModule mod_rewrite.c>
-  RewriteEngine On
-  RewriteBase /
-  RewriteRule ^index\.html$ - [L]
-  RewriteCond %{REQUEST_FILENAME} !-f
-  RewriteCond %{REQUEST_FILENAME} !-d
-  RewriteRule . /index.html [L]
-</IfModule>
+# 1. Tenta usar o arquivo dentro da pasta 404, se falhar tenta o arquivo da raiz
+ErrorDocument 404 /404/index.html
+
+# 2. Garante que o index.html seja o arquivo principal de cada pasta
+DirectoryIndex index.html
+
+# 3. Evita que o Apache mostre erro 403 ao tentar listar pastas
+Options -Indexes -MultiViews
+
+RewriteEngine On
+RewriteBase /
+
+# 4. Se o usuário digitar /contatos (sem barra), redireciona para /contatos/ (com barra)
+# Isso é essencial porque o Next.js exportou como pasta
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_URI} !(.*)/$
+RewriteRule ^(.*)$ $1/ [L,R=301]
+
+# 5. Regra de Fallback para o SPA
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
