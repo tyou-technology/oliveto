@@ -27,6 +27,7 @@ export interface LoginResponse {
 
 export interface TokenValidationResponse {
   valid: boolean;
+  name: string;
   email: string;
   userId: string;
   firmId?: string;

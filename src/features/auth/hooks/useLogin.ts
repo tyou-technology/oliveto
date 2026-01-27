@@ -16,7 +16,6 @@ export const useLogin = () => {
     },
     onSuccess: (data) => {
       localStorage.setItem("token", data.token);
-      localStorage.setItem("user", JSON.stringify(data));
       
       toast.success("Login realizado com sucesso!");
       router.push(ROUTES.ADMIN.DASHBOARD.HOME);
