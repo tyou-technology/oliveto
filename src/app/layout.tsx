@@ -5,6 +5,7 @@ import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import { QueryProvider } from "@/components/providers/query-provider";
 import { Toaster } from "@/components/atoms/sonner";
+import { AuthProvider } from "@/components/providers/auth-provider";
 
 const golos = Golos_Text({
   subsets: ["latin"],
@@ -105,8 +106,10 @@ export default function RootLayout({
         className={`${golos.variable} ${outfit.variable} font-sans antialiased`}
       >
         <QueryProvider>
-          {children}
-          <Toaster />
+          <AuthProvider>
+            {children}
+            <Toaster />
+          </AuthProvider>
         </QueryProvider>
         <Analytics />
       </body>

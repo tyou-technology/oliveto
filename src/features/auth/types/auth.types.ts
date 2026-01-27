@@ -24,3 +24,12 @@ export interface LoginResponse {
   firmId?: string;
   role?: string;
 }
+
+export interface TokenValidationResponse {
+  valid: boolean;
+  email: string;
+  userId: string;
+  firmId?: string;
+  role?: string;
+  message: string;
+}
