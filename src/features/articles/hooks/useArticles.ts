@@ -1,0 +1,58 @@
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { articlesApi } from "../api/articles.api";
+import { CreateArticleDTO, UpdateArticleDTO } from "@/lib/types/article";
+import { toast } from "sonner";
+
+export const useArticles = (firmId?: string, page = 0, size = 10) => {
+  const queryClient = useQueryClient();
+
+  const { data: articlesData, isLoading: isLoadingArticles } = useQuery({
+    queryKey: ["articles", firmId, page, size],
+    queryFn: () => articlesApi.getAllByFirmId(firmId!, page, size),
+    enabled: !!firmId,
+  });
+
+  const createArticle = useMutation({
+    mutationFn: articlesApi.create,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["articles"] });
+      toast.success("Artigo criado com sucesso!");
+    },
+    onError: (error: any) => {
+      toast.error("Erro ao criar artigo: " + (error.response?.data?.message || error.message));
+    },
+  });
+
+  const updateArticle = useMutation({
+    mutationFn: ({ id, data }: { id: string; data: UpdateArticleDTO }) =>
+      articlesApi.update(id, data),
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["articles"] });
+      toast.success("Artigo atualizado com sucesso!");
+    },
+    onError: (error: any) => {
+      toast.error("Erro ao atualizar artigo: " + (error.response?.data?.message || error.message));
+    },
+  });
+
+  const deleteArticle = useMutation({
+    mutationFn: articlesApi.delete,
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["articles"] });
+      toast.success("Artigo excluído com sucesso!");
+    },
+    onError: (error: any) => {
+      toast.error("Erro ao excluir artigo: " + (error.response?.data?.message || error.message));
+    },
+  });
+
+  return {
+    articles: articlesData?.content || [],
+    totalPages: articlesData?.totalPages || 0,
+    totalElements: articlesData?.totalElements || 0,
+    isLoadingArticles,
+    createArticle,
+    updateArticle,
+    deleteArticle,
+  };
+};

@@ -2,9 +2,11 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { LogOut, User, X } from "lucide-react";
+import { X } from "lucide-react";
 import { ROUTES } from "@/lib/config/routes";
-import { navigationItems } from "@/lib/constants/dashboard";
+import { SidebarUserInfo } from "@/components/molecules/sidebar-user-info";
+import { SidebarNavigation } from "@/components/molecules/sidebar-navigation";
+import { SidebarLogoutButton } from "@/components/molecules/sidebar-logout-button";
 
 interface DashboardSidebarProps {
   isOpen: boolean;
@@ -47,53 +49,9 @@ export function DashboardSidebar({ isOpen, onClose }: DashboardSidebarProps) {
             </div>
           </div>
 
-          {/* User info */}
-          <div className="p-4 border-b border-white/10">
-            <div className="flex items-center gap-3 p-3 bg-white/5 rounded-xl">
-              <div className="w-10 h-10 bg-[#00FF90]/20 rounded-full flex items-center justify-center">
-                <User className="w-5 h-5 text-[#00FF90]" />
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="font-medium truncate">João Silva</p>
-                <p className="text-sm text-neutral-400 truncate">
-                  joao@empresa.com.br
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Navigation */}
-          <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
-            {navigationItems.map((item) => (
-              <Link
-                key={item.label}
-                href={item.href}
-                className={`flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-200 group ${
-                  item.active
-                    ? "bg-[#00FF90]/10 text-[#00FF90]"
-                    : "text-neutral-400 hover:bg-white/5 hover:text-white"
-                }`}
-              >
-                <item.icon
-                  className={`w-5 h-5 ${item.active ? "text-[#00FF90]" : ""}`}
-                />
-                <span className="flex-1">{item.label}</span>
-                {item.badge && (
-                  <span className="px-2 py-0.5 text-xs bg-[#00FF90] text-black rounded-full font-medium">
-                    {item.badge}
-                  </span>
-                )}
-              </Link>
-            ))}
-          </nav>
-
-          {/* Logout */}
-          <div className="p-4 border-t border-white/10">
-            <button className="flex items-center gap-3 px-4 py-3 w-full text-neutral-400 hover:text-red-400 hover:bg-red-400/10 rounded-xl transition-all duration-200">
-              <LogOut className="w-5 h-5" />
-              <span>Sair</span>
-            </button>
-          </div>
+          <SidebarUserInfo />
+          <SidebarNavigation />
+          <SidebarLogoutButton />
         </div>
       </aside>
     </>
