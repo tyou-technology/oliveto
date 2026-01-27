@@ -6,18 +6,19 @@ import Link from "next/link";
 import Image from "next/image";
 import { Loader2 } from "lucide-react";
 import { FormField } from "@/components/atoms/form-field";
-import {
-  LoginSchema,
-  LoginRequest,
-} from "@/features/auth/types/auth.types";
+import { LoginSchema, LoginRequest } from "@/features/auth/types/auth.types";
 import { useLogin } from "@/features/auth/hooks/useLogin";
 import { ROUTES } from "@/lib/config/routes";
 import { SocialLogin } from "../molecules/social-login";
+import { useEffect, useState } from "react";
 
 export function LoginForm() {
+  const [rememberMe, setRememberMe] = useState(false);
+
   const {
     register,
     handleSubmit,
+    setValue,
     formState: { errors },
   } = useForm<LoginRequest>({
     resolver: zodResolver(LoginSchema),
@@ -25,7 +26,20 @@ export function LoginForm() {
 
   const { mutate: login, isPending } = useLogin();
 
+  useEffect(() => {
+    const savedEmail = localStorage.getItem("rememberedEmail");
+    if (savedEmail) {
+      setValue("email", savedEmail);
+      setRememberMe(true);
+    }
+  }, [setValue]);
+
   const onSubmit = (data: LoginRequest) => {
+    if (rememberMe) {
+      localStorage.setItem("rememberedEmail", data.email);
+    } else {
+      localStorage.removeItem("rememberedEmail");
+    }
     login(data);
   };
 
@@ -68,6 +82,8 @@ export function LoginForm() {
             <input
               type="checkbox"
               className="w-4 h-4 bg-[#111] border border-[#222] rounded accent-primary"
+              checked={rememberMe}
+              onChange={(e) => setRememberMe(e.target.checked)}
             />
             <span className="text-sm text-gray-400">Lembrar-me</span>
           </label>
