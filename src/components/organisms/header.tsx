@@ -13,7 +13,7 @@ import {
 import { Menu } from "lucide-react";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
-import { NAV_LINKS } from "@/lib/config/navigation";
+import { ROUTES } from "@/lib/config/routes";
 
 interface HeaderProps {
   bg?: string;
@@ -30,12 +30,12 @@ export function Header({ bg = "bg-black", noLinks = false }: HeaderProps) {
     <header
       className={`flex items-center justify-between px-4 py-4 sm:px-8 sm:py-6 lg:px-16 ${bg}`}
     >
-      <Link href="/public" className="text-xl font-bold tracking-wider">
+      <Link href={ROUTES.PUBLIC.HOME} className="text-xl font-bold tracking-wider">
         <Image src="/logo.png" alt="Logo" width={150} height={150} />
       </Link>
       {!noLinks && (
         <nav className="hidden lg:flex items-center gap-6 xl:gap-8">
-          {NAV_LINKS.map((item) => (
+          {ROUTES.HEADER.map((item) => (
             <Link
               key={item.href}
               href={item.href}
@@ -53,7 +53,7 @@ export function Header({ bg = "bg-black", noLinks = false }: HeaderProps) {
 
       {!noLinks && (
         <>
-          <Link href="/login" className="flex w-fit h-fit">
+          <Link href={ROUTES.ADMIN.LOGIN} className="flex w-fit h-fit">
             <Button
               variant="outline"
               className="hidden lg:inline-flex border-white text-white bg-transparent hover:bg-primary hover:border-primary hover:text-black text-sm px-8 cursor-pointer"
@@ -79,7 +79,7 @@ export function Header({ bg = "bg-black", noLinks = false }: HeaderProps) {
             >
               <SheetHeader className="p-6 border-b border-secondary">
                 <SheetTitle className="text-left text-lg font-bold tracking-wider">
-                  <Link href="/public" className="text-xl font-bold tracking-wider">
+                  <Link href={ROUTES.PUBLIC.HOME} className="text-xl font-bold tracking-wider">
                     <Image
                       src="/logo.png"
                       alt="Logo"
@@ -91,7 +91,7 @@ export function Header({ bg = "bg-black", noLinks = false }: HeaderProps) {
               </SheetHeader>
 
               <nav className="flex flex-col p-6">
-                {NAV_LINKS.map((item) => (
+                {ROUTES.HEADER.map((item) => (
                   <Link
                     key={item.href}
                     href={item.href}
@@ -112,7 +112,7 @@ export function Header({ bg = "bg-black", noLinks = false }: HeaderProps) {
                   asChild
                   className="w-full bg-primary text-primary-white hover:bg-primary/90"
                 >
-                  <Link href="/login" onClick={closeSheet}>
+                  <Link href={ROUTES.ADMIN.LOGIN} onClick={closeSheet}>
                     Login
                   </Link>
                 </Button>

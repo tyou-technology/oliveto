@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { Header } from "@/components/header";
-import { Footer } from "@/components/footer";
-import { PageBackgroundWords } from "@/components/page-background-words";
+import { Header } from "@/components/organisms/header";
+import { Footer } from "@/components/organisms/footer";
+import { PageBackgroundWords } from "@/components/atoms/page-background-words";
 import { FilterBar } from "@/components/molecules/filter-bar";
 import { ArticleGridItem } from "@/components/molecules/article-grid-item";
 import { LoadMoreButton } from "@/components/atoms/load-more-button";

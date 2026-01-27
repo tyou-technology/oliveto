@@ -1,7 +1,7 @@
-import { Header } from "@/components/header";
-import { Footer } from "@/components/footer";
+import { Header } from "@/components/organisms/header";
+import { Footer } from "@/components/organisms/footer";
 import Image from "next/image";
-import { PageBackgroundWords } from "@/components/page-background-words";
+import { PageBackgroundWords } from "@/components/atoms/page-background-words";
 import { FounderProfile } from "@/components/molecules/founder-profile";
 import { sobrePageContent, founders } from "@/lib/constants/sobre-page";
 

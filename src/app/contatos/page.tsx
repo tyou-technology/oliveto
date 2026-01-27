@@ -1,6 +1,6 @@
-import { Header } from "@/components/header";
-import { Footer } from "@/components/footer";
-import { PageBackgroundWords } from "@/components/page-background-words";
+import { Header } from "@/components/organisms/header";
+import { Footer } from "@/components/organisms/footer";
+import { PageBackgroundWords } from "@/components/atoms/page-background-words";
 import { ContactInfo } from "@/components/molecules/contact-info";
 import { ContactForm } from "@/components/molecules/contact-form";
 import { contactPageContent } from "@/lib/constants/contact-page";

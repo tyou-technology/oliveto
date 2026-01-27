@@ -7,7 +7,7 @@ import { Home, ArrowLeft, Search, MessageCircle } from "lucide-react";
 import { Button } from "@/components/atoms/button";
 import Image from "next/image";
 import { useState } from "react";
-import { Header } from "@/components/header";
+import { Header } from "@/components/organisms/header";
 
 const WHATSAPP_NUMBER = "5543991231726";
 const WHATSAPP_MESSAGE =

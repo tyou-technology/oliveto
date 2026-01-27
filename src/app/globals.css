@@ -1,11 +1,12 @@
-@import "../../node_modules/.pnpm/tailwindcss@4.1.18/node_modules/tailwindcss/dist/lib.d.mts";
-@import "../../node_modules/tw-animate-css";
+@import "tailwindcss";
+
+@plugin "tailwindcss-animate";
 
 @custom-variant dark (&:is(.dark *));
 
 /* Tema escuro para Oliveto (Base Zinc + Brand Green) */
 :root {
-  --background: #00000;
+  --background: #000000;
   --foreground: oklch(0.141 0.005 285.823);
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.141 0.005 285.823);

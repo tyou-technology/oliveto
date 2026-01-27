@@ -7,7 +7,7 @@ import { Construction, Home, Hammer, Clock, CheckCircle } from "lucide-react";
 import { Button } from "@/components/atoms/button";
 import { useState, useEffect } from "react";
 import Image from "next/image";
-import { Header } from "./header";
+import { Header } from "@/components/organisms/header";
 
 const FEATURES_COMING = [
   "Calculadora Previdenciária Completa",

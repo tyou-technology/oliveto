@@ -27,37 +27,38 @@ import {
   Plus,
   Newspaper,
 } from "lucide-react";
-import EmConstrucao from "@/components/em-construcao";
+import EmConstrucao from "@/components/templates/em-construcao";
+import { ROUTES } from "@/lib/config/routes";
 
 const navigationItems = [
   {
     icon: LayoutDashboard,
     label: "Visão Geral",
-    href: "/dashboard",
+    href: ROUTES.ADMIN.DASHBOARD.HOME,
     active: true,
   },
-  { icon: FileText, label: "Documentos", href: "/dashboard/documentos" },
-  { icon: Scale, label: "Perícias", href: "/dashboard/pericias" },
+  { icon: FileText, label: "Documentos", href: ROUTES.ADMIN.DASHBOARD.DOCUMENTOS },
+  { icon: Scale, label: "Perícias", href: ROUTES.ADMIN.DASHBOARD.PERICIAS },
   {
     icon: FolderOpen,
     label: "Contabilidade",
-    href: "/dashboard/contabilidade",
+    href: ROUTES.ADMIN.DASHBOARD.CONTABILIDADE,
   },
-  { icon: ClipboardCheck, label: "Auditorias", href: "/dashboard/auditorias" },
-  { icon: Newspaper, label: "Artigos", href: "/dashboard/artigos" },
+  { icon: ClipboardCheck, label: "Auditorias", href: ROUTES.ADMIN.DASHBOARD.AUDITORIAS },
+  { icon: Newspaper, label: "Artigos", href: ROUTES.ADMIN.DASHBOARD.ARTIGOS },
   {
     icon: MessageSquare,
     label: "Mensagens",
-    href: "/dashboard/mensagens",
+    href: ROUTES.ADMIN.DASHBOARD.MENSAGENS,
     badge: 3,
   },
   {
     icon: Bell,
     label: "Notificações",
-    href: "/dashboard/notificacoes",
+    href: ROUTES.ADMIN.DASHBOARD.NOTIFICACOES,
     badge: 5,
   },
-  { icon: Settings, label: "Configurações", href: "/dashboard/configuracoes" },
+  { icon: Settings, label: "Configurações", href: ROUTES.ADMIN.DASHBOARD.CONFIGURACOES },
 ];
 
 const recentDocuments = [
@@ -142,7 +143,7 @@ export default function DashboardPage() {
           {/* Logo */}
           <div className="p-6 border-b border-white/10">
             <div className="flex items-center justify-between">
-              <Link href="/public" className="text-2xl font-bold tracking-tight">
+              <Link href={ROUTES.PUBLIC.HOME} className="text-2xl font-bold tracking-tight">
                 <Image src="/logo.png" alt="Logo" width={100} height={100} />
               </Link>
               <button
@@ -321,7 +322,7 @@ export default function DashboardPage() {
                   Processos em Andamento
                 </h2>
                 <Link
-                  href="/dashboard/processos"
+                  href={ROUTES.ADMIN.DASHBOARD.PROCESSOS}
                   className="text-sm text-[#00FF90] hover:underline flex items-center gap-1"
                 >
                   Ver todos <ChevronRight className="w-4 h-4" />
@@ -443,7 +444,7 @@ export default function DashboardPage() {
             <div className="flex items-center justify-between p-6 border-b border-white/10">
               <h2 className="text-lg font-semibold">Documentos Recentes</h2>
               <Link
-                href="/dashboard/documentos"
+                href={ROUTES.ADMIN.DASHBOARD.DOCUMENTOS}
                 className="text-sm text-[#00FF90] hover:underline flex items-center gap-1"
               >
                 Ver todos <ChevronRight className="w-4 h-4" />

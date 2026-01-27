@@ -1,5 +1,5 @@
-import { Header } from "@/components/header";
-import { Footer } from "@/components/footer";
+import { Header } from "@/components/organisms/header";
+import { Footer } from "@/components/organisms/footer";
 import Link from "next/link";
 import { articlesFullContent } from "@/lib/constants/articles-full-content";
 import { notFound } from "next/navigation";
