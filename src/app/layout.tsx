@@ -3,6 +3,8 @@ import type { Metadata } from "next";
 import { Golos_Text, Outfit } from "next/font/google";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
+import { QueryProvider } from "@/components/providers/query-provider";
+import { Toaster } from "@/components/atoms/sonner";
 
 const golos = Golos_Text({
   subsets: ["latin"],
@@ -98,11 +100,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="pt-BR">
+    <html lang="pt-BR" suppressHydrationWarning>
       <body
         className={`${golos.variable} ${outfit.variable} font-sans antialiased`}
       >
-        {children}
+        <QueryProvider>
+          {children}
+          <Toaster />
+        </QueryProvider>
         <Analytics />
       </body>
     </html>

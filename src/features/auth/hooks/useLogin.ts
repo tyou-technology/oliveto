@@ -11,7 +11,6 @@ export const useLogin = () => {
   return useMutation<LoginResponse, Error, LoginRequest>({
     mutationFn: authApi.login,
     onSuccess: (data) => {
-      // Store token (consider using httpOnly cookies for better security in production)
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data));
       
