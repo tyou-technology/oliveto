@@ -39,30 +39,28 @@ export const useAuth = () => {
     }
 
     // Validation finished (success or error)
-    // We only set isChecking to false AFTER we've handled the redirects
-    // This keeps the loader visible during the redirect process
 
     if (isAdminRoute) {
       if (!hasToken) {
+        // Redirecting to login, keep loading true
         router.push(ROUTES.ADMIN.LOGIN);
-        setIsChecking(false);
         return;
       }
 
       if (isError) {
+        // Redirecting to login, keep loading true
         localStorage.removeItem("token");
         localStorage.removeItem("user");
         clearUser();
         router.push(ROUTES.ADMIN.LOGIN);
-        setIsChecking(false);
         return;
       }
     }
 
     if (isLoginRoute && isSuccess && data?.valid) {
+      // Redirecting to dashboard, keep loading true
       setUser(data);
       router.push(ROUTES.ADMIN.DASHBOARD.HOME);
-      // Don't set isChecking to false here, let the redirect happen while loading
       return; 
     }
 
@@ -70,7 +68,7 @@ export const useAuth = () => {
       setUser(data);
     }
 
-    // If no redirect happened, we are done checking
+    // Only set checking to false if NO redirect happened
     setIsChecking(false);
 
   }, [isAdminRoute, isLoginRoute, hasToken, isError, isSuccess, data, router, shouldValidate, isLoading, setUser, clearUser]);
