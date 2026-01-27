@@ -1,34 +1,33 @@
 "use client";
 
-import { useState } from "react";
+import {useState} from "react";
 import Link from "next/link";
 import Image from "next/image";
 import {
-  LayoutDashboard,
-  FileText,
-  FolderOpen,
-  Scale,
-  ClipboardCheck,
-  MessageSquare,
   Bell,
-  Settings,
-  LogOut,
+  Calendar,
+  CheckCircle2,
   ChevronRight,
+  ClipboardCheck,
+  Clock,
   Download,
   Eye,
-  Clock,
-  CheckCircle2,
-  TrendingUp,
-  Calendar,
-  Search,
+  FileText,
+  FolderOpen,
+  LayoutDashboard,
+  LogOut,
   Menu,
-  X,
-  User,
-  Plus,
+  MessageSquare,
   Newspaper,
+  Plus,
+  Scale,
+  Search,
+  Settings,
+  TrendingUp,
+  User,
+  X,
 } from "lucide-react";
-import EmConstrucao from "@/components/templates/em-construcao";
-import { ROUTES } from "@/lib/config/routes";
+import {ROUTES} from "@/lib/config/routes";
 
 const navigationItems = [
   {
@@ -121,7 +120,6 @@ const upcomingTasks = [
 export default function DashboardPage() {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  return <EmConstrucao />;
 
   return (
     <div className="min-h-screen bg-[#0a0a0a] text-white flex">

@@ -92,12 +92,12 @@ export function LoginForm() {
               />
               <span className="text-sm text-gray-400">Lembrar-me</span>
             </label>
-            <Link
-              href="/recuperar-senha" // TODO: Create this route
-              className="text-sm text-primary hover:underline"
-            >
-              Esqueceu a senha?
-            </Link>
+            {/*<Link*/}
+            {/*  href="/recuperar-senha" // TODO: Create this route*/}
+            {/*  className="text-sm text-primary hover:underline"*/}
+            {/*>*/}
+            {/*  Esqueceu a senha?*/}
+            {/*</Link>*/}
           </div>
 
           <button
@@ -128,7 +128,7 @@ export function LoginForm() {
           </button>
         </form>
 
-        <SocialLogin />
+        {/*<SocialLogin />*/}
 
         <div className="mt-10 text-center">
           <Link
