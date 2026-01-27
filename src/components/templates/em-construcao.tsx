@@ -1,13 +1,13 @@
 "use client";
 
 import type React from "react";
+import {useEffect, useState} from "react";
 
 import Link from "next/link";
-import { Construction, Home, Hammer, Clock, CheckCircle } from "lucide-react";
-import { Button } from "@/components/atoms/button";
-import { useState, useEffect } from "react";
-import Image from "next/image";
-import { Header } from "@/components/organisms/header";
+import {Clock, Construction, Hammer, Home} from "lucide-react";
+import {Button} from "@/components/atoms/button";
+import {Header} from "@/components/organisms/header";
+import {ROUTES} from "@/lib/config/routes";
 
 const FEATURES_COMING = [
   "Calculadora Previdenciária Completa",
@@ -156,7 +156,7 @@ export default function EmConstrucao() {
               variant="outline"
               className="border-border/30 hover:border-primary hover:bg-primary hover:text-black rounded-full px-8 bg-transparent"
             >
-              <Link href="/public">
+              <Link href={ROUTES.PUBLIC.HOME}>
                 <Home className="w-4 h-4 mr-2" />
                 Voltar ao início
               </Link>

@@ -1,16 +1,15 @@
 "use client";
 
-import { useForm } from "react-hook-form";
-import { zodResolver } from "@hookform/resolvers/zod";
+import {useForm} from "react-hook-form";
+import {zodResolver} from "@hookform/resolvers/zod";
 import Link from "next/link";
 import Image from "next/image";
-import { Loader2 } from "lucide-react";
-import { FormField } from "@/components/atoms/form-field";
-import { LoginSchema, LoginRequest } from "@/features/auth/types/auth.types";
-import { useLogin } from "@/features/auth/hooks/useLogin";
-import { ROUTES } from "@/lib/config/routes";
-import { SocialLogin } from "../molecules/social-login";
-import { useEffect, useState } from "react";
+import {Loader2} from "lucide-react";
+import {FormField} from "@/components/atoms/form-field";
+import {LoginRequest, LoginSchema} from "@/features/auth/types/auth.types";
+import {useLogin} from "@/features/auth/hooks/useLogin";
+import {ROUTES} from "@/lib/config/routes";
+import {useEffect, useState} from "react";
 
 export function LoginForm() {
   const [rememberMe, setRememberMe] = useState(false);
@@ -87,12 +86,12 @@ export function LoginForm() {
             />
             <span className="text-sm text-gray-400">Lembrar-me</span>
           </label>
-          <Link
-            href="/recuperar-senha" // TODO: Create this route
-            className="text-sm text-primary hover:underline"
-          >
-            Esqueceu a senha?
-          </Link>
+          {/*<Link*/}
+          {/*  href="/recuperar-senha" // TODO: Create this route*/}
+          {/*  className="text-sm text-primary hover:underline"*/}
+          {/*>*/}
+          {/*  Esqueceu a senha?*/}
+          {/*</Link>*/}
         </div>
 
         <button
@@ -123,7 +122,7 @@ export function LoginForm() {
         </button>
       </form>
 
-      <SocialLogin />
+      {/*<SocialLogin />*/}
 
       <div className="mt-10 text-center">
         <Link
