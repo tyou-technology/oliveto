@@ -9,7 +9,11 @@ export const useLogin = () => {
   const router = useRouter();
 
   return useMutation<LoginResponse, Error, LoginRequest>({
-    mutationFn: authApi.login,
+    mutationFn: async (data) => {
+      // Artificial delay to show the loader (optional, remove if not desired)
+      await new Promise((resolve) => setTimeout(resolve, 4000));
+      return authApi.login(data);
+    },
     onSuccess: (data) => {
       localStorage.setItem("token", data.token);
       localStorage.setItem("user", JSON.stringify(data));
