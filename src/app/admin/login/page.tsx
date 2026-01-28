@@ -1,12 +1,17 @@
 "use client";
 
+import { useState } from "react";
 import { LoginBranding } from "@/components/organisms/login-branding";
 import { LoginForm } from "@/components/organisms/login-form";
 import { PublicRoute } from "@/features/auth/components/PublicRoute";
+import { FullPageLoader } from "@/components/molecules/FullPageLoader";
 
 export default function LoginPage() {
+  const [isLoggingIn, setIsLoggingIn] = useState(false);
+
   return (
     <PublicRoute>
+      {isLoggingIn && <FullPageLoader />}
       <style jsx global>{`
         @keyframes shake {
           0%,
@@ -39,7 +44,7 @@ export default function LoginPage() {
         {/* Right Side - Form */}
         <div className="w-full lg:w-1/2 h-full overflow-y-auto">
           <div className="min-h-full w-full flex items-center justify-center p-8 lg:p-12">
-            <LoginForm />
+            <LoginForm setIsLoggingIn={setIsLoggingIn} />
           </div>
         </div>
       </main>
