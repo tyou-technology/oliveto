@@ -2,10 +2,11 @@
 
 import { LoginBranding } from "@/components/organisms/login-branding";
 import { LoginForm } from "@/components/organisms/login-form";
+import { PublicRoute } from "@/features/auth/components/PublicRoute";
 
 export default function LoginPage() {
   return (
-    <>
+    <PublicRoute>
       <style jsx global>{`
         @keyframes shake {
           0%,
@@ -42,6 +43,6 @@ export default function LoginPage() {
           </div>
         </div>
       </main>
-    </>
+    </PublicRoute>
   );
 }

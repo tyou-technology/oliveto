@@ -34,3 +34,14 @@ export interface TokenValidationResponse {
   role?: string;
   message: string;
 }
+
+export interface ConfirmRegistrationRequest {
+  verificationToken: string;
+}
+
+export interface ConfirmRegistrationResponse {
+  token: string;
+  type: string;
+  email: string;
+  userId: string;
+}

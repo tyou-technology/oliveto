@@ -10,8 +10,6 @@ export const useLogin = () => {
 
   return useMutation<LoginResponse, Error, LoginRequest>({
     mutationFn: async (data) => {
-      // Artificial delay to show the loader (optional, remove if not desired)
-      await new Promise((resolve) => setTimeout(resolve, 4000));
       return authApi.login(data);
     },
     onSuccess: (data) => {
