@@ -59,34 +59,37 @@ export function ArticleForm({
     resolver: zodResolver(CreateArticleSchema),
     defaultValues: {
       status: initialData?.status || ArticleStatus.DRAFT,
-      authorId: initialData?.authorId || authorId,
-      firmId: initialData?.firmId || firmId,
+      authorId: initialData?.author?.id || initialData?.authorId || authorId,
+      firmId: initialData?.firm?.id || initialData?.firmId || firmId,
       content: initialData?.content || "",
-      tagIds: initialData?.tags ? initialData.tags.map((t) => t.id) : [],
+      tagIds: initialData?.tags ? initialData.tags.map((t) => t.id) : (initialData?.tagIds || []),
       title: initialData?.title || "",
       briefing: initialData?.briefing || "",
       imageUrl: initialData?.imageUrl || "",
+      authorName: initialData?.author?.fullName || initialData?.authorName || authorName,
     },
   });
 
-  // Update values if initialData changes after mount (though unlikely in current flow)
+  // Update values if initialData changes after mount
   useEffect(() => {
     if (initialData) {
       reset({
         title: initialData.title,
         briefing: initialData.briefing || "",
-        content: initialData.content,
+        content: initialData.content || "",
         status: initialData.status,
-        authorId: initialData.authorId,
-        firmId: initialData.firmId,
-        tagIds: initialData.tags ? initialData.tags.map((t) => t.id) : [],
+        authorId: initialData.author?.id || initialData.authorId || authorId,
+        firmId: initialData.firm?.id || initialData.firmId || firmId,
+        tagIds: initialData.tags ? initialData.tags.map((t) => t.id) : (initialData.tagIds || []),
         imageUrl: initialData.imageUrl || "",
+        authorName: initialData.author?.fullName || initialData.authorName || authorName,
       });
     }
-  }, [initialData, reset]);
+  }, [initialData, reset, authorId, firmId, authorName]);
 
   const selectedTagIds = watch("tagIds") || [];
   const imageUrl = watch("imageUrl");
+  const currentAuthorName = watch("authorName") || authorName;
 
   const handleFormSubmit = (status: ArticleStatus) => {
     if (readOnly) return;
@@ -366,7 +369,7 @@ export function ArticleForm({
             <input
               type="text"
               disabled
-              value={authorName}
+              value={currentAuthorName}
               className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 placeholder:text-neutral-600 focus:outline-none focus:border-[#00FF90]/50 transition-colors opacity-50 cursor-not-allowed"
             />
           </div>

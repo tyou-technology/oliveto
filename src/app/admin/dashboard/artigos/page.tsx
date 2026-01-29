@@ -242,9 +242,9 @@ export default function ArtigosPage() {
             onSubmit={() => {}} // No-op for view mode
             isPending={false}
             tags={tags || []}
-            authorId={fullArticle.authorId}
-            firmId={fullArticle.firmId}
-            authorName={user?.name || "Usuário"}
+            authorId={fullArticle.authorId || ""}
+            firmId={fullArticle.firmId || ""}
+            authorName={fullArticle.authorName || "Usuário"}
             initialData={fullArticle}
             readOnly={true}
             onCancel={() => {
@@ -265,9 +265,9 @@ export default function ArtigosPage() {
             onSubmit={handleUpdateArticle}
             isPending={updateArticle.isPending}
             tags={tags || []}
-            authorId={fullArticle.authorId}
-            firmId={fullArticle.firmId}
-            authorName={user?.name || "Usuário"}
+            authorId={fullArticle.authorId || ""}
+            firmId={fullArticle.firmId || ""}
+            authorName={fullArticle.authorName || "Usuário"}
             initialData={fullArticle}
             onCancel={() => {
               setActiveTab("list");

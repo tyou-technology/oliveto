@@ -19,16 +19,20 @@ export interface TagResponseDTO {
 
 export interface ArticleResponseDTO {
   id: string;
-  firmId: string;
-  authorId: string;
+  firmId?: string;
+  firm?: { id: string; displayName: string };
+  authorId?: string;
+  authorName?: string;
+  author?: { id: string; fullName: string; email: string };
   title: string;
   subtitle?: string;
   briefing?: string;
-  content: string;
+  content?: string;
   imageUrl?: string;
   status: ArticleStatus;
   publishedAt?: string;
-  tags: TagResponseDTO[];
+  tags?: TagResponseDTO[];
+  tagIds?: string[];
   createdAt: string;
   updatedAt: string;
 }
@@ -36,6 +40,7 @@ export interface ArticleResponseDTO {
 export const CreateArticleSchema = z.object({
   firmId: z.string().uuid(),
   authorId: z.string().uuid(),
+  authorName: z.string().max(255).optional(),
   title: z.string().min(1, "Título é obrigatório").max(255),
   subtitle: z.string().max(255).optional(),
   briefing: z.string().optional(),
