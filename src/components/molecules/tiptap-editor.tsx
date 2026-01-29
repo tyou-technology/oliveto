@@ -24,19 +24,23 @@ import {
   Heading3,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { useEffect } from "react";
 
 interface TiptapEditorProps {
   content: string;
-  onChange: (content: string) => void;
+  onChange?: (content: string) => void;
   placeholder?: string;
+  readOnly?: boolean;
 }
 
 export function TiptapEditor({
   content,
   onChange,
   placeholder = "Escreva o conteúdo aqui...",
+  readOnly = false,
 }: TiptapEditorProps) {
   const editor = useEditor({
+    editable: !readOnly,
     extensions: [
       StarterKit.configure({
         heading: {
@@ -61,227 +65,248 @@ export function TiptapEditor({
     ],
     content,
     onUpdate: ({ editor }) => {
-      onChange(editor.getHTML());
+      onChange?.(editor.getHTML());
     },
     editorProps: {
       attributes: {
-        class:
+        class: cn(
           "prose prose-invert max-w-none focus:outline-none min-h-[300px] px-6 py-4",
+          readOnly && "cursor-default"
+        ),
       },
     },
   });
+
+  // Update editable state when readOnly prop changes
+  useEffect(() => {
+    if (editor) {
+      editor.setEditable(!readOnly);
+    }
+  }, [editor, readOnly]);
+
+  // Update content if it changes externally (e.g. initial load)
+  useEffect(() => {
+    if (editor && content !== editor.getHTML()) {
+      editor.commands.setContent(content);
+    }
+  }, [editor, content]);
 
   if (!editor) {
     return null;
   }
 
   return (
-    <div className="bg-[#111111] border border-white/10 rounded-2xl overflow-hidden flex flex-col">
-      {/* Toolbar */}
-      <div className="border-b border-white/10 p-2 flex flex-wrap gap-1 bg-[#1a1a1a]">
-        <div className="flex items-center gap-1 mr-2 border-r border-white/10 pr-2">
-          <button
-            type="button"
-            onClick={() => editor.chain().focus().undo().run()}
-            disabled={!editor.can().undo()}
-            className="p-2 hover:bg-white/10 rounded-lg transition-colors disabled:opacity-30"
-            title="Desfazer"
-          >
-            <Undo className="w-4 h-4" />
-          </button>
-          <button
-            type="button"
-            onClick={() => editor.chain().focus().redo().run()}
-            disabled={!editor.can().redo()}
-            className="p-2 hover:bg-white/10 rounded-lg transition-colors disabled:opacity-30"
-            title="Refazer"
-          >
-            <Redo className="w-4 h-4" />
-          </button>
-        </div>
+    <div className={cn(
+      "bg-[#111111] border border-white/10 rounded-2xl overflow-hidden flex flex-col",
+      readOnly && "opacity-80"
+    )}>
+      {/* Toolbar - Hide if readOnly */}
+      {!readOnly && (
+        <div className="border-b border-white/10 p-2 flex flex-wrap gap-1 bg-[#1a1a1a]">
+          <div className="flex items-center gap-1 mr-2 border-r border-white/10 pr-2">
+            <button
+              type="button"
+              onClick={() => editor.chain().focus().undo().run()}
+              disabled={!editor.can().undo()}
+              className="p-2 hover:bg-white/10 rounded-lg transition-colors disabled:opacity-30"
+              title="Desfazer"
+            >
+              <Undo className="w-4 h-4" />
+            </button>
+            <button
+              type="button"
+              onClick={() => editor.chain().focus().redo().run()}
+              disabled={!editor.can().redo()}
+              className="p-2 hover:bg-white/10 rounded-lg transition-colors disabled:opacity-30"
+              title="Refazer"
+            >
+              <Redo className="w-4 h-4" />
+            </button>
+          </div>
 
-        <div className="flex items-center gap-1 mr-2 border-r border-white/10 pr-2">
-          <button
-            type="button"
-            onClick={() =>
-              editor.chain().focus().toggleHeading({ level: 1 }).run()
-            }
-            className={cn(
-              "p-2 hover:bg-white/10 rounded-lg transition-colors",
-              editor.isActive("heading", { level: 1 }) &&
-                "bg-white/20 text-[#00FF90]"
-            )}
-            title="Título 1"
-          >
-            <Heading1 className="w-5 h-5" />
-          </button>
-          <button
-            type="button"
-            onClick={() =>
-              editor.chain().focus().toggleHeading({ level: 2 }).run()
-            }
-            className={cn(
-              "p-2 hover:bg-white/10 rounded-lg transition-colors",
-              editor.isActive("heading", { level: 2 }) &&
-                "bg-white/20 text-[#00FF90]"
-            )}
-            title="Título 2"
-          >
-            <Heading2 className="w-4 h-4" />
-          </button>
-          <button
-            type="button"
-            onClick={() =>
-              editor.chain().focus().toggleHeading({ level: 3 }).run()
-            }
-            className={cn(
-              "p-2 hover:bg-white/10 rounded-lg transition-colors",
-              editor.isActive("heading", { level: 3 }) &&
-                "bg-white/20 text-[#00FF90]"
-            )}
-            title="Título 3"
-          >
-            <Heading3 className="w-3 h-3" />
-          </button>
-        </div>
+          <div className="flex items-center gap-1 mr-2 border-r border-white/10 pr-2">
+            <button
+              type="button"
+              onClick={() =>
+                editor.chain().focus().toggleHeading({ level: 1 }).run()
+              }
+              className={cn(
+                "p-2 hover:bg-white/10 rounded-lg transition-colors",
+                editor.isActive("heading", { level: 1 }) &&
+                  "bg-white/20 text-[#00FF90]"
+              )}
+              title="Título 1"
+            >
+              <Heading1 className="w-5 h-5" />
+            </button>
+            <button
+              type="button"
+              onClick={() =>
+                editor.chain().focus().toggleHeading({ level: 2 }).run()
+              }
+              className={cn(
+                "p-2 hover:bg-white/10 rounded-lg transition-colors",
+                editor.isActive("heading", { level: 2 }) &&
+                  "bg-white/20 text-[#00FF90]"
+              )}
+              title="Título 2"
+            >
+              <Heading2 className="w-4 h-4" />
+            </button>
+            <button
+              type="button"
+              onClick={() =>
+                editor.chain().focus().toggleHeading({ level: 3 }).run()
+              }
+              className={cn(
+                "p-2 hover:bg-white/10 rounded-lg transition-colors",
+                editor.isActive("heading", { level: 3 }) &&
+                  "bg-white/20 text-[#00FF90]"
+              )}
+              title="Título 3"
+            >
+              <Heading3 className="w-3 h-3" />
+            </button>
+          </div>
 
-        <div className="flex items-center gap-1 mr-2 border-r border-white/10 pr-2">
-          <button
-            type="button"
-            onClick={() => editor.chain().focus().toggleBold().run()}
-            className={cn(
-              "p-2 hover:bg-white/10 rounded-lg transition-colors",
-              editor.isActive("bold") && "bg-white/20 text-[#00FF90]"
-            )}
-            title="Negrito"
-          >
-            <Bold className="w-4 h-4" />
-          </button>
-          <button
-            type="button"
-            onClick={() => editor.chain().focus().toggleItalic().run()}
-            className={cn(
-              "p-2 hover:bg-white/10 rounded-lg transition-colors",
-              editor.isActive("italic") && "bg-white/20 text-[#00FF90]"
-            )}
-            title="Itálico"
-          >
-            <Italic className="w-4 h-4" />
-          </button>
-          <button
-            type="button"
-            onClick={() => editor.chain().focus().toggleUnderline().run()}
-            className={cn(
-              "p-2 hover:bg-white/10 rounded-lg transition-colors",
-              editor.isActive("underline") && "bg-white/20 text-[#00FF90]"
-            )}
-            title="Sublinhado"
-          >
-            <UnderlineIcon className="w-4 h-4" />
-          </button>
-          <button
-            type="button"
-            onClick={() => editor.chain().focus().toggleStrike().run()}
-            className={cn(
-              "p-2 hover:bg-white/10 rounded-lg transition-colors",
-              editor.isActive("strike") && "bg-white/20 text-[#00FF90]"
-            )}
-            title="Tachado"
-          >
-            <Strikethrough className="w-4 h-4" />
-          </button>
-        </div>
+          <div className="flex items-center gap-1 mr-2 border-r border-white/10 pr-2">
+            <button
+              type="button"
+              onClick={() => editor.chain().focus().toggleBold().run()}
+              className={cn(
+                "p-2 hover:bg-white/10 rounded-lg transition-colors",
+                editor.isActive("bold") && "bg-white/20 text-[#00FF90]"
+              )}
+              title="Negrito"
+            >
+              <Bold className="w-4 h-4" />
+            </button>
+            <button
+              type="button"
+              onClick={() => editor.chain().focus().toggleItalic().run()}
+              className={cn(
+                "p-2 hover:bg-white/10 rounded-lg transition-colors",
+                editor.isActive("italic") && "bg-white/20 text-[#00FF90]"
+              )}
+              title="Itálico"
+            >
+              <Italic className="w-4 h-4" />
+            </button>
+            <button
+              type="button"
+              onClick={() => editor.chain().focus().toggleUnderline().run()}
+              className={cn(
+                "p-2 hover:bg-white/10 rounded-lg transition-colors",
+                editor.isActive("underline") && "bg-white/20 text-[#00FF90]"
+              )}
+              title="Sublinhado"
+            >
+              <UnderlineIcon className="w-4 h-4" />
+            </button>
+            <button
+              type="button"
+              onClick={() => editor.chain().focus().toggleStrike().run()}
+              className={cn(
+                "p-2 hover:bg-white/10 rounded-lg transition-colors",
+                editor.isActive("strike") && "bg-white/20 text-[#00FF90]"
+              )}
+              title="Tachado"
+            >
+              <Strikethrough className="w-4 h-4" />
+            </button>
+          </div>
 
-        <div className="flex items-center gap-1 mr-2 border-r border-white/10 pr-2">
-          <button
-            type="button"
-            onClick={() => editor.chain().focus().setTextAlign("left").run()}
-            className={cn(
-              "p-2 hover:bg-white/10 rounded-lg transition-colors",
-              editor.isActive({ textAlign: "left" }) &&
-                "bg-white/20 text-[#00FF90]"
-            )}
-            title="Alinhar à Esquerda"
-          >
-            <AlignLeft className="w-4 h-4" />
-          </button>
-          <button
-            type="button"
-            onClick={() => editor.chain().focus().setTextAlign("center").run()}
-            className={cn(
-              "p-2 hover:bg-white/10 rounded-lg transition-colors",
-              editor.isActive({ textAlign: "center" }) &&
-                "bg-white/20 text-[#00FF90]"
-            )}
-            title="Centralizar"
-          >
-            <AlignCenter className="w-4 h-4" />
-          </button>
-          <button
-            type="button"
-            onClick={() => editor.chain().focus().setTextAlign("right").run()}
-            className={cn(
-              "p-2 hover:bg-white/10 rounded-lg transition-colors",
-              editor.isActive({ textAlign: "right" }) &&
-                "bg-white/20 text-[#00FF90]"
-            )}
-            title="Alinhar à Direita"
-          >
-            <AlignRight className="w-4 h-4" />
-          </button>
-          <button
-            type="button"
-            onClick={() => editor.chain().focus().setTextAlign("justify").run()}
-            className={cn(
-              "p-2 hover:bg-white/10 rounded-lg transition-colors",
-              editor.isActive({ textAlign: "justify" }) &&
-                "bg-white/20 text-[#00FF90]"
-            )}
-            title="Justificar"
-          >
-            <AlignJustify className="w-4 h-4" />
-          </button>
-        </div>
+          <div className="flex items-center gap-1 mr-2 border-r border-white/10 pr-2">
+            <button
+              type="button"
+              onClick={() => editor.chain().focus().setTextAlign("left").run()}
+              className={cn(
+                "p-2 hover:bg-white/10 rounded-lg transition-colors",
+                editor.isActive({ textAlign: "left" }) &&
+                  "bg-white/20 text-[#00FF90]"
+              )}
+              title="Alinhar à Esquerda"
+            >
+              <AlignLeft className="w-4 h-4" />
+            </button>
+            <button
+              type="button"
+              onClick={() => editor.chain().focus().setTextAlign("center").run()}
+              className={cn(
+                "p-2 hover:bg-white/10 rounded-lg transition-colors",
+                editor.isActive({ textAlign: "center" }) &&
+                  "bg-white/20 text-[#00FF90]"
+              )}
+              title="Centralizar"
+            >
+              <AlignCenter className="w-4 h-4" />
+            </button>
+            <button
+              type="button"
+              onClick={() => editor.chain().focus().setTextAlign("right").run()}
+              className={cn(
+                "p-2 hover:bg-white/10 rounded-lg transition-colors",
+                editor.isActive({ textAlign: "right" }) &&
+                  "bg-white/20 text-[#00FF90]"
+              )}
+              title="Alinhar à Direita"
+            >
+              <AlignRight className="w-4 h-4" />
+            </button>
+            <button
+              type="button"
+              onClick={() => editor.chain().focus().setTextAlign("justify").run()}
+              className={cn(
+                "p-2 hover:bg-white/10 rounded-lg transition-colors",
+                editor.isActive({ textAlign: "justify" }) &&
+                  "bg-white/20 text-[#00FF90]"
+              )}
+              title="Justificar"
+            >
+              <AlignJustify className="w-4 h-4" />
+            </button>
+          </div>
 
-        <div className="flex items-center gap-1 mr-2 border-r border-white/10 pr-2">
-          <button
-            type="button"
-            onClick={() => editor.chain().focus().toggleBulletList().run()}
-            className={cn(
-              "p-2 hover:bg-white/10 rounded-lg transition-colors",
-              editor.isActive("bulletList") && "bg-white/20 text-[#00FF90]"
-            )}
-            title="Lista com Marcadores"
-          >
-            <List className="w-4 h-4" />
-          </button>
-          <button
-            type="button"
-            onClick={() => editor.chain().focus().toggleOrderedList().run()}
-            className={cn(
-              "p-2 hover:bg-white/10 rounded-lg transition-colors",
-              editor.isActive("orderedList") && "bg-white/20 text-[#00FF90]"
-            )}
-            title="Lista Numerada"
-          >
-            <ListOrdered className="w-4 h-4" />
-          </button>
-        </div>
+          <div className="flex items-center gap-1 mr-2 border-r border-white/10 pr-2">
+            <button
+              type="button"
+              onClick={() => editor.chain().focus().toggleBulletList().run()}
+              className={cn(
+                "p-2 hover:bg-white/10 rounded-lg transition-colors",
+                editor.isActive("bulletList") && "bg-white/20 text-[#00FF90]"
+              )}
+              title="Lista com Marcadores"
+            >
+              <List className="w-4 h-4" />
+            </button>
+            <button
+              type="button"
+              onClick={() => editor.chain().focus().toggleOrderedList().run()}
+              className={cn(
+                "p-2 hover:bg-white/10 rounded-lg transition-colors",
+                editor.isActive("orderedList") && "bg-white/20 text-[#00FF90]"
+              )}
+              title="Lista Numerada"
+            >
+              <ListOrdered className="w-4 h-4" />
+            </button>
+          </div>
 
-        <div className="flex items-center gap-1">
-          <button
-            type="button"
-            onClick={() => editor.chain().focus().toggleBlockquote().run()}
-            className={cn(
-              "p-2 hover:bg-white/10 rounded-lg transition-colors",
-              editor.isActive("blockquote") && "bg-white/20 text-[#00FF90]"
-            )}
-            title="Citação"
-          >
-            <Quote className="w-4 h-4" />
-          </button>
+          <div className="flex items-center gap-1">
+            <button
+              type="button"
+              onClick={() => editor.chain().focus().toggleBlockquote().run()}
+              className={cn(
+                "p-2 hover:bg-white/10 rounded-lg transition-colors",
+                editor.isActive("blockquote") && "bg-white/20 text-[#00FF90]"
+              )}
+              title="Citação"
+            >
+              <Quote className="w-4 h-4" />
+            </button>
+          </div>
         </div>
-      </div>
+      )}
 
       {/* Editor Content */}
       <EditorContent editor={editor} className="flex-1" />

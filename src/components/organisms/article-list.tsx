@@ -5,11 +5,12 @@ import { ptBR } from "date-fns/locale";
 
 interface ArticleListProps {
   articles: ArticleResponseDTO[];
+  onView: (article: ArticleResponseDTO) => void;
   onEdit: (article: ArticleResponseDTO) => void;
   onDelete: (id: string) => void;
 }
 
-export function ArticleList({ articles, onEdit, onDelete }: ArticleListProps) {
+export function ArticleList({ articles, onView, onEdit, onDelete }: ArticleListProps) {
   return (
     <div className="bg-[#111111] border border-white/10 rounded-2xl overflow-hidden">
       <div className="overflow-x-auto">
@@ -74,6 +75,7 @@ export function ArticleList({ articles, onEdit, onDelete }: ArticleListProps) {
                     <button
                       className="p-2 hover:bg-white/10 rounded-lg transition-colors"
                       title="Visualizar"
+                      onClick={() => onView(article)}
                     >
                       <Eye className="w-4 h-4 text-neutral-400" />
                     </button>

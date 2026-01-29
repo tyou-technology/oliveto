@@ -1,26 +1,47 @@
 "use client";
 
 import { useState } from "react";
-import { Plus, Tag } from "lucide-react";
+import { Plus, Tag, Loader2 } from "lucide-react";
 import { useUserStore } from "@/stores/useUserStore";
 import { ArticleList } from "@/components/organisms/article-list";
 import { ArticleForm } from "@/components/organisms/article-form";
 import { useArticles } from "@/features/articles/hooks/useArticles";
+import { useArticle } from "@/features/articles/hooks/useArticle";
 import {
   CreateArticleDTO,
   ArticleResponseDTO,
   CreateTagDTO,
   TagResponseDTO,
+  UpdateArticleDTO,
+  UpdateTagDTO,
 } from "@/lib/types/article";
 import { useTags } from "@/features/articles/hooks/useTags";
 import { TagList } from "@/components/organisms/tag-list";
 import { TagForm } from "@/components/organisms/tag-form";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+} from "@/components/atoms/alert-dialog";
 
-type TabType = "list" | "create" | "tags" | "create-tag";
+type TabType = "list" | "create" | "tags" | "create-tag" | "edit" | "view" | "edit-tag";
 
 export default function ArtigosPage() {
   const [activeTab, setActiveTab] = useState<TabType>("list");
   const { user } = useUserStore();
+
+  // State for selection
+  const [selectedArticleId, setSelectedArticleId] = useState<string | null>(null);
+  const [selectedTag, setSelectedTag] = useState<TagResponseDTO | null>(null);
+  
+  // Delete modals state
+  const [isDeleteArticleOpen, setIsDeleteArticleOpen] = useState(false);
+  const [isDeleteTagOpen, setIsDeleteTagOpen] = useState(false);
 
   // Fetch articles and tags for the current user's firm
   const {
@@ -35,6 +56,10 @@ export default function ArtigosPage() {
     user?.firmId
   );
 
+  // Fetch full article details when an ID is selected
+  const { article: fullArticle, isLoading: isLoadingFullArticle } = useArticle(selectedArticleId);
+
+  // Article Handlers
   const handleCreateArticle = (data: CreateArticleDTO) => {
     createArticle.mutate(data, {
       onSuccess: () => {
@@ -43,6 +68,36 @@ export default function ArtigosPage() {
     });
   };
 
+  const handleUpdateArticle = (data: CreateArticleDTO) => {
+    if (selectedArticleId) {
+      // Map CreateArticleDTO to UpdateArticleDTO
+      const updateData: UpdateArticleDTO = {
+        ...data,
+      };
+      updateArticle.mutate(
+        { id: selectedArticleId, data: updateData },
+        {
+          onSuccess: () => {
+            setActiveTab("list");
+            setSelectedArticleId(null);
+          },
+        }
+      );
+    }
+  };
+
+  const handleDeleteArticleConfirm = () => {
+    if (selectedArticleId) {
+      deleteArticle.mutate(selectedArticleId, {
+        onSuccess: () => {
+          setIsDeleteArticleOpen(false);
+          setSelectedArticleId(null);
+        },
+      });
+    }
+  };
+
+  // Tag Handlers
   const handleCreateTag = (data: CreateTagDTO) => {
     createTag.mutate(data, {
       onSuccess: () => {
@@ -51,82 +106,118 @@ export default function ArtigosPage() {
     });
   };
 
-  const handleDeleteArticle = (id: string) => {
-    if (confirm("Tem certeza que deseja excluir este artigo?")) {
-      deleteArticle.mutate(id);
+  const handleUpdateTag = (data: CreateTagDTO) => {
+    if (selectedTag) {
+      const updateData: UpdateTagDTO = {
+        ...data,
+      };
+      updateTag.mutate(
+        { id: selectedTag.id, data: updateData },
+        {
+          onSuccess: () => {
+            setActiveTab("tags");
+            setSelectedTag(null);
+          },
+        }
+      );
     }
   };
 
-  const handleDeleteTag = (id: string) => {
-    if (confirm("Tem certeza que deseja excluir esta tag?")) {
-      deleteTag.mutate(id);
+  const handleDeleteTagConfirm = () => {
+    if (selectedTag) {
+      deleteTag.mutate(selectedTag.id, {
+        onSuccess: () => {
+          setIsDeleteTagOpen(false);
+          setSelectedTag(null);
+        },
+      });
     }
   };
 
-  const handleEditArticle = (article: ArticleResponseDTO) => {
-    console.log("Edit article:", article);
+  // Navigation Triggers
+  const openViewArticle = (article: ArticleResponseDTO) => {
+    setSelectedArticleId(article.id);
+    setActiveTab("view");
   };
 
-  const handleEditTag = (tag: TagResponseDTO) => {
-    console.log("Edit tag:", tag);
+  const openEditArticle = (article: ArticleResponseDTO) => {
+    setSelectedArticleId(article.id);
+    setActiveTab("edit");
+  };
+
+  const openDeleteArticle = (id: string) => {
+    setSelectedArticleId(id);
+    setIsDeleteArticleOpen(true);
+  };
+
+  const openEditTag = (tag: TagResponseDTO) => {
+    setSelectedTag(tag);
+    setActiveTab("edit-tag");
+  };
+
+  const openDeleteTag = (id: string) => {
+    const tag = tags.find(t => t.id === id);
+    if (tag) {
+      setSelectedTag(tag);
+      setIsDeleteTagOpen(true);
+    }
+  };
+
+  // Helper to get article title for delete modal
+  const getSelectedArticleTitle = () => {
+    if (fullArticle) return fullArticle.title;
+    const fromList = articles.find(a => a.id === selectedArticleId);
+    return fromList?.title;
   };
 
   return (
     <div className="p-4 lg:p-8">
-      {/* Tabs */}
-      <div className="flex flex-wrap items-center gap-4 mb-8">
-        <button
-          onClick={() => setActiveTab("list")}
-          className={`px-6 py-3 rounded-xl font-medium transition-all ${
-            activeTab === "list"
-              ? "bg-[#00FF90] text-black"
-              : "bg-white/5 text-neutral-400 hover:bg-white/10 hover:text-white"
-          }`}
-        >
-          Todos os Artigos
-        </button>
-        <button
-          onClick={() => setActiveTab("create")}
-          className={`px-6 py-3 rounded-xl font-medium transition-all flex items-center gap-2 ${
-            activeTab === "create"
-              ? "bg-[#00FF90] text-black"
-              : "bg-white/5 text-neutral-400 hover:bg-white/10 hover:text-white"
-          }`}
-        >
-          <Plus className="w-5 h-5" />
-          Novo Artigo
-        </button>
-        <div className="w-px h-8 bg-white/10 mx-2 hidden md:block" />
-        <button
-          onClick={() => setActiveTab("tags")}
-          className={`px-6 py-3 rounded-xl font-medium transition-all flex items-center gap-2 ${
-            activeTab === "tags"
-              ? "bg-[#00FF90] text-black"
-              : "bg-white/5 text-neutral-400 hover:bg-white/10 hover:text-white"
-          }`}
-        >
-          <Tag className="w-5 h-5" />
-          Gerenciar Tags
-        </button>
-        <button
-          onClick={() => setActiveTab("create-tag")}
-          className={`px-6 py-3 rounded-xl font-medium transition-all flex items-center gap-2 ${
-            activeTab === "create-tag"
-              ? "bg-[#00FF90] text-black"
-              : "bg-white/5 text-neutral-400 hover:bg-white/10 hover:text-white"
-          }`}
-        >
-          <Plus className="w-5 h-5" />
-          Nova Tag
-        </button>
-      </div>
+      {/* Tabs - Only show main tabs when not in edit/view/create mode */}
+      {["list", "tags"].includes(activeTab) && (
+        <div className="flex flex-wrap items-center gap-4 mb-8">
+          <button
+            onClick={() => setActiveTab("list")}
+            className={`px-6 py-3 rounded-xl font-medium transition-all ${
+              activeTab === "list"
+                ? "bg-[#00FF90] text-black"
+                : "bg-white/5 text-neutral-400 hover:bg-white/10 hover:text-white"
+            }`}
+          >
+            Todos os Artigos
+          </button>
+          <button
+            onClick={() => setActiveTab("tags")}
+            className={`px-6 py-3 rounded-xl font-medium transition-all flex items-center gap-2 ${
+              activeTab === "tags"
+                ? "bg-[#00FF90] text-black"
+                : "bg-white/5 text-neutral-400 hover:bg-white/10 hover:text-white"
+            }`}
+          >
+            <Tag className="w-5 h-5" />
+            Gerenciar Tags
+          </button>
+        </div>
+      )}
 
+      {/* Content */}
       {activeTab === "list" && (
-        <ArticleList
-          articles={articles}
-          onEdit={handleEditArticle}
-          onDelete={handleDeleteArticle}
-        />
+        <div className="space-y-6">
+          <div className="flex justify-end">
+            <button
+              onClick={() => setActiveTab("create")}
+              className="flex items-center gap-2 px-4 py-2 bg-[#00FF90] text-black font-medium rounded-xl hover:bg-[#00FF90]/90 transition-colors"
+            >
+              <Plus className="w-4 h-4" />
+              Novo Artigo
+            </button>
+          </div>
+          <ArticleList
+            articles={articles}
+            onView={openViewArticle}
+            onEdit={openEditArticle}
+            onDelete={openDeleteArticle}
+          />
+        </div>
       )}
 
       {activeTab === "create" && (
@@ -137,23 +228,136 @@ export default function ArtigosPage() {
           authorId={user?.userId || ""}
           firmId={user?.firmId || ""}
           authorName={user?.name || "Usuário"}
+          onCancel={() => setActiveTab("list")}
         />
       )}
 
+      {activeTab === "view" && (
+        isLoadingFullArticle ? (
+          <div className="flex items-center justify-center h-64">
+            <Loader2 className="w-8 h-8 text-[#00FF90] animate-spin" />
+          </div>
+        ) : fullArticle ? (
+          <ArticleForm
+            onSubmit={() => {}} // No-op for view mode
+            isPending={false}
+            tags={tags || []}
+            authorId={fullArticle.authorId}
+            firmId={fullArticle.firmId}
+            authorName={user?.name || "Usuário"}
+            initialData={fullArticle}
+            readOnly={true}
+            onCancel={() => {
+              setActiveTab("list");
+              setSelectedArticleId(null);
+            }}
+          />
+        ) : null
+      )}
+
+      {activeTab === "edit" && (
+        isLoadingFullArticle ? (
+          <div className="flex items-center justify-center h-64">
+            <Loader2 className="w-8 h-8 text-[#00FF90] animate-spin" />
+          </div>
+        ) : fullArticle ? (
+          <ArticleForm
+            onSubmit={handleUpdateArticle}
+            isPending={updateArticle.isPending}
+            tags={tags || []}
+            authorId={fullArticle.authorId}
+            firmId={fullArticle.firmId}
+            authorName={user?.name || "Usuário"}
+            initialData={fullArticle}
+            onCancel={() => {
+              setActiveTab("list");
+              setSelectedArticleId(null);
+            }}
+          />
+        ) : null
+      )}
+
       {activeTab === "tags" && (
-        <TagList
-          tags={tags}
-          onEdit={handleEditTag}
-          onDelete={handleDeleteTag}
-        />
+        <div className="space-y-6">
+          <div className="flex justify-end">
+            <button
+              onClick={() => setActiveTab("create-tag")}
+              className="flex items-center gap-2 px-4 py-2 bg-[#00FF90] text-black font-medium rounded-xl hover:bg-[#00FF90]/90 transition-colors"
+            >
+              <Plus className="w-4 h-4" />
+              Nova Tag
+            </button>
+          </div>
+          <TagList
+            tags={tags}
+            onEdit={openEditTag}
+            onDelete={openDeleteTag}
+          />
+        </div>
       )}
 
       {activeTab === "create-tag" && (
         <TagForm
           onSubmit={handleCreateTag}
           isPending={createTag.isPending}
+          onCancel={() => setActiveTab("tags")}
         />
       )}
+
+      {activeTab === "edit-tag" && selectedTag && (
+        <TagForm
+          onSubmit={handleUpdateTag}
+          isPending={updateTag.isPending}
+          initialData={selectedTag}
+          onCancel={() => {
+            setActiveTab("tags");
+            setSelectedTag(null);
+          }}
+        />
+      )}
+
+      {/* Delete Article Confirmation */}
+      <AlertDialog open={isDeleteArticleOpen} onOpenChange={setIsDeleteArticleOpen}>
+        <AlertDialogContent className="bg-[#111] border-white/10 text-white">
+          <AlertDialogHeader>
+            <AlertDialogTitle>Excluir Artigo</AlertDialogTitle>
+            <AlertDialogDescription className="text-neutral-400">
+              Tem certeza que deseja excluir o artigo "{getSelectedArticleTitle()}"? Esta ação não pode ser desfeita.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel className="bg-white/5 border-white/10 hover:bg-white/10 text-white hover:text-white">Cancelar</AlertDialogCancel>
+            <AlertDialogAction 
+              onClick={handleDeleteArticleConfirm}
+              className="bg-red-500 hover:bg-red-600 text-white"
+            >
+              Excluir
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
+      {/* Delete Tag Confirmation */}
+      <AlertDialog open={isDeleteTagOpen} onOpenChange={setIsDeleteTagOpen}>
+        <AlertDialogContent className="bg-[#111] border-white/10 text-white">
+          <AlertDialogHeader>
+            <AlertDialogTitle>Excluir Tag</AlertDialogTitle>
+            <AlertDialogDescription className="text-neutral-400">
+              Tem certeza que deseja excluir a tag "{selectedTag?.name}"? Esta ação não pode ser desfeita.
+            </AlertDialogDescription>
+          </AlertDialogHeader>
+          <AlertDialogFooter>
+            <AlertDialogCancel className="bg-white/5 border-white/10 hover:bg-white/10 text-white hover:text-white">Cancelar</AlertDialogCancel>
+            <AlertDialogAction 
+              onClick={handleDeleteTagConfirm}
+              className="bg-red-500 hover:bg-red-600 text-white"
+            >
+              Excluir
+            </AlertDialogAction>
+          </AlertDialogFooter>
+        </AlertDialogContent>
+      </AlertDialog>
+
     </div>
   );
 }

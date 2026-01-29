@@ -10,15 +10,18 @@ import {
   Tag,
   User,
   X,
+  ArrowLeft,
 } from "lucide-react";
 import {
   CreateArticleDTO,
   CreateArticleSchema,
   ArticleStatus,
   TagResponseDTO,
+  ArticleResponseDTO,
 } from "@/lib/types/article";
 import { useState, useEffect } from "react";
 import { TiptapEditor } from "@/components/molecules/tiptap-editor";
+import Image from "next/image";
 
 interface ArticleFormProps {
   onSubmit: (data: CreateArticleDTO) => void;
@@ -27,6 +30,9 @@ interface ArticleFormProps {
   authorId: string;
   firmId: string;
   authorName: string;
+  initialData?: ArticleResponseDTO;
+  onCancel?: () => void;
+  readOnly?: boolean;
 }
 
 export function ArticleForm({
@@ -36,6 +42,9 @@ export function ArticleForm({
   authorId,
   firmId,
   authorName,
+  initialData,
+  onCancel,
+  readOnly = false,
 }: ArticleFormProps) {
   const [showCategoryDropdown, setShowCategoryDropdown] = useState(false);
 
@@ -44,32 +53,49 @@ export function ArticleForm({
     handleSubmit,
     setValue,
     watch,
+    reset,
     formState: { errors },
   } = useForm<CreateArticleDTO>({
     resolver: zodResolver(CreateArticleSchema),
     defaultValues: {
-      status: ArticleStatus.DRAFT,
-      authorId: authorId,
-      firmId: firmId,
-      content: "",
-      tagIds: [],
+      status: initialData?.status || ArticleStatus.DRAFT,
+      authorId: initialData?.authorId || authorId,
+      firmId: initialData?.firmId || firmId,
+      content: initialData?.content || "",
+      tagIds: initialData?.tags ? initialData.tags.map((t) => t.id) : [],
+      title: initialData?.title || "",
+      briefing: initialData?.briefing || "",
+      imageUrl: initialData?.imageUrl || "",
     },
   });
 
-  // Update default values if props change (e.g. initial load)
+  // Update values if initialData changes after mount (though unlikely in current flow)
   useEffect(() => {
-    setValue("authorId", authorId);
-    setValue("firmId", firmId);
-  }, [authorId, firmId, setValue]);
+    if (initialData) {
+      reset({
+        title: initialData.title,
+        briefing: initialData.briefing || "",
+        content: initialData.content,
+        status: initialData.status,
+        authorId: initialData.authorId,
+        firmId: initialData.firmId,
+        tagIds: initialData.tags ? initialData.tags.map((t) => t.id) : [],
+        imageUrl: initialData.imageUrl || "",
+      });
+    }
+  }, [initialData, reset]);
 
   const selectedTagIds = watch("tagIds") || [];
+  const imageUrl = watch("imageUrl");
 
   const handleFormSubmit = (status: ArticleStatus) => {
+    if (readOnly) return;
     setValue("status", status);
     handleSubmit(onSubmit)();
   };
 
   const toggleTag = (tagId: string) => {
+    if (readOnly) return;
     const currentTags = watch("tagIds") || [];
     if (currentTags.includes(tagId)) {
       setValue(
@@ -85,8 +111,28 @@ export function ArticleForm({
     return tags.filter((tag) => selectedTagIds.includes(tag.id));
   };
 
+  const getTitle = () => {
+    if (readOnly) return "Visualizar Artigo";
+    if (initialData) return "Editar Artigo";
+    return "Novo Artigo";
+  };
+
   return (
     <div className="space-y-6">
+      {/* Header with Back Button if onCancel is provided */}
+      {onCancel && (
+        <div className="flex items-center gap-4 mb-2">
+          <button
+            type="button"
+            onClick={onCancel}
+            className="p-2 hover:bg-white/10 rounded-lg transition-colors text-neutral-400 hover:text-white"
+          >
+            <ArrowLeft className="w-5 h-5" />
+          </button>
+          <h2 className="text-xl font-semibold">{getTitle()}</h2>
+        </div>
+      )}
+
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         {/* Main Form */}
         <div className="lg:col-span-2 space-y-6">
@@ -98,8 +144,9 @@ export function ArticleForm({
             <input
               type="text"
               {...register("title")}
+              disabled={readOnly}
               placeholder="Digite o título do artigo..."
-              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-lg font-medium placeholder:text-neutral-600 focus:outline-none focus:border-[#00FF90]/50 transition-colors"
+              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-lg font-medium placeholder:text-neutral-600 focus:outline-none focus:border-[#00FF90]/50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
             />
             {errors.title && (
               <p className="text-red-500 text-sm mt-1">
@@ -115,9 +162,10 @@ export function ArticleForm({
             </label>
             <textarea
               {...register("briefing")}
+              disabled={readOnly}
               placeholder="Uma breve descrição que aparecerá na listagem de artigos..."
               rows={3}
-              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 placeholder:text-neutral-600 focus:outline-none focus:border-[#00FF90]/50 transition-colors resize-none"
+              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 placeholder:text-neutral-600 focus:outline-none focus:border-[#00FF90]/50 transition-colors resize-none disabled:opacity-50 disabled:cursor-not-allowed"
             />
           </div>
 
@@ -129,6 +177,7 @@ export function ArticleForm({
             <TiptapEditor
               content={watch("content")}
               onChange={(content) => setValue("content", content)}
+              readOnly={readOnly}
             />
             {errors.content && (
               <p className="text-red-500 text-sm">{errors.content.message}</p>
@@ -155,24 +204,41 @@ export function ArticleForm({
                 <span>Público</span>
               </div>
               <div className="pt-4 border-t border-white/10 space-y-3">
-                <button
-                  type="button"
-                  onClick={() => handleFormSubmit(ArticleStatus.DRAFT)}
-                  disabled={isPending}
-                  className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-white/5 hover:bg-white/10 rounded-xl transition-colors disabled:opacity-50"
-                >
-                  <Save className="w-4 h-4" />
-                  Salvar Rascunho
-                </button>
-                <button
-                  type="button"
-                  onClick={() => handleFormSubmit(ArticleStatus.PUBLISHED)}
-                  disabled={isPending}
-                  className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-[#00FF90] text-black font-medium rounded-xl hover:bg-[#00FF90]/90 transition-colors disabled:opacity-50"
-                >
-                  <Send className="w-4 h-4" />
-                  Publicar Artigo
-                </button>
+                {!readOnly && (
+                  <>
+                    <button
+                      type="button"
+                      onClick={() => handleFormSubmit(ArticleStatus.DRAFT)}
+                      disabled={isPending}
+                      className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-white/5 hover:bg-white/10 rounded-xl transition-colors disabled:opacity-50"
+                    >
+                      <Save className="w-4 h-4" />
+                      Salvar Rascunho
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleFormSubmit(ArticleStatus.PUBLISHED)}
+                      disabled={isPending}
+                      className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-[#00FF90] text-black font-medium rounded-xl hover:bg-[#00FF90]/90 transition-colors disabled:opacity-50"
+                    >
+                      <Send className="w-4 h-4" />
+                      Publicar Artigo
+                    </button>
+                  </>
+                )}
+                {onCancel && (
+                  <button
+                    type="button"
+                    onClick={onCancel}
+                    className={`w-full flex items-center justify-center gap-2 px-4 py-3 font-medium rounded-xl transition-colors ${
+                      readOnly 
+                        ? "bg-white/5 hover:bg-white/10 text-white" 
+                        : "bg-red-500/10 text-red-400 hover:bg-red-500/20"
+                    }`}
+                  >
+                    {readOnly ? "Voltar" : "Cancelar"}
+                  </button>
+                )}
               </div>
             </div>
           </div>
@@ -193,77 +259,102 @@ export function ArticleForm({
                     className="inline-flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium bg-[#00FF90]/10 text-[#00FF90] border border-[#00FF90]/20"
                   >
                     {tag.name}
-                    <button 
-                      type="button" 
-                      onClick={() => toggleTag(tag.id)}
-                      className="hover:text-white"
-                    >
-                      <X className="w-3 h-3" />
-                    </button>
+                    {!readOnly && (
+                      <button 
+                        type="button" 
+                        onClick={() => toggleTag(tag.id)}
+                        className="hover:text-white"
+                      >
+                        <X className="w-3 h-3" />
+                      </button>
+                    )}
                   </span>
                 ))}
               </div>
             )}
 
-            <div className="relative">
-              <button
-                type="button"
-                onClick={() => setShowCategoryDropdown(!showCategoryDropdown)}
-                className="w-full flex items-center justify-between px-4 py-3 bg-white/5 border border-white/10 rounded-xl hover:border-white/20 transition-colors"
-              >
-                <span className="text-neutral-500">
-                  Selecione as tags
-                </span>
-                <ChevronDown
-                  className={`w-4 h-4 transition-transform ${
-                    showCategoryDropdown ? "rotate-180" : ""
-                  }`}
-                />
-              </button>
-              {showCategoryDropdown && (
-                <div className="absolute top-full left-0 right-0 mt-2 bg-[#1a1a1a] border border-white/10 rounded-xl overflow-hidden z-10 max-h-60 overflow-y-auto">
-                  {tags.length === 0 ? (
-                    <div className="px-4 py-3 text-sm text-neutral-500">
-                      Nenhuma tag encontrada. Crie uma nova tag primeiro.
-                    </div>
-                  ) : (
-                    tags.map((tag) => (
-                      <button
-                        key={tag.id}
-                        type="button"
-                        onClick={() => {
-                          toggleTag(tag.id);
-                          // Don't close dropdown to allow multiple selection
-                        }}
-                        className={`w-full px-4 py-3 text-left hover:bg-white/5 transition-colors text-sm flex items-center justify-between ${
-                          selectedTagIds.includes(tag.id) ? "text-[#00FF90]" : "text-white"
-                        }`}
-                      >
-                        <span>{tag.name}</span>
-                        {selectedTagIds.includes(tag.id) && (
-                          <span className="w-2 h-2 rounded-full bg-[#00FF90]" />
-                        )}
-                      </button>
-                    ))
-                  )}
-                </div>
-              )}
-            </div>
+            {!readOnly && (
+              <div className="relative">
+                <button
+                  type="button"
+                  onClick={() => setShowCategoryDropdown(!showCategoryDropdown)}
+                  className="w-full flex items-center justify-between px-4 py-3 bg-white/5 border border-white/10 rounded-xl hover:border-white/20 transition-colors"
+                >
+                  <span className="text-neutral-500">
+                    Selecione as tags
+                  </span>
+                  <ChevronDown
+                    className={`w-4 h-4 transition-transform ${
+                      showCategoryDropdown ? "rotate-180" : ""
+                    }`}
+                  />
+                </button>
+                {showCategoryDropdown && (
+                  <div className="absolute top-full left-0 right-0 mt-2 bg-[#1a1a1a] border border-white/10 rounded-xl overflow-hidden z-10 max-h-60 overflow-y-auto">
+                    {tags.length === 0 ? (
+                      <div className="px-4 py-3 text-sm text-neutral-500">
+                        Nenhuma tag encontrada. Crie uma nova tag primeiro.
+                      </div>
+                    ) : (
+                      tags.map((tag) => (
+                        <button
+                          key={tag.id}
+                          type="button"
+                          onClick={() => {
+                            toggleTag(tag.id);
+                            // Don't close dropdown to allow multiple selection
+                          }}
+                          className={`w-full px-4 py-3 text-left hover:bg-white/5 transition-colors text-sm flex items-center justify-between ${
+                            selectedTagIds.includes(tag.id) ? "text-[#00FF90]" : "text-white"
+                          }`}
+                        >
+                          <span>{tag.name}</span>
+                          {selectedTagIds.includes(tag.id) && (
+                            <span className="w-2 h-2 rounded-full bg-[#00FF90]" />
+                          )}
+                        </button>
+                      ))
+                    )}
+                  </div>
+                )}
+              </div>
+            )}
           </div>
 
           {/* Cover Image */}
           <div className="bg-[#111111] border border-white/10 rounded-2xl p-6">
             <h3 className="font-semibold mb-4 flex items-center gap-2">
               <ImageIcon className="w-4 h-4 text-[#00FF90]" />
-              Imagem de Capa
+              Imagem de Capa (URL)
             </h3>
-            <div className="border-2 border-dashed border-white/10 rounded-xl p-8 text-center hover:border-[#00FF90]/30 transition-colors cursor-pointer">
-              <ImageIcon className="w-10 h-10 text-neutral-500 mx-auto mb-3" />
-              <p className="text-sm text-neutral-400 mb-1">
-                Arraste uma imagem ou clique para selecionar
+            <input
+              type="text"
+              {...register("imageUrl")}
+              disabled={readOnly}
+              placeholder="https://exemplo.com/imagem.jpg"
+              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm placeholder:text-neutral-600 focus:outline-none focus:border-[#00FF90]/50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed mb-4"
+            />
+            {errors.imageUrl && (
+              <p className="text-red-500 text-sm mt-1 mb-2">
+                {errors.imageUrl.message}
               </p>
-              <p className="text-xs text-neutral-600">PNG, JPG até 5MB</p>
-            </div>
+            )}
+            
+            {/* Image Preview */}
+            {imageUrl && (
+              <div className="relative w-full h-48 rounded-xl overflow-hidden border border-white/10">
+                <Image 
+                  src={imageUrl} 
+                  alt="Preview da capa" 
+                  fill 
+                  className="object-cover"
+                  onError={(e) => {
+                    // Fallback for broken images if needed, or just let it show broken icon
+                    (e.target as HTMLImageElement).style.display = 'none';
+                  }}
+                />
+              </div>
+            )}
           </div>
 
           {/* Author */}

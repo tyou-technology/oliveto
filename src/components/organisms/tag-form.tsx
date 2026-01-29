@@ -2,20 +2,24 @@
 
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { Save } from "lucide-react";
-import { CreateTagDTO, CreateTagSchema } from "@/lib/types/article";
+import { ArrowLeft, Save } from "lucide-react";
+import { CreateTagDTO, CreateTagSchema, TagResponseDTO } from "@/lib/types/article";
 import { useUserStore } from "@/stores/useUserStore";
+import { useEffect } from "react";
 
 interface TagFormProps {
   onSubmit: (data: CreateTagDTO) => void;
   isPending: boolean;
+  initialData?: TagResponseDTO;
+  onCancel?: () => void;
 }
 
-export function TagForm({ onSubmit, isPending }: TagFormProps) {
+export function TagForm({ onSubmit, isPending, initialData, onCancel }: TagFormProps) {
   const { user } = useUserStore();
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm<CreateTagDTO>({
     resolver: zodResolver(CreateTagSchema),
@@ -25,8 +29,36 @@ export function TagForm({ onSubmit, isPending }: TagFormProps) {
     },
   });
 
+  useEffect(() => {
+    if (initialData) {
+      reset({
+        firmId: initialData.firmId,
+        name: initialData.name,
+        description: initialData.description || "",
+        color: initialData.color || "#00FF90",
+        icon: initialData.icon || "",
+      });
+    }
+  }, [initialData, reset]);
+
   return (
     <div className="max-w-2xl mx-auto space-y-6">
+      {/* Header with Back Button if onCancel is provided */}
+      {onCancel && (
+        <div className="flex items-center gap-4 mb-2">
+          <button
+            type="button"
+            onClick={onCancel}
+            className="p-2 hover:bg-white/10 rounded-lg transition-colors text-neutral-400 hover:text-white"
+          >
+            <ArrowLeft className="w-5 h-5" />
+          </button>
+          <h2 className="text-xl font-semibold">
+            {initialData ? "Editar Tag" : "Nova Tag"}
+          </h2>
+        </div>
+      )}
+
       <div className="bg-[#111111] border border-white/10 rounded-2xl p-6 space-y-6">
         <div>
           <label className="block text-sm text-neutral-400 mb-3">
@@ -75,7 +107,7 @@ export function TagForm({ onSubmit, isPending }: TagFormProps) {
           )}
         </div>
 
-        <div className="pt-4 border-t border-white/10">
+        <div className="pt-4 border-t border-white/10 space-y-3">
           <button
             type="button"
             onClick={handleSubmit(onSubmit)}
@@ -85,6 +117,15 @@ export function TagForm({ onSubmit, isPending }: TagFormProps) {
             <Save className="w-4 h-4" />
             Salvar Tag
           </button>
+          {onCancel && (
+            <button
+              type="button"
+              onClick={onCancel}
+              className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-red-500/10 text-red-400 font-medium rounded-xl hover:bg-red-500/20 transition-colors"
+            >
+              Cancelar
+            </button>
+          )}
         </div>
       </div>
     </div>
