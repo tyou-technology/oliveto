@@ -9,22 +9,34 @@ import {
   Send,
   Tag,
   User,
+  X,
 } from "lucide-react";
-import { categories } from "@/lib/constants/articles";
 import {
   CreateArticleDTO,
   CreateArticleSchema,
   ArticleStatus,
+  TagResponseDTO,
 } from "@/lib/types/article";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { TiptapEditor } from "@/components/molecules/tiptap-editor";
 
 interface ArticleFormProps {
   onSubmit: (data: CreateArticleDTO) => void;
   isPending: boolean;
+  tags: TagResponseDTO[];
+  authorId: string;
+  firmId: string;
+  authorName: string;
 }
 
-export function ArticleForm({ onSubmit, isPending }: ArticleFormProps) {
+export function ArticleForm({
+  onSubmit,
+  isPending,
+  tags,
+  authorId,
+  firmId,
+  authorName,
+}: ArticleFormProps) {
   const [showCategoryDropdown, setShowCategoryDropdown] = useState(false);
 
   const {
@@ -37,15 +49,40 @@ export function ArticleForm({ onSubmit, isPending }: ArticleFormProps) {
     resolver: zodResolver(CreateArticleSchema),
     defaultValues: {
       status: ArticleStatus.DRAFT,
-      authorId: "00000000-0000-0000-0000-000000000000", // Placeholder, should come from auth context
-      firmId: "00000000-0000-0000-0000-000000000000", // Placeholder
+      authorId: authorId,
+      firmId: firmId,
       content: "",
+      tagIds: [],
     },
   });
+
+  // Update default values if props change (e.g. initial load)
+  useEffect(() => {
+    setValue("authorId", authorId);
+    setValue("firmId", firmId);
+  }, [authorId, firmId, setValue]);
+
+  const selectedTagIds = watch("tagIds") || [];
 
   const handleFormSubmit = (status: ArticleStatus) => {
     setValue("status", status);
     handleSubmit(onSubmit)();
+  };
+
+  const toggleTag = (tagId: string) => {
+    const currentTags = watch("tagIds") || [];
+    if (currentTags.includes(tagId)) {
+      setValue(
+        "tagIds",
+        currentTags.filter((id) => id !== tagId)
+      );
+    } else {
+      setValue("tagIds", [...currentTags, tagId]);
+    }
+  };
+
+  const getSelectedTags = () => {
+    return tags.filter((tag) => selectedTagIds.includes(tag.id));
   };
 
   return (
@@ -140,12 +177,34 @@ export function ArticleForm({ onSubmit, isPending }: ArticleFormProps) {
             </div>
           </div>
 
-          {/* Category */}
+          {/* Category / Tags */}
           <div className="bg-[#111111] border border-white/10 rounded-2xl p-6">
             <h3 className="font-semibold mb-4 flex items-center gap-2">
               <Tag className="w-4 h-4 text-[#00FF90]" />
-              Categoria
+              Tags
             </h3>
+            
+            {/* Selected Tags Chips */}
+            {selectedTagIds.length > 0 && (
+              <div className="flex flex-wrap gap-2 mb-3">
+                {getSelectedTags().map(tag => (
+                  <span 
+                    key={tag.id} 
+                    className="inline-flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium bg-[#00FF90]/10 text-[#00FF90] border border-[#00FF90]/20"
+                  >
+                    {tag.name}
+                    <button 
+                      type="button" 
+                      onClick={() => toggleTag(tag.id)}
+                      className="hover:text-white"
+                    >
+                      <X className="w-3 h-3" />
+                    </button>
+                  </span>
+                ))}
+              </div>
+            )}
+
             <div className="relative">
               <button
                 type="button"
@@ -153,7 +212,7 @@ export function ArticleForm({ onSubmit, isPending }: ArticleFormProps) {
                 className="w-full flex items-center justify-between px-4 py-3 bg-white/5 border border-white/10 rounded-xl hover:border-white/20 transition-colors"
               >
                 <span className="text-neutral-500">
-                  Selecione uma categoria (Tags)
+                  Selecione as tags
                 </span>
                 <ChevronDown
                   className={`w-4 h-4 transition-transform ${
@@ -162,20 +221,31 @@ export function ArticleForm({ onSubmit, isPending }: ArticleFormProps) {
                 />
               </button>
               {showCategoryDropdown && (
-                <div className="absolute top-full left-0 right-0 mt-2 bg-[#1a1a1a] border border-white/10 rounded-xl overflow-hidden z-10">
-                  {categories.map((cat) => (
-                    <button
-                      key={cat.value}
-                      type="button"
-                      onClick={() => {
-                        // Logic to add tag ID to array
-                        setShowCategoryDropdown(false);
-                      }}
-                      className="w-full px-4 py-3 text-left hover:bg-white/5 transition-colors text-sm"
-                    >
-                      {cat.label}
-                    </button>
-                  ))}
+                <div className="absolute top-full left-0 right-0 mt-2 bg-[#1a1a1a] border border-white/10 rounded-xl overflow-hidden z-10 max-h-60 overflow-y-auto">
+                  {tags.length === 0 ? (
+                    <div className="px-4 py-3 text-sm text-neutral-500">
+                      Nenhuma tag encontrada. Crie uma nova tag primeiro.
+                    </div>
+                  ) : (
+                    tags.map((tag) => (
+                      <button
+                        key={tag.id}
+                        type="button"
+                        onClick={() => {
+                          toggleTag(tag.id);
+                          // Don't close dropdown to allow multiple selection
+                        }}
+                        className={`w-full px-4 py-3 text-left hover:bg-white/5 transition-colors text-sm flex items-center justify-between ${
+                          selectedTagIds.includes(tag.id) ? "text-[#00FF90]" : "text-white"
+                        }`}
+                      >
+                        <span>{tag.name}</span>
+                        {selectedTagIds.includes(tag.id) && (
+                          <span className="w-2 h-2 rounded-full bg-[#00FF90]" />
+                        )}
+                      </button>
+                    ))
+                  )}
                 </div>
               )}
             </div>
@@ -205,23 +275,10 @@ export function ArticleForm({ onSubmit, isPending }: ArticleFormProps) {
             <input
               type="text"
               disabled
-              value="Augusto Favareto Paes" // Should come from user store
+              value={authorName}
               className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 placeholder:text-neutral-600 focus:outline-none focus:border-[#00FF90]/50 transition-colors opacity-50 cursor-not-allowed"
             />
           </div>
-
-          {/* Schedule */}
-          {/*<div className="bg-[#111111] border border-white/10 rounded-2xl p-6">*/}
-          {/*  <h3 className="font-semibold mb-4 flex items-center gap-2">*/}
-          {/*    <Calendar className="w-4 h-4 text-[#00FF90]" />*/}
-          {/*    Agendar Publicação*/}
-          {/*  </h3>*/}
-          {/*  <input*/}
-          {/*    type="datetime-local"*/}
-          {/*    {...register("publishedAt")}*/}
-          {/*    className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 focus:outline-none focus:border-[#00FF90]/50 transition-colors text-neutral-400"*/}
-          {/*  />*/}
-          {/*</div>*/}
         </div>
       </div>
     </div>

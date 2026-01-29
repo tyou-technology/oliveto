@@ -1,7 +1,7 @@
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { articlesApi } from "../api/articles.api";
-import { CreateTagDTO, UpdateTagDTO } from "@/lib/types/article";
-import { toast } from "sonner";
+import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
+import {articlesApi} from "../api/articles.api";
+import {UpdateTagDTO} from "@/lib/types/article";
+import {toast} from "sonner";
 
 export const useTags = (firmId?: string) => {
   const queryClient = useQueryClient();

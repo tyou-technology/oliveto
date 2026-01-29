@@ -41,7 +41,7 @@ export function ArticleList({ articles, onEdit, onDelete }: ArticleListProps) {
                 </td>
                 <td className="px-6 py-4">
                   <div className="flex flex-wrap gap-1">
-                    {article.tags.map((tag) => (
+                    {(article.tags != null && article.tags.length > 0) && article.tags.map((tag) => (
                       <span
                         key={tag.id}
                         className="text-[#00FF90] text-xs bg-[#00FF90]/10 px-2 py-0.5 rounded-full"

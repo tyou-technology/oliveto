@@ -133,6 +133,10 @@ export default function ArtigosPage() {
         <ArticleForm
           onSubmit={handleCreateArticle}
           isPending={createArticle.isPending}
+          tags={tags || []}
+          authorId={user?.userId || ""}
+          firmId={user?.firmId || ""}
+          authorName={user?.name || "Usuário"}
         />
       )}
 
