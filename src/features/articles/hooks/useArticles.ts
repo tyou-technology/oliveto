@@ -3,6 +3,8 @@ import { articlesApi } from "../api/articles.api";
 import { CreateArticleDTO, UpdateArticleDTO } from "@/lib/types/article";
 import { toast } from "sonner";
 
+const STALE_TIME = 1000 * 60 * 5; // 5 minutes
+
 export const useArticles = (firmId?: string, page = 0, size = 10) => {
   const queryClient = useQueryClient();
 
@@ -10,6 +12,7 @@ export const useArticles = (firmId?: string, page = 0, size = 10) => {
     queryKey: ["articles", firmId, page, size],
     queryFn: () => articlesApi.getAllByFirmId(firmId!, page, size),
     enabled: !!firmId,
+    staleTime: STALE_TIME,
   });
 
   const createArticle = useMutation({
@@ -48,8 +51,8 @@ export const useArticles = (firmId?: string, page = 0, size = 10) => {
 
   return {
     articles: articlesData?.content || [],
-    totalPages: articlesData?.totalPages || 0,
-    totalElements: articlesData?.totalElements || 0,
+    totalPages: articlesData?.page?.totalPages || 0,
+    totalElements: articlesData?.page?.totalElements || 0,
     isLoadingArticles,
     createArticle,
     updateArticle,

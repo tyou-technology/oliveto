@@ -8,17 +8,30 @@ import { FilterBar } from "@/components/molecules/filter-bar";
 import { ArticleGridItem } from "@/components/molecules/article-grid-item";
 import { LoadMoreButton } from "@/components/atoms/load-more-button";
 import { articlesPageContent } from "@/lib/constants/articles-page";
-import { articlesPageData } from "@/lib/constants/articles-page-data";
+import { useArticles } from "@/features/articles/hooks/useArticles";
+import { useTags } from "@/features/articles/hooks/useTags";
+import { env } from "@/lib/env";
+import { Loader2 } from "lucide-react";
 
 export default function ArtigosPage() {
-  const [visibleCount, setVisibleCount] = useState(6);
+  const [page, setPage] = useState(0);
+  
+  const { articles, totalPages, totalElements, isLoadingArticles } = useArticles(
+    env.NEXT_PUBLIC_FIRM_ID,
+    page,
+    6
+  );
+
+  const { tags, isLoadingTags } = useTags(env.NEXT_PUBLIC_FIRM_ID);
 
   const handleLoadMore = () => {
-    setVisibleCount((prev) => prev + 6);
+    if (page < totalPages - 1) {
+      setPage((prev) => prev + 1);
+    }
   };
 
-  const visibleArticles = articlesPageData.slice(0, visibleCount);
-  const hasMore = visibleCount < articlesPageData.length;
+  const hasMore = page < totalPages - 1;
+  const isLoading = isLoadingArticles || isLoadingTags;
 
   return (
     <main className="min-h-screen bg-secondary text-foreground">
@@ -34,22 +47,32 @@ export default function ArtigosPage() {
         <PageBackgroundWords />
       </section>
 
-      {/* Filters */}
       <section className="container mx-auto px-6 py-8 text-white">
-        <FilterBar availableCount={articlesPageData.length} />
+        <FilterBar availableCount={totalElements} />
 
         {/* Articles Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 py-12">
-          {visibleArticles.map((artigo) => (
-            <ArticleGridItem key={artigo.id} article={artigo} />
-          ))}
-        </div>
+        {isLoading && articles.length === 0 ? (
+          <div className="flex items-center justify-center h-64">
+            <Loader2 className="w-8 h-8 text-primary animate-spin" />
+          </div>
+        ) : (
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 py-12">
+            {articles.map((artigo) => (
+              <ArticleGridItem 
+                key={artigo.id} 
+                article={artigo} 
+                allTags={tags} // Pass all tags to resolve names
+              />
+            ))}
+          </div>
+        )}
 
         {/* Load More */}
         {hasMore && (
           <LoadMoreButton
             text={articlesPageContent.loadMoreButtonText}
             onClick={handleLoadMore}
+            disabled={isLoadingArticles}
           />
         )}
       </section>

@@ -1,24 +1,61 @@
 import { Header } from "@/components/organisms/header";
 import { Footer } from "@/components/organisms/footer";
 import Link from "next/link";
-import { articlesFullContent } from "@/lib/constants/articles-full-content";
 import { notFound } from "next/navigation";
+import { articlesApi } from "@/features/articles/api/articles.api";
+import { format } from "date-fns";
+import { ptBR } from "date-fns/locale";
+import { env } from "@/lib/env";
+import Image from "next/image";
 
-export async function generateStaticParams() {
-  const slugs = Object.keys(articlesFullContent);
+/**
+ * This function is required for `output: "export"` config.
+ * It tells Next.js which article pages to generate at build time.
+ * NOTE: Your backend API must be accessible during the build process for this to work.
+ */
+export async function generateStaticParams(): Promise<{ slug: string }[]> {
+  try {
+    const firmId = env.NEXT_PUBLIC_FIRM_ID;
+    if (!firmId) {
+      console.error("FIRM_ID is not defined. Cannot generate static params.");
+      return [];
+    }
+    
+    const response = await articlesApi.getAllByFirmId(firmId, 0, 1000);
+    
+    if (!response || !response.content || response.content.length === 0) {
+      console.warn("No articles found to generate static params.");
+      return [];
+    }
 
-  return slugs.map((slug) => ({
-    slug: slug,
-  }));
+    const paths = response.content.map((article) => ({
+      slug: article.id,
+    }));
+
+    return paths;
+
+  } catch (error) {
+    console.error("CRITICAL: Failed to fetch articles for generateStaticParams. Your API might be down or inaccessible during build.", error);
+    return [];
+  }
+}
+
+async function getArticle(slug: string) {
+  try {
+    return await articlesApi.getById(slug);
+  } catch (error) {
+    console.error(`Failed to fetch article with slug/id: ${slug}`, error);
+    return null;
+  }
 }
 
 export default async function ArtigoPage({
   params,
-}: {
+}: Readonly<{
   params: Promise<{ slug: string }>;
-}) {
+}>) {
   const { slug } = await params;
-  const article = articlesFullContent[slug];
+  const article = await getArticle(slug);
 
   if (!article) {
     notFound();
@@ -32,15 +69,15 @@ export default async function ArtigoPage({
       <div className="h-2 bg-primary" />
 
       {/* Article Header */}
-      <section className="bg-black py-12 md:py-16">
+      <section className="bg-black py-12 md:py-12">
         <div className="container mx-auto px-6 md:px-12 lg:px-24 max-w-5xl">
           {/* Breadcrumb */}
           <nav className="mb-8">
             <ol className="flex items-center gap-1 text-sm text-muted-foreground">
               <li>
                 <Link
-                  href="/public"
-                  className="hover:text-foreground transition-colors"
+                  href="/"
+                  className="hover:text-primary transition-colors"
                 >
                   Home
                 </Link>
@@ -49,43 +86,78 @@ export default async function ArtigoPage({
               <li>
                 <Link
                   href="/artigos"
-                  className="hover:text-foreground transition-colors"
+                  className="hover:text-primary transition-colors"
                 >
-                  Artigo
+                  Artigos
                 </Link>
               </li>
-              <li>/</li>
             </ol>
           </nav>
+
+          {/* Tags */}
+          {article.tags && article.tags.length > 0 && (
+            <div className="flex flex-wrap gap-2 mb-6">
+              {article.tags.map((tag) => (
+                <span
+                  key={tag.id}
+                  className="text-primary text-sm font-medium bg-primary/10 px-3 py-1 rounded-full"
+                >
+                  {tag.name}
+                </span>
+              ))}
+            </div>
+          )}
 
           {/* Title */}
           <h1 className="text-2xl md:text-3xl lg:text-4xl font-bold leading-tight mb-6 max-w-3xl">
             {article.title}
           </h1>
 
-          {/* Author */}
-          <p className="text-sm text-muted-foreground">
-            Por: <span className="text-primary">{article.author}</span>
-          </p>
+          {/* Author and Date */}
+          <div className="flex flex-col  gap-4 text-sm text-muted-foreground mb-2">
+            {article.briefing && (
+                <p className="text-lg  mb-2 font-thin leading-relaxed">
+                  {article.briefing}
+                </p>
+            )}
+            <p>
+              Por: <span className="text-primary">{article.author?.fullName || article.authorName}</span>
+            </p>
+            {article.publishedAt && (
+              <>
+                <span className="w-1 h-1 rounded-full bg-neutral-600" />
+                <p>
+                  {format(new Date(article.publishedAt), "dd 'de' MMMM 'de' yyyy", { locale: ptBR })}
+                </p>
+              </>
+            )}
+          </div>
+
+          {/*/!* Cover Image *!/*/}
+          {/*{article.imageUrl && (*/}
+          {/*  <div className="relative w-full aspect-video rounded-xl overflow-hidden mb-8">*/}
+          {/*    <Image*/}
+          {/*      src={article.imageUrl}*/}
+          {/*      alt={article.title}*/}
+          {/*      fill*/}
+          {/*      className="object-cover"*/}
+          {/*      priority*/}
+          {/*    />*/}
+          {/*  </div>*/}
+          {/*)}*/}
         </div>
       </section>
 
       {/* Article Content */}
-      <section className="bg-secondary text-white py-12 md:py-16">
+      <section className="bg-secondary text-white py-12 md:py-12">
         <div className="container mx-auto px-6 md:px-12 lg:px-24 max-w-5xl">
-          {article.content.map((section, index) => (
-            <div key={index} className="mb-8">
-              <h2 className="text-lg font-semibold mb-6">{section.subtitle}</h2>
-              {section.paragraphs.map((paragraph, pIndex) => (
-                <p
-                  key={pIndex}
-                  className="text-base leading-relaxed mb-6 text-white"
-                >
-                  {paragraph}
-                </p>
-              ))}
-            </div>
-          ))}
+
+          {article.content && (
+            <div
+              className="prose prose-invert max-w-none prose-custom prose-p:text-gray-300 prose-headings:text-white prose-a:text-primary hover:prose-a:text-primary/80"
+              dangerouslySetInnerHTML={{ __html: article.content }}
+            />
+          )}
 
           {/* Divider */}
           <div className="border-t border-gray-300 my-12" />

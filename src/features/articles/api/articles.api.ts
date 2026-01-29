@@ -8,6 +8,16 @@ import {
   UpdateTagDTO,
 } from "@/lib/types/article";
 
+interface PaginatedResponse<T> {
+  content: T[];
+  page: {
+    size: number;
+    number: number;
+    totalElements: number;
+    totalPages: number;
+  };
+}
+
 export const articlesApi = {
   // Articles
   create: async (data: CreateArticleDTO): Promise<ArticleResponseDTO> => {
@@ -15,8 +25,8 @@ export const articlesApi = {
     return response.data;
   },
 
-  getAllByFirmId: async (firmId: string, page = 0, size = 10): Promise<{ content: ArticleResponseDTO[], totalPages: number, totalElements: number }> => {
-    const response = await api.get<{ content: ArticleResponseDTO[], totalPages: number, totalElements: number }>(`/articles/by-firm/${firmId}`, {
+  getAllByFirmId: async (firmId: string, page = 0, size = 10): Promise<PaginatedResponse<ArticleResponseDTO>> => {
+    const response = await api.get<PaginatedResponse<ArticleResponseDTO>>(`/articles/by-firm/${firmId}`, {
       params: { page, size },
     });
     return response.data;

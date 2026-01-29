@@ -1,7 +1,6 @@
 import { z } from "zod";
 
 const envSchema = z.object({
-
   NODE_ENV: z
     .enum(["development", "test", "production"])
     .default("development"),
@@ -10,12 +9,15 @@ const envSchema = z.object({
   NEXT_PUBLIC_APP_ENV: z
     .enum(["development", "production", "test"])
     .default("development"),
+  
+  NEXT_PUBLIC_FIRM_ID: z.string().uuid(),
 });
 
 const _env = envSchema.safeParse({
   NODE_ENV: process.env.NODE_ENV,
   NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
   NEXT_PUBLIC_APP_ENV: process.env.NEXT_PUBLIC_APP_ENV,
+  NEXT_PUBLIC_FIRM_ID: process.env.NEXT_PUBLIC_FIRM_ID,
 });
 
 if (!_env.success) {

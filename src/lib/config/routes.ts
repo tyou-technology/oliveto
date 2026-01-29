@@ -1,6 +1,6 @@
 export const ROUTES = {
   PUBLIC: {
-    HOME: "/public",
+    HOME: "/",
     SOBRE: "/sobre",
     SERVICOS: "/servicos",
     ARTIGOS: "/artigos",

@@ -3,6 +3,8 @@ import {articlesApi} from "../api/articles.api";
 import {UpdateTagDTO} from "@/lib/types/article";
 import {toast} from "sonner";
 
+const STALE_TIME = 1000 * 60 * 5; // 5 minutes
+
 export const useTags = (firmId?: string) => {
   const queryClient = useQueryClient();
 
@@ -10,6 +12,7 @@ export const useTags = (firmId?: string) => {
     queryKey: ["tags", firmId],
     queryFn: () => articlesApi.getAllTagsByFirmId(firmId!),
     enabled: !!firmId,
+    staleTime: STALE_TIME,
   });
 
   const createTag = useMutation({
