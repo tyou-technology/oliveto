@@ -12,6 +12,7 @@ import {
 import { useUserStore } from "@/stores/useUserStore";
 import { useRouter } from "next/navigation";
 import { ROUTES } from "@/lib/config/routes";
+import { cookieManager } from "@/lib/cookies";
 
 interface DashboardHeaderProps {
   onMenuClick: () => void;
@@ -28,8 +29,7 @@ export function DashboardHeader({
   const router = useRouter();
 
   const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("user");
+    cookieManager.removeToken();
     clearUser();
     router.push(ROUTES.ADMIN.LOGIN);
   };

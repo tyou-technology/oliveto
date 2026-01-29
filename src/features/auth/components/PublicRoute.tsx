@@ -7,13 +7,14 @@ import { ROUTES } from "@/lib/config/routes";
 import { FullPageLoader } from "@/components/molecules/FullPageLoader";
 import { useEffect } from "react";
 import { useUserStore } from "@/stores/useUserStore";
+import { cookieManager } from "@/lib/cookies";
 
 export const PublicRoute = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
   const { setUser } = useUserStore();
   
   // We only want to check validation if there is a token
-  const token = typeof window !== 'undefined' ? localStorage.getItem("token") : null;
+  const token = typeof window !== 'undefined' ? cookieManager.getToken() : null;
 
   const { data, isLoading, isSuccess } = useQuery({
     queryKey: ["validateTokenPublic"],

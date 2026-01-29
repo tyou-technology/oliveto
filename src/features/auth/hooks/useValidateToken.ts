@@ -5,6 +5,7 @@ import { ROUTES } from "@/lib/config/routes";
 import { toast } from "sonner";
 import { useEffect } from "react";
 import { useUserStore } from "@/stores/useUserStore";
+import { cookieManager } from "@/lib/cookies";
 
 export const useValidateToken = () => {
   const router = useRouter();
@@ -22,7 +23,7 @@ export const useValidateToken = () => {
       if (data.valid) {
         setUser(data);
       } else {
-        localStorage.removeItem("token");
+        cookieManager.removeToken();
         clearUser();
         router.push(ROUTES.ADMIN.LOGIN);
         toast.error(data.message || "Sessão inválida. Faça login novamente.");
@@ -32,7 +33,7 @@ export const useValidateToken = () => {
 
   useEffect(() => {
     if (isError) {
-      localStorage.removeItem("token");
+      cookieManager.removeToken();
       clearUser();
       router.push(ROUTES.ADMIN.LOGIN);
       const message =
