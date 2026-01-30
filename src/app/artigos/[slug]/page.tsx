@@ -1,12 +1,11 @@
-import { Header } from "@/components/organisms/header";
-import { Footer } from "@/components/organisms/footer";
+import {Header} from "@/components/organisms/header";
+import {Footer} from "@/components/organisms/footer";
 import Link from "next/link";
-import { notFound } from "next/navigation";
-import { articlesApi } from "@/features/articles/api/articles.api";
-import { format } from "date-fns";
-import { ptBR } from "date-fns/locale";
-import { env } from "@/lib/env";
-import Image from "next/image";
+import {notFound} from "next/navigation";
+import {articlesApi} from "@/features/articles/api/articles.api";
+import {format} from "date-fns";
+import {ptBR} from "date-fns/locale";
+import {env} from "@/lib/env";
 
 /**
  * This function is required for `output: "export"` config.
@@ -120,18 +119,21 @@ export default async function ArtigoPage({
                   {article.briefing}
                 </p>
             )}
-            <p>
-              Por: <span className="text-primary">{article.author?.fullName || article.authorName}</span>
-            </p>
-            {article.publishedAt && (
-              <>
-                <span className="w-1 h-1 rounded-full bg-neutral-600" />
-                <p>
-                  {format(new Date(article.publishedAt), "dd 'de' MMMM 'de' yyyy", { locale: ptBR })}
-                </p>
-              </>
-            )}
+            <div className={"flex  gap-4 items-center"}>
+              <p>
+                Autor: <span className="text-primary">{article.author?.fullName || article.authorName}</span>
+              </p>
+              {article.publishedAt && (
+                  <>
+                    <span className="w-1 h-1 rounded-full bg-neutral-600"/>
+                    <p>
+                      {format(new Date(article.publishedAt), "dd 'de' MMMM 'de' yyyy", {locale: ptBR})}
+                    </p>
+                  </>
+              )}
+            </div>
           </div>
+
 
           {/*/!* Cover Image *!/*/}
           {/*{article.imageUrl && (*/}
