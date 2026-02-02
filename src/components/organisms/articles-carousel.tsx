@@ -2,10 +2,11 @@
 
 import { useState, useEffect, useCallback } from "react";
 import Link from "next/link";
-import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
-import { articlesPageData } from "@/lib/constants/articles-page-data";
+import { ChevronLeft, ChevronRight, ArrowRight, Loader2 } from "lucide-react";
 import { articlesCarouselContent } from "@/lib/constants/articles-carousel";
 import { ArticleCard } from "@/components/molecules/article-card";
+import { useArticles } from "@/features/articles/hooks/useArticles";
+import { env } from "@/lib/env";
 
 export function ArticlesCarousel() {
   const [currentIndex, setCurrentIndex] = useState(0);
@@ -13,23 +14,46 @@ export function ArticlesCarousel() {
 
   const { itemsPerView, autoPlayInterval } = articlesCarouselContent;
 
+  const { articles, isLoadingArticles } = useArticles(
+    env.NEXT_PUBLIC_FIRM_ID,
+    0,
+    10,
+    true
+  );
+
   const nextSlide = useCallback(() => {
+    if (articles.length === 0) return;
     setCurrentIndex((prev) =>
-      prev + 1 >= articlesPageData.length - itemsPerView + 1 ? 0 : prev + 1
+      prev + 1 >= articles.length - itemsPerView + 1 ? 0 : prev + 1
     );
-  }, [itemsPerView]);
+  }, [itemsPerView, articles.length]);
 
   const prevSlide = () => {
+    if (articles.length === 0) return;
     setCurrentIndex((prev) =>
-      prev === 0 ? articlesPageData.length - itemsPerView : prev - 1
+      prev === 0 ? articles.length - itemsPerView : prev - 1
     );
   };
 
   useEffect(() => {
-    if (!isAutoPlaying) return;
+    if (!isAutoPlaying || articles.length === 0) return;
     const interval = setInterval(nextSlide, autoPlayInterval);
     return () => clearInterval(interval);
-  }, [isAutoPlaying, nextSlide, autoPlayInterval]);
+  }, [isAutoPlaying, nextSlide, autoPlayInterval, articles.length]);
+
+  if (isLoadingArticles) {
+    return (
+      <section className="py-20 bg-[#0a0a0a]">
+        <div className="max-w-7xl mx-auto px-6 lg:px-8 flex justify-center">
+          <Loader2 className="w-8 h-8 text-[#00FF90] animate-spin" />
+        </div>
+      </section>
+    );
+  }
+
+  if (articles.length === 0) {
+    return null;
+  }
 
   return (
     <section className="py-20 bg-[#0a0a0a]">
@@ -50,7 +74,7 @@ export function ArticlesCarousel() {
 
           <div className="flex items-center gap-4">
             {/* Navigation Buttons */}
-            {articlesPageData.length > 3 && (
+            {articles.length > itemsPerView && (
               <div className="flex gap-2">
                 <button
                   onClick={() => {
@@ -100,32 +124,34 @@ export function ArticlesCarousel() {
               }%)`,
             }}
           >
-            {articlesPageData.map((article) => (
+            {articles.map((article) => (
               <ArticleCard key={article.id} article={article} />
             ))}
           </div>
         </div>
 
         {/* Progress indicators */}
-        <div className="flex justify-center gap-2 mt-8">
-          {Array.from({
-            length: articlesPageData.length - itemsPerView + 1,
-          }).map((_, index) => (
-            <button
-              key={index}
-              onClick={() => {
-                setCurrentIndex(index);
-                setIsAutoPlaying(false);
-              }}
-              className={`h-1 transition-all duration-300 cursor-pointer ${
-                index === currentIndex
-                  ? "w-8 bg-[#00FF90]"
-                  : "w-4 bg-neutral-700 hover:bg-neutral-600"
-              }`}
-              aria-label={`Ir para slide ${index + 1}`}
-            />
-          ))}
-        </div>
+        {articles.length > itemsPerView && (
+          <div className="flex justify-center gap-2 mt-8">
+            {Array.from({
+              length: Math.max(0, articles.length - itemsPerView + 1),
+            }).map((_, index) => (
+              <button
+                key={index}
+                onClick={() => {
+                  setCurrentIndex(index);
+                  setIsAutoPlaying(false);
+                }}
+                className={`h-1 transition-all duration-300 cursor-pointer ${
+                  index === currentIndex
+                    ? "w-8 bg-[#00FF90]"
+                    : "w-4 bg-neutral-700 hover:bg-neutral-600"
+                }`}
+                aria-label={`Ir para slide ${index + 1}`}
+              />
+            ))}
+          </div>
+        )}
 
         {/* Mobile: Ver todos */}
         <div className="flex justify-center mt-8 md:hidden">

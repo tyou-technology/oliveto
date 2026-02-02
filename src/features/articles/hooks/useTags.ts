@@ -5,12 +5,14 @@ import {toast} from "sonner";
 
 const STALE_TIME = 1000 * 60 * 5; // 5 minutes
 
-export const useTags = (firmId?: string) => {
+export const useTags = (firmId?: string, publishedOnly = false) => {
   const queryClient = useQueryClient();
 
   const { data: tagsData, isLoading: isLoadingTags } = useQuery({
-    queryKey: ["tags", firmId],
-    queryFn: () => articlesApi.getAllTagsByFirmId(firmId!),
+    queryKey: ["tags", firmId, publishedOnly],
+    queryFn: () => publishedOnly 
+      ? articlesApi.getPublishedTagsByFirmId(firmId!)
+      : articlesApi.getAllTagsByFirmId(firmId!),
     enabled: !!firmId,
     staleTime: STALE_TIME,
   });

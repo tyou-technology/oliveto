@@ -76,6 +76,13 @@ export const articlesApi = {
     return response.data;
   },
 
+  getPublishedTagsByFirmId: async (firmId: string, page = 0, size = 100): Promise<{ content: TagResponseDTO[] }> => {
+    const response = await api.get<{ content: TagResponseDTO[] }>(`/tags/published/by-firm/${firmId}`, {
+      params: { page, size },
+    });
+    return response.data;
+  },
+
   updateTag: async (id: string, data: UpdateTagDTO): Promise<TagResponseDTO> => {
     const response = await api.put<TagResponseDTO>(`/tags/${id}`, data);
     return response.data;

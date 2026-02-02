@@ -7,7 +7,7 @@ interface ArticleGridItemProps {
   allTags: TagResponseDTO[];
 }
 
-export function ArticleGridItem({ article, allTags }: ArticleGridItemProps) {
+export function ArticleGridItem({ article, allTags }: Readonly<ArticleGridItemProps>) {
   const getCategoryName = () => {
     if (article.tagIds && article.tagIds.length > 0 && allTags) {
       const firstTagId = article.tagIds[0];
@@ -15,7 +15,6 @@ export function ArticleGridItem({ article, allTags }: ArticleGridItemProps) {
       return foundTag?.name || "Geral";
     }
     
-    // Fallback for detail view or other cases where `tags` array might exist
     if (article.tags && article.tags.length > 0) {
       return article.tags[0].name;
     }

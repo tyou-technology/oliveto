@@ -1,34 +1,43 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
-import type { Article } from "@/lib/types/article";
+import type { ArticleResponseDTO } from "@/lib/types/article";
 import { CategoryBadge } from "@/components/atoms/category-badge";
+import { Key } from "react";
 
 interface ArticleCardProps {
-  article: Article;
+  article: ArticleResponseDTO;
   className?: string;
 }
 
-export function ArticleCard({ article, className }: ArticleCardProps) {
+export function ArticleCard({article, className}: Readonly<ArticleCardProps>) {
+  console.log(article)
   return (
-    <Link
-      href={`/artigos/${article.slug}`}
-      className={`min-w-[calc(33.333%-16px)] group ${className || ""}`}
-    >
-      <article className="relative">
-        {/* Image */}
-        <div className="relative h-56 overflow-hidden mb-4">
-          <Image
-            src={article.image || "/placeholder.svg"}
-            alt={article.title}
-            fill
-            className="object-cover transition-transform duration-500 group-hover:scale-110"
-          />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
-        </div>
+      <Link
+          href={`/artigos/${article.id}`}
+          className={`min-w-[calc(33.333%-16px)] group ${className || ""}`}
+      >
+        <article className="relative">
+          {/* Image */}
+          <div className="relative h-56 overflow-hidden mb-4">
+            <Image
+                src={article.imageUrl || "/placeholder.svg"}
+                alt={article.title}
+                fill
+                className="object-cover transition-transform duration-500 group-hover:scale-110"
+            />
+            <div
+                className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"/>
+          </div>
 
-        {/* Content */}
-        <CategoryBadge category={article.category} />
+          {/* Content */}
+          {article.tags && article.tags.length > 0 && (
+              <div className="flex flex-wrap gap-2">
+                {article.tags.map((tag: { id: Key | null | undefined; name: string; }) => (
+              <CategoryBadge key={tag.id} category={tag.name} />
+            ))}
+          </div>
+        )}
         <h3 className="text-white text-base mt-2 leading-relaxed line-clamp-3 group-hover:text-neutral-300 transition-colors">
           {article.title}
         </h3>
