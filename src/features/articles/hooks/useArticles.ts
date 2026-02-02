@@ -1,16 +1,18 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { articlesApi } from "../api/articles.api";
-import { CreateArticleDTO, UpdateArticleDTO } from "@/lib/types/article";
+import { UpdateArticleDTO } from "@/lib/types/article";
 import { toast } from "sonner";
 
 const STALE_TIME = 1000 * 60 * 5; // 5 minutes
 
-export const useArticles = (firmId?: string, page = 0, size = 10) => {
+export const useArticles = (firmId?: string, page = 0, size = 10, publishedOnly = false) => {
   const queryClient = useQueryClient();
 
   const { data: articlesData, isLoading: isLoadingArticles } = useQuery({
-    queryKey: ["articles", firmId, page, size],
-    queryFn: () => articlesApi.getAllByFirmId(firmId!, page, size),
+    queryKey: ["articles", firmId, page, size, publishedOnly],
+    queryFn: () => publishedOnly 
+      ? articlesApi.getPublishedByFirmId(firmId!, page, size)
+      : articlesApi.getAllByFirmId(firmId!, page, size),
     enabled: !!firmId,
     staleTime: STALE_TIME,
   });

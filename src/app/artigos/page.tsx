@@ -19,7 +19,8 @@ export default function ArtigosPage() {
   const { articles, totalPages, totalElements, isLoadingArticles } = useArticles(
     env.NEXT_PUBLIC_FIRM_ID,
     page,
-    6
+    6,
+    true // publishedOnly
   );
 
   const { tags, isLoadingTags } = useTags(env.NEXT_PUBLIC_FIRM_ID);

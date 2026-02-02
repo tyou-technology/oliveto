@@ -20,9 +20,9 @@ export async function generateStaticParams(): Promise<{ slug: string }[]> {
       return [];
     }
     
-    const response = await articlesApi.getAllByFirmId(firmId, 0, 1000);
+    const response = await articlesApi.getPublishedByFirmId(firmId, 0, 1000);
     
-    if (!response || !response.content || response.content.length === 0) {
+    if (!response?.content?.length) {
       console.warn("No articles found to generate static params.");
       return [];
     }

@@ -32,6 +32,13 @@ export const articlesApi = {
     return response.data;
   },
 
+  getPublishedByFirmId: async (firmId: string, page = 0, size = 10): Promise<PaginatedResponse<ArticleResponseDTO>> => {
+    const response = await api.get<PaginatedResponse<ArticleResponseDTO>>(`/articles/published/by-firm/${firmId}`, {
+      params: { page, size },
+    });
+    return response.data;
+  },
+
   getById: async (id: string): Promise<ArticleResponseDTO> => {
     const response = await api.get<ArticleResponseDTO>(`/articles/${id}`);
     return response.data;
