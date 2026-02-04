@@ -3,6 +3,13 @@
 import Link from "next/link";
 import { Calculator, ArrowRight, CheckCircle } from "lucide-react";
 
+const CALCULATOR_FEATURES = [
+  "Cálculo de contribuições em atraso",
+  "Simulação de aposentadoria",
+  "Recuperação de créditos previdenciários",
+  "Análise de tempo de contribuição",
+];
+
 export function CalculatorBanner() {
   return (
     <section className="py-16 bg-secondary">
@@ -34,12 +41,7 @@ export function CalculatorBanner() {
               </p>
 
               <ul className="space-y-3">
-                {[
-                  "Cálculo de contribuições em atraso",
-                  "Simulação de aposentadoria",
-                  "Recuperação de créditos previdenciários",
-                  "Análise de tempo de contribuição",
-                ].map((item, index) => (
+                {CALCULATOR_FEATURES.map((item, index) => (
                   <li
                     key={index}
                     className="flex items-center gap-3 text-gray-300"
