@@ -25,6 +25,11 @@ export function ScrambleText({
     let timeoutId: NodeJS.Timeout;
     const currentTextRef = { value: displayText };
 
+    // Performance optimization: Pre-split text to avoid splitting in every animation frame
+    const targetChars = text.split("");
+    const targetLength = targetChars.length;
+    const charsLength = CHARS.length;
+
     const startAnimation = () => {
       startTimeRef.current = performance.now();
 
@@ -35,25 +40,28 @@ export function ScrambleText({
         const easedProgress = 1 - Math.pow(1 - progress, 3);
 
         const fixedCharsCount =
-          progress >= 1 ? text.length : Math.floor(easedProgress * text.length);
+          progress >= 1 ? targetLength : Math.floor(easedProgress * targetLength);
 
         const shouldUpdateScramble = Math.floor(now / 40) % 2 === 0;
 
-        const result = text
-          .split("")
-          .map((char, index) => {
-            if (index < fixedCharsCount) {
-              return char;
-            }
+        let result = "";
 
-            if (char === " ") return " ";
+        // Optimization: Use loop and string concatenation instead of map/join
+        // to reduce garbage collection during animation frames
+        for (let i = 0; i < targetLength; i++) {
+          const char = targetChars[i];
 
-            if (shouldUpdateScramble) {
-              return CHARS[Math.floor(Math.random() * CHARS.length)];
-            }
-            return currentTextRef.value[index] || CHARS[0];
-          })
-          .join("");
+          if (i < fixedCharsCount) {
+            result += char;
+          } else if (char === " ") {
+            result += " ";
+          } else if (shouldUpdateScramble) {
+            result += CHARS[Math.floor(Math.random() * charsLength)];
+          } else {
+            // Handle case where previous text length is different
+            result += currentTextRef.value[i] || CHARS[0];
+          }
+        }
 
         currentTextRef.value = result;
         setDisplayText(result);
@@ -76,7 +84,7 @@ export function ScrambleText({
       if (frameRef.current) cancelAnimationFrame(frameRef.current);
       if (timeoutId) clearTimeout(timeoutId);
     };
-  }, [text, duration, delay]);
+  }, [text, duration, delay]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return <span className={className}>{displayText}</span>;
 }
