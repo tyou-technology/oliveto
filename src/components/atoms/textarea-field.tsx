@@ -14,11 +14,13 @@ export function TextareaField({
   value,
   onChange,
   className,
+  "aria-label": ariaLabel,
   ...props
 }: TextareaFieldProps) {
   return (
     <textarea
       name={name}
+      aria-label={ariaLabel || placeholder}
       value={value}
       onChange={onChange}
       placeholder={placeholder}
