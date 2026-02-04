@@ -6,8 +6,10 @@ import Link from "next/link";
 import { Home, ArrowLeft, Search, MessageCircle } from "lucide-react";
 import { Button } from "@/components/atoms/button";
 import Image from "next/image";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { Header } from "@/components/organisms/header";
+import { useArticles } from "@/features/articles/hooks/useArticles";
+import { env } from "@/lib/env";
 
 const WHATSAPP_NUMBER = "5543991231726";
 const WHATSAPP_MESSAGE =
@@ -23,6 +25,12 @@ const QUICK_LINKS = [
 
 export default function NotFound() {
   const [searchQuery, setSearchQuery] = useState("");
+  const { totalElements } = useArticles(env.NEXT_PUBLIC_FIRM_ID, 0, 1, true);
+
+  const quickLinks = useMemo(() => {
+    if (totalElements > 0) return QUICK_LINKS;
+    return QUICK_LINKS.filter((link) => link.label !== "Artigos");
+  }, [totalElements]);
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -70,7 +78,7 @@ export default function NotFound() {
           <div className="mb-8">
             <p className="text-sm text-white mb-4">Links rápidos:</p>
             <div className="flex flex-wrap justify-center gap-2">
-              {QUICK_LINKS.map((link) => (
+              {quickLinks.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
 import { Button } from "@/components/atoms/button";
 import {
@@ -14,6 +14,8 @@ import { Menu } from "lucide-react";
 import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { ROUTES } from "@/lib/config/routes";
+import { useArticles } from "@/features/articles/hooks/useArticles";
+import { env } from "@/lib/env";
 
 interface HeaderProps {
   bg?: string;
@@ -23,6 +25,12 @@ interface HeaderProps {
 export function Header({ bg = "bg-black", noLinks = false }: HeaderProps) {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
+  const { totalElements } = useArticles(env.NEXT_PUBLIC_FIRM_ID, 0, 1, true);
+
+  const navItems = useMemo(() => {
+    if (totalElements > 0) return ROUTES.HEADER;
+    return ROUTES.HEADER.filter((item) => item.label !== "Artigos");
+  }, [totalElements]);
 
   const closeSheet = () => setIsOpen(false);
 
@@ -35,7 +43,7 @@ export function Header({ bg = "bg-black", noLinks = false }: HeaderProps) {
       </Link>
       {!noLinks && (
         <nav className="hidden lg:flex items-center gap-6 xl:gap-8">
-          {ROUTES.HEADER.map((item) => (
+          {navItems.map((item) => (
             <Link
               key={item.href}
               href={item.href}
@@ -91,7 +99,7 @@ export function Header({ bg = "bg-black", noLinks = false }: HeaderProps) {
               </SheetHeader>
 
               <nav className="flex flex-col p-6">
-                {ROUTES.HEADER.map((item) => (
+                {navItems.map((item) => (
                   <Link
                     key={item.href}
                     href={item.href}

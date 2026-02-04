@@ -1,6 +1,7 @@
 "use client";
 
 import { useState } from "react";
+import { notFound } from "next/navigation";
 import { Header } from "@/components/organisms/header";
 import { Footer } from "@/components/organisms/footer";
 import { PageBackgroundWords } from "@/components/atoms/page-background-words";
@@ -24,6 +25,10 @@ export default function ArtigosPage() {
   );
 
   const { tags, isLoadingTags } = useTags(env.NEXT_PUBLIC_FIRM_ID);
+
+  if (!isLoadingArticles && totalElements === 0) {
+    notFound();
+  }
 
   const handleLoadMore = () => {
     if (page < totalPages - 1) {
