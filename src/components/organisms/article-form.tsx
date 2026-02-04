@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import {
   ChevronDown,
   ImageIcon,
+  RotateCcw,
   Save,
   Send,
   Tag,
@@ -217,8 +218,8 @@ export function ArticleForm({
                           disabled={isPending}
                           className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-yellow-500/10 hover:bg-yellow-500/20 text-yellow-500 rounded-xl transition-colors disabled:opacity-50"
                         >
-                          <Save className="w-4 h-4" />
-                          Reverter para Rascunho
+                          <RotateCcw className="w-4 h-4" />
+                          Despublicar
                         </button>
                         <button
                           type="button"
