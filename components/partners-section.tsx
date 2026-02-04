@@ -15,6 +15,8 @@ const partners = [
   { name: "SESCAP", initials: "SESC" },
 ];
 
+const doubledPartners = [...partners, ...partners];
+
 export function PartnersSection() {
   const scrollRef = useRef<HTMLDivElement>(null);
   const [isHovered, setIsHovered] = useState(false);
@@ -63,7 +65,7 @@ export function PartnersSection() {
           className="flex overflow-hidden gap-8"
         >
           {/* Duplicate for infinite scroll */}
-          {[...partners, ...partners].map((partner, index) => (
+          {doubledPartners.map((partner, index) => (
             <div
               key={index}
               className="flex-shrink-0 w-32 h-20 bg-white/5 border border-white/10 rounded-lg flex items-center justify-center hover:border-[#00FF90]/50 transition-colors group cursor-pointer"
