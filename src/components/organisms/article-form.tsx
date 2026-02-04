@@ -209,24 +209,49 @@ export function ArticleForm({
               <div className="pt-4 border-t border-white/10 space-y-3">
                 {!readOnly && (
                   <>
-                    <button
-                      type="button"
-                      onClick={() => handleFormSubmit(ArticleStatus.DRAFT)}
-                      disabled={isPending}
-                      className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-white/5 hover:bg-white/10 rounded-xl transition-colors disabled:opacity-50"
-                    >
-                      <Save className="w-4 h-4" />
-                      Salvar Rascunho
-                    </button>
-                    <button
-                      type="button"
-                      onClick={() => handleFormSubmit(ArticleStatus.PUBLISHED)}
-                      disabled={isPending}
-                      className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-[#00FF90] text-black font-medium rounded-xl hover:bg-[#00FF90]/90 transition-colors disabled:opacity-50"
-                    >
-                      <Send className="w-4 h-4" />
-                      Publicar Artigo
-                    </button>
+                    {initialData?.status === ArticleStatus.PUBLISHED ? (
+                      <>
+                        <button
+                          type="button"
+                          onClick={() => handleFormSubmit(ArticleStatus.DRAFT)}
+                          disabled={isPending}
+                          className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-yellow-500/10 hover:bg-yellow-500/20 text-yellow-500 rounded-xl transition-colors disabled:opacity-50"
+                        >
+                          <Save className="w-4 h-4" />
+                          Reverter para Rascunho
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleFormSubmit(ArticleStatus.PUBLISHED)}
+                          disabled={isPending}
+                          className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-[#00FF90] text-black font-medium rounded-xl hover:bg-[#00FF90]/90 transition-colors disabled:opacity-50"
+                        >
+                          <Save className="w-4 h-4" />
+                          Salvar Alterações
+                        </button>
+                      </>
+                    ) : (
+                      <>
+                        <button
+                          type="button"
+                          onClick={() => handleFormSubmit(ArticleStatus.DRAFT)}
+                          disabled={isPending}
+                          className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-white/5 hover:bg-white/10 rounded-xl transition-colors disabled:opacity-50"
+                        >
+                          <Save className="w-4 h-4" />
+                          Salvar Rascunho
+                        </button>
+                        <button
+                          type="button"
+                          onClick={() => handleFormSubmit(ArticleStatus.PUBLISHED)}
+                          disabled={isPending}
+                          className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-[#00FF90] text-black font-medium rounded-xl hover:bg-[#00FF90]/90 transition-colors disabled:opacity-50"
+                        >
+                          <Send className="w-4 h-4" />
+                          Publicar Artigo
+                        </button>
+                      </>
+                    )}
                   </>
                 )}
                 {onCancel && (

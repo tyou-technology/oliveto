@@ -122,7 +122,7 @@ export function TagForm({ onSubmit, isPending, initialData, onCancel }: TagFormP
             className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-[#00FF90] text-black font-medium rounded-xl hover:bg-[#00FF90]/90 transition-colors disabled:opacity-50"
           >
             <Save className="w-4 h-4" />
-            Salvar Tag
+            {initialData ? "Salvar Alterações" : "Criar Tag"}
           </button>
           {onCancel && (
             <button
