@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
 import { articlesPageData } from "@/lib/constants/articles-page-data";
@@ -30,6 +30,14 @@ export function ArticlesCarousel() {
     const interval = setInterval(nextSlide, autoPlayInterval);
     return () => clearInterval(interval);
   }, [isAutoPlaying, nextSlide, autoPlayInterval]);
+
+  const progressIndicators = useMemo(
+    () =>
+      Array.from({
+        length: articlesPageData.length - itemsPerView + 1,
+      }),
+    [itemsPerView]
+  );
 
   return (
     <section className="py-20 bg-[#0a0a0a]">
@@ -108,9 +116,7 @@ export function ArticlesCarousel() {
 
         {/* Progress indicators */}
         <div className="flex justify-center gap-2 mt-8">
-          {Array.from({
-            length: articlesPageData.length - itemsPerView + 1,
-          }).map((_, index) => (
+          {progressIndicators.map((_, index) => (
             <button
               key={index}
               onClick={() => {
