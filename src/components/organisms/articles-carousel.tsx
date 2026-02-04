@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight, ArrowRight, Loader2 } from "lucide-react";
 import { articlesCarouselContent } from "@/lib/constants/articles-carousel";
@@ -19,6 +19,13 @@ export function ArticlesCarousel() {
     0,
     10,
     true
+  );
+
+  const carouselStyle = useMemo(
+    () => ({
+      transform: `translateX(-${currentIndex * (100 / itemsPerView + 2)}%)`,
+    }),
+    [currentIndex, itemsPerView]
   );
 
   const nextSlide = useCallback(() => {
@@ -54,6 +61,14 @@ export function ArticlesCarousel() {
   if (articles.length === 0) {
     return null;
   }
+
+  const progressIndicators = useMemo(
+    () =>
+      Array.from({
+        length: articles.length - itemsPerView + 1,
+      }),
+    [itemsPerView]
+  );
 
   return (
     <section className="py-20 bg-[#0a0a0a]">
@@ -118,11 +133,7 @@ export function ArticlesCarousel() {
         >
           <div
             className="flex transition-transform duration-500 ease-out gap-6"
-            style={{
-              transform: `translateX(-${
-                currentIndex * (100 / itemsPerView + 2)
-              }%)`,
-            }}
+            style={carouselStyle}
           >
             {articles.map((article) => (
               <ArticleCard key={article.id} article={article} />
@@ -133,9 +144,7 @@ export function ArticlesCarousel() {
         {/* Progress indicators */}
         {articles.length > itemsPerView && (
           <div className="flex justify-center gap-2 mt-8">
-            {Array.from({
-              length: Math.max(0, articles.length - itemsPerView + 1),
-            }).map((_, index) => (
+            {progressIndicators.map((_, index) => (
               <button
                 key={index}
                 onClick={() => {

@@ -47,7 +47,7 @@ export function ContactForm() {
 
     // Simulate a small delay for better UX
     setTimeout(() => {
-      window.open(whatsappUrl, "_blank");
+      window.open(whatsappUrl, "_blank", "noopener,noreferrer");
       setLoading(false);
       setFormData(initialFormState);
     }, 1000);
