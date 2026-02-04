@@ -14,30 +14,37 @@ import {CategoryBadge} from "@/components/atoms/category-badge";
  * NOTE: Your backend API must be accessible during the build process for this to work.
  */
 export async function generateStaticParams(): Promise<{ slug: string }[]> {
-  try {
-    const firmId = env.NEXT_PUBLIC_FIRM_ID;
-    if (!firmId) {
-      console.error("FIRM_ID is not defined. Cannot generate static params.");
-      return [];
-    }
-    
-    const response = await articlesApi.getPublishedByFirmId(firmId, 0, 1000);
-    
-    if (!response?.content?.length) {
-      console.warn("No articles found to generate static params.");
-      return [];
-    }
+  const firmId = env.NEXT_PUBLIC_FIRM_ID;
+  if (!firmId) {
+    throw new Error("FIRM_ID is not defined. Cannot generate static params.");
+  }
 
-    const paths = response.content.map((article) => ({
+  // We intentionally allow this to throw if the API fails, ensuring the build fails
+  // instead of silently generating 0 pages.
+  const response = await articlesApi.getPublishedByFirmId(firmId, 0, 1000);
+
+  if (!response || !Array.isArray(response.content)) {
+    throw new Error("Invalid API response format: 'content' array missing.");
+  }
+
+  if (response.content.length === 0) {
+    console.warn("No articles found to generate static params.");
+    return [];
+  }
+
+  const paths = response.content
+    .filter((article) => {
+      if (!article.id) {
+        console.warn(`Article found without ID: ${article.title || "Unknown Title"}. Skipping.`);
+        return false;
+      }
+      return true;
+    })
+    .map((article) => ({
       slug: article.id,
     }));
 
-    return paths;
-
-  } catch (error) {
-    console.error("CRITICAL: Failed to fetch articles for generateStaticParams. Your API might be down or inaccessible during build.", error);
-    return [];
-  }
+  return paths;
 }
 
 async function getArticle(slug: string) {
