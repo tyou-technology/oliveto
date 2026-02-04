@@ -133,6 +133,7 @@ export function Header({ bg = "bg-black", noLinks = false }: HeaderProps) {
                     <Link
                       href="https://www.instagram.com/olivetocont"
                       target="_blank"
+                      rel="noopener noreferrer"
                       className="text-sm text-white hover:text-white"
                     >
                       Instagram
@@ -140,6 +141,7 @@ export function Header({ bg = "bg-black", noLinks = false }: HeaderProps) {
                     <Link
                       href="https://www.linkedin.com/company/olivetocont/"
                       target="_blank"
+                      rel="noopener noreferrer"
                       className="text-sm text-white hover:text-white"
                     >
                       Linkedin
@@ -147,6 +149,7 @@ export function Header({ bg = "bg-black", noLinks = false }: HeaderProps) {
                     <Link
                       href="https://www.tiktok.com/@olivetocont"
                       target="_blank"
+                      rel="noopener noreferrer"
                       className="text-sm text-white hover:text-white"
                     >
                       Tiktok
