@@ -2,7 +2,7 @@
 
 import { useState, useEffect, useCallback, useMemo } from "react";
 import Link from "next/link";
-import { ChevronLeft, ChevronRight, ArrowRight, Loader2 } from "lucide-react";
+import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
 import { articlesCarouselContent } from "@/lib/constants/articles-carousel";
 import { ArticleCard } from "@/components/molecules/article-card";
 import { useArticles } from "@/features/articles/hooks/useArticles";
@@ -57,13 +57,7 @@ export function ArticlesCarousel() {
   );
 
   if (isLoadingArticles) {
-    return (
-      <section className="py-20 bg-[#0a0a0a]">
-        <div className="max-w-7xl mx-auto px-6 lg:px-8 flex justify-center">
-          <Loader2 className="w-8 h-8 text-[#00FF90] animate-spin" />
-        </div>
-      </section>
-    );
+    return null;
   }
 
   if (articles.length === 0) {
