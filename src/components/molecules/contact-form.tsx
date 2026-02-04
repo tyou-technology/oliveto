@@ -10,6 +10,7 @@ import {
 import { InputField } from "@/components/atoms/input-field";
 import { TextareaField } from "@/components/atoms/textarea-field";
 import { SubmitButton } from "@/components/atoms/submit-button";
+import { toast } from "sonner";
 
 const initialFormState: ContactFormData = {
   nome: "",
@@ -30,27 +31,35 @@ export function ContactForm() {
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setLoading(true);
 
-    const message = encodeURIComponent(
-      `*Nova mensagem do site - Oliveto*\\n\\n` +
-        `*Nome:* ${formData.nome}\\n` +
-        `*Email:* ${formData.email}\\n` +
-        `*Cidade:* ${formData.cidade}\\n` +
-        `*Telefone:* ${formData.telefone}\\n\\n` +
-        `*Mensagem:*\\n${formData.mensagem}`
-    );
+    try {
+      // Simulate API call delay
+      await new Promise((resolve) => setTimeout(resolve, 1000));
 
-    const whatsappUrl = `https://wa.me/${COMPANY_WHATSAPP}?text=${message}`;
+      const message = encodeURIComponent(
+        `*Nova mensagem do site - Oliveto*\\n\\n` +
+          `*Nome:* ${formData.nome}\\n` +
+          `*Email:* ${formData.email}\\n` +
+          `*Cidade:* ${formData.cidade}\\n` +
+          `*Telefone:* ${formData.telefone}\\n\\n` +
+          `*Mensagem:*\\n${formData.mensagem}`
+      );
 
-    // Simulate a small delay for better UX
-    setTimeout(() => {
+      const whatsappUrl = `https://wa.me/${COMPANY_WHATSAPP}?text=${message}`;
+
+      toast.success("Mensagem pronta! Abrindo WhatsApp...");
+
       window.open(whatsappUrl, "_blank", "noopener,noreferrer");
-      setLoading(false);
       setFormData(initialFormState);
-    }, 1000);
+    } catch (error) {
+      console.error(error);
+      toast.error("Erro ao preparar mensagem. Tente novamente.");
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

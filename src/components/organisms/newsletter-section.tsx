@@ -4,6 +4,7 @@ import type React from "react";
 
 import { useState } from "react";
 import { ArrowRight, FileText, CheckCircle } from "lucide-react";
+import { toast } from "sonner";
 
 export function NewsletterSection() {
   const [email, setEmail] = useState("");
@@ -14,11 +15,18 @@ export function NewsletterSection() {
     e.preventDefault();
     setIsLoading(true);
 
-    // Simulate API call
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    try {
+      // Simulate API call
+      await new Promise((resolve) => setTimeout(resolve, 1000));
 
-    setIsSubmitted(true);
-    setIsLoading(false);
+      setIsSubmitted(true);
+      toast.success("Inscrição realizada com sucesso!");
+    } catch (error) {
+      console.error(error);
+      toast.error("Erro ao realizar inscrição. Tente novamente.");
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
