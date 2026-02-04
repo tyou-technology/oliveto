@@ -2,6 +2,7 @@ import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { articlesApi } from "../api/articles.api";
 import { UpdateArticleDTO } from "@/lib/types/article";
 import { toast } from "sonner";
+import { getFriendlyErrorMessage } from "@/lib/utils/error-handler";
 
 const STALE_TIME = 1000 * 60 * 5; // 5 minutes
 
@@ -24,7 +25,7 @@ export const useArticles = (firmId?: string, page = 0, size = 10, publishedOnly 
       toast.success("Artigo criado com sucesso!");
     },
     onError: (error: any) => {
-      toast.error("Erro ao criar artigo: " + (error.response?.data?.message || error.message));
+      toast.error(getFriendlyErrorMessage(error));
     },
   });
 
@@ -36,7 +37,7 @@ export const useArticles = (firmId?: string, page = 0, size = 10, publishedOnly 
       toast.success("Artigo atualizado com sucesso!");
     },
     onError: (error: any) => {
-      toast.error("Erro ao atualizar artigo: " + (error.response?.data?.message || error.message));
+      toast.error(getFriendlyErrorMessage(error));
     },
   });
 
@@ -47,7 +48,7 @@ export const useArticles = (firmId?: string, page = 0, size = 10, publishedOnly 
       toast.success("Artigo excluído com sucesso!");
     },
     onError: (error: any) => {
-      toast.error("Erro ao excluir artigo: " + (error.response?.data?.message || error.message));
+      toast.error(getFriendlyErrorMessage(error));
     },
   });
 

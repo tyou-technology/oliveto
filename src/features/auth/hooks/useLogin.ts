@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { ROUTES } from "@/lib/config/routes";
 import { toast } from "sonner";
 import { cookieManager } from "@/lib/cookies";
+import { getFriendlyErrorMessage } from "@/lib/utils/error-handler";
 
 export const useLogin = () => {
   const router = useRouter();
@@ -20,8 +21,7 @@ export const useLogin = () => {
       router.push(ROUTES.ADMIN.DASHBOARD.HOME);
     },
     onError: (error: any) => {
-      const message = error.response?.data?.message || "Erro ao realizar login. Verifique suas credenciais.";
-      toast.error(message);
+      toast.error(getFriendlyErrorMessage(error));
     },
   });
 };

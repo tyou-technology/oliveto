@@ -2,6 +2,7 @@ import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
 import {articlesApi} from "../api/articles.api";
 import {UpdateTagDTO} from "@/lib/types/article";
 import {toast} from "sonner";
+import {getFriendlyErrorMessage} from "@/lib/utils/error-handler";
 
 const STALE_TIME = 1000 * 60 * 5; // 5 minutes
 
@@ -24,7 +25,7 @@ export const useTags = (firmId?: string, publishedOnly = false) => {
       toast.success("Tag criada com sucesso!");
     },
     onError: (error: any) => {
-      toast.error("Erro ao criar tag: " + (error.response?.data?.message || error.message));
+      toast.error(getFriendlyErrorMessage(error));
     },
   });
 
@@ -36,7 +37,7 @@ export const useTags = (firmId?: string, publishedOnly = false) => {
       toast.success("Tag atualizada com sucesso!");
     },
     onError: (error: any) => {
-      toast.error("Erro ao atualizar tag: " + (error.response?.data?.message || error.message));
+      toast.error(getFriendlyErrorMessage(error));
     },
   });
 
@@ -47,7 +48,7 @@ export const useTags = (firmId?: string, publishedOnly = false) => {
       toast.success("Tag excluída com sucesso!");
     },
     onError: (error: any) => {
-      toast.error("Erro ao excluir tag: " + (error.response?.data?.message || error.message));
+      toast.error(getFriendlyErrorMessage(error));
     },
   });
 
