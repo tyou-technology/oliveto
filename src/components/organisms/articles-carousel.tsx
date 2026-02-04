@@ -48,6 +48,14 @@ export function ArticlesCarousel() {
     return () => clearInterval(interval);
   }, [isAutoPlaying, nextSlide, autoPlayInterval, articles.length]);
 
+  const progressIndicators = useMemo(
+    () =>
+      Array.from({
+        length: Math.max(0, articles.length - itemsPerView + 1),
+      }),
+    [articles.length, itemsPerView]
+  );
+
   if (isLoadingArticles) {
     return (
       <section className="py-20 bg-[#0a0a0a]">
@@ -61,14 +69,6 @@ export function ArticlesCarousel() {
   if (articles.length === 0) {
     return null;
   }
-
-  const progressIndicators = useMemo(
-    () =>
-      Array.from({
-        length: articles.length - itemsPerView + 1,
-      }),
-    [itemsPerView]
-  );
 
   return (
     <section className="py-20 bg-[#0a0a0a]">
