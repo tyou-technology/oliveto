@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
 
 const testimonials = [
@@ -35,6 +35,8 @@ export function TestimonialsSection() {
   const AUTO_PLAY_INTERVAL = 8000; // 8 segundos —
   const itemsPerPage = 2;
   const totalPages = Math.ceil(testimonials.length / itemsPerPage);
+
+  const paginationItems = useMemo(() => Array.from({ length: totalPages }), [totalPages]);
 
   const currentTestimonials = testimonials.slice(
     currentPage * itemsPerPage,
@@ -79,7 +81,7 @@ export function TestimonialsSection() {
         <div className="flex items-center gap-2 mb-8">
           <p className="text-sm text-gray-500">Depoimentos.</p>
           <div className="flex gap-1">
-            {Array.from({ length: totalPages }).map((_, index) => (
+            {paginationItems.map((_, index) => (
               <button
                 key={index}
                 onClick={() => handleIndexChange(index)}
