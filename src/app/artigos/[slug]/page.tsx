@@ -6,6 +6,7 @@ import {articlesApi} from "@/features/articles/api/articles.api";
 import {format} from "date-fns";
 import {ptBR} from "date-fns/locale";
 import {env} from "@/lib/env";
+import {CategoryBadge} from "@/components/atoms/category-badge";
 
 /**
  * This function is required for `output: "export"` config.
@@ -97,12 +98,11 @@ export default async function ArtigoPage({
           {article.tags && article.tags.length > 0 && (
             <div className="flex flex-wrap gap-2 mb-6">
               {article.tags.map((tag) => (
-                <span
-                  key={tag.id}
-                  className="text-primary text-sm font-medium bg-primary/10 px-3 py-1 rounded-full"
-                >
-                  {tag.name}
-                </span>
+                <CategoryBadge 
+                  key={tag.id} 
+                  category={tag.name} 
+                  color={tag.color} 
+                />
               ))}
             </div>
           )}

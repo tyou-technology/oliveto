@@ -18,7 +18,6 @@ export function ArticleList({ articles, onView, onEdit, onDelete }: ArticleListP
           <thead>
             <tr className="text-left text-sm text-neutral-500 border-b border-white/10">
               <th className="px-6 py-4 font-medium">Título</th>
-              <th className="px-6 py-4 font-medium">Tags</th>
               <th className="px-6 py-4 font-medium">Status</th>
               <th className="px-6 py-4 font-medium">Data</th>
               <th className="px-6 py-4 font-medium text-right">Ações</th>
@@ -38,18 +37,6 @@ export function ArticleList({ articles, onView, onEdit, onDelete }: ArticleListP
                     <span className="font-medium max-w-xs truncate text-white">
                       {article.title}
                     </span>
-                  </div>
-                </td>
-                <td className="px-6 py-4">
-                  <div className="flex flex-wrap gap-1">
-                    {(article.tags != null && article.tags.length > 0) && article.tags.map((tag) => (
-                      <span
-                        key={tag.id}
-                        className="text-[#00FF90] text-xs bg-[#00FF90]/10 px-2 py-0.5 rounded-full"
-                      >
-                        {tag.name}
-                      </span>
-                    ))}
                   </div>
                 </td>
                 <td className="px-6 py-4">

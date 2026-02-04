@@ -1,6 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
 import { ArticleResponseDTO, TagResponseDTO } from "@/lib/types/article";
+import { CategoryBadge } from "@/components/atoms/category-badge";
+import { useState } from "react";
 
 interface ArticleGridItemProps {
   article: ArticleResponseDTO;
@@ -8,40 +10,65 @@ interface ArticleGridItemProps {
 }
 
 export function ArticleGridItem({ article, allTags }: Readonly<ArticleGridItemProps>) {
-  const getCategoryName = () => {
-    if (article.tagIds && article.tagIds.length > 0 && allTags) {
-      const firstTagId = article.tagIds[0];
-      const foundTag = allTags.find(tag => tag.id === firstTagId);
-      return foundTag?.name || "Geral";
-    }
-    
-    if (article.tags && article.tags.length > 0) {
-      return article.tags[0].name;
-    }
+  const [isExpanded, setIsExpanded] = useState(false);
 
-    return "Geral";
+  // Resolve tags: prefer article.tags (populated), fallback to matching tagIds with allTags
+  const resolvedTags = article.tags && article.tags.length > 0 
+    ? article.tags 
+    : (article.tagIds?.map(id => allTags.find(t => t.id === id)).filter(Boolean) as TagResponseDTO[]) || [];
+
+  const visibleTags = isExpanded ? resolvedTags : resolvedTags.slice(0, 3);
+  const hasMoreTags = resolvedTags.length > 3;
+
+  const handleExpand = (e: React.MouseEvent) => {
+    e.preventDefault(); // Prevent navigation when clicking expand
+    e.stopPropagation();
+    setIsExpanded(true);
   };
 
-  const category = getCategoryName();
-
   return (
-    <Link href={`/artigos/${article.id}`}>
-      <article className="group cursor-pointer">
+    <div className="flex flex-col h-full group">
+      <Link href={`/artigos/${article.id}`} className="cursor-pointer block">
         <div className="relative aspect-[4/3] overflow-hidden rounded mb-4">
           <Image
             src={article.imageUrl || "/placeholder.svg"}
             alt={article.title}
             fill
             className="object-cover transition-transform duration-300 group-hover:scale-105"
+            unoptimized
           />
         </div>
-        <span className="text-primary text-sm font-medium">
-          {category}
-        </span>
-        <p className="text-foreground text-sm text-white mt-2 leading-relaxed">
+      </Link>
+      
+      <div className="flex flex-wrap gap-2 mb-2 min-h-[28px]">
+        {resolvedTags.length > 0 ? (
+          <>
+            {visibleTags.map((tag) => (
+              <CategoryBadge 
+                key={tag.id} 
+                category={tag.name} 
+                color={tag.color} 
+              />
+            ))}
+            {!isExpanded && hasMoreTags && (
+              <button 
+                onClick={handleExpand}
+                className="text-xs text-neutral-400 hover:text-white transition-colors px-1 cursor-pointer"
+              >
+                ...
+              </button>
+            )}
+          </>
+        ) : (
+          <span className="text-neutral-500 text-sm">Geral</span>
+        )}
+      </div>
+
+      <Link href={`/artigos/${article.id}`} className="cursor-pointer block">
+        <p className="text-sm text-white mt-1 leading-relaxed group-hover:text-[#00FF90] transition-colors">
           {article.title}
         </p>
-      </article>
-    </Link>
+      </Link>
+    </div>
   );
 }

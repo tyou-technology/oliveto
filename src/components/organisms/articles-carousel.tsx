@@ -132,11 +132,17 @@ export function ArticlesCarousel() {
           onMouseLeave={() => setIsAutoPlaying(true)}
         >
           <div
-            className="flex transition-transform duration-500 ease-out gap-6"
-            style={carouselStyle}
+            className={`flex transition-transform duration-500 ease-out gap-6 ${
+              articles.length < itemsPerView ? "justify-center" : ""
+            }`}
+            style={articles.length >= itemsPerView ? carouselStyle : {}}
           >
             {articles.map((article) => (
-              <ArticleCard key={article.id} article={article} />
+              <ArticleCard 
+                key={article.id} 
+                article={article} 
+                className={articles.length < itemsPerView ? "min-w-[350px] max-w-[400px]" : undefined}
+              />
             ))}
           </div>
         </div>

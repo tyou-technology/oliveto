@@ -258,15 +258,20 @@ export function ArticleForm({
               <div className="flex flex-wrap gap-2 mb-3">
                 {getSelectedTags().map(tag => (
                   <span 
-                    key={tag.id} 
-                    className="inline-flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium bg-[#00FF90]/10 text-[#00FF90] border border-[#00FF90]/20"
+                    key={tag.id}
+                    className="inline-flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium border"
+                    style={{
+                      backgroundColor: tag.color ? `${tag.color}20` : '#00FF9020',
+                      color: tag.color || '#00FF90',
+                      borderColor: tag.color ? `${tag.color}40` : '#00FF9040'
+                    }}
                   >
                     {tag.name}
                     {!readOnly && (
                       <button 
                         type="button" 
                         onClick={() => toggleTag(tag.id)}
-                        className="hover:text-white"
+                        className="hover:opacity-70"
                       >
                         <X className="w-3 h-3" />
                       </button>
@@ -311,9 +316,12 @@ export function ArticleForm({
                             selectedTagIds.includes(tag.id) ? "text-[#00FF90]" : "text-white"
                           }`}
                         >
-                          <span>{tag.name}</span>
+                          <span style={{ color: tag.color || undefined }}>{tag.name}</span>
                           {selectedTagIds.includes(tag.id) && (
-                            <span className="w-2 h-2 rounded-full bg-[#00FF90]" />
+                            <span 
+                              className="w-2 h-2 rounded-full" 
+                              style={{ backgroundColor: tag.color || '#00FF90' }}
+                            />
                           )}
                         </button>
                       ))
