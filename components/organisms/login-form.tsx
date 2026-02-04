@@ -95,7 +95,7 @@ export function LoginForm({ onShowToast, onRegisterSuccess }: LoginFormProps) {
 
     setTimeout(() => {
       setIsSubmitting(false);
-      window.open(whatsappUrl, "_blank");
+      window.open(whatsappUrl, "_blank", "noopener,noreferrer");
       onRegisterSuccess(formData.name || "Cliente");
       setFormData({
         email: "",
