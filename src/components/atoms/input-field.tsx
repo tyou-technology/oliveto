@@ -13,11 +13,13 @@ export function InputField({
   value,
   onChange,
   className,
+  "aria-label": ariaLabel,
   ...props
 }: InputFieldProps) {
   return (
     <input
       name={name}
+      aria-label={ariaLabel || placeholder}
       value={value}
       onChange={onChange}
       placeholder={placeholder}
