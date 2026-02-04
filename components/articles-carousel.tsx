@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, useCallback } from "react";
+import { useState, useEffect, useCallback, useMemo } from "react";
 import Link from "next/link";
 import { ChevronLeft, ChevronRight, ArrowRight } from "lucide-react";
 import { articlesPageData } from "@/lib/constants/articles-page-data";
@@ -12,6 +12,13 @@ export function ArticlesCarousel() {
   const [isAutoPlaying, setIsAutoPlaying] = useState(true);
 
   const { itemsPerView, autoPlayInterval } = articlesCarouselContent;
+
+  const carouselStyle = useMemo(
+    () => ({
+      transform: `translateX(-${currentIndex * (100 / itemsPerView + 2)}%)`,
+    }),
+    [currentIndex, itemsPerView]
+  );
 
   const nextSlide = useCallback(() => {
     setCurrentIndex((prev) =>
@@ -94,11 +101,7 @@ export function ArticlesCarousel() {
         >
           <div
             className="flex transition-transform duration-500 ease-out gap-6"
-            style={{
-              transform: `translateX(-${
-                currentIndex * (100 / itemsPerView + 2)
-              }%)`,
-            }}
+            style={carouselStyle}
           >
             {articlesPageData.map((article) => (
               <ArticleCard key={article.id} article={article} />
