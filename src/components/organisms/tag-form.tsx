@@ -20,6 +20,8 @@ export function TagForm({ onSubmit, isPending, initialData, onCancel }: TagFormP
     register,
     handleSubmit,
     reset,
+    watch,
+    setValue,
     formState: { errors },
   } = useForm<CreateTagDTO>({
     resolver: zodResolver(CreateTagSchema),
@@ -28,6 +30,8 @@ export function TagForm({ onSubmit, isPending, initialData, onCancel }: TagFormP
       color: "#00FF90",
     },
   });
+
+  const watchedColor = watch("color");
 
   useEffect(() => {
     if (initialData) {
@@ -92,7 +96,10 @@ export function TagForm({ onSubmit, isPending, initialData, onCancel }: TagFormP
           <div className="flex items-center gap-4">
             <input
               type="color"
-              {...register("color")}
+              value={watchedColor}
+              onChange={(e) =>
+                setValue("color", e.target.value, { shouldValidate: true })
+              }
               className="w-12 h-12 rounded-lg cursor-pointer bg-transparent border-none"
             />
             <input
