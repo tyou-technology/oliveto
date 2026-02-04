@@ -10,13 +10,22 @@ import { cookieManager } from "@/lib/cookies";
 export const useValidateToken = () => {
   const router = useRouter();
   const { setUser, clearUser } = useUserStore();
+  const token = cookieManager.getToken();
 
   const { data, isError, isLoading, error, isSuccess } = useQuery({
     queryKey: ["validateToken"],
     queryFn: authApi.validateToken,
-    retry: 1,
+    retry: false,
     refetchOnWindowFocus: false,
+    enabled: !!token,
   });
+
+  useEffect(() => {
+    if (!token) {
+      clearUser();
+      router.push(ROUTES.ADMIN.LOGIN);
+    }
+  }, [token, clearUser, router]);
 
   useEffect(() => {
     if (isSuccess && data) {
@@ -44,9 +53,9 @@ export const useValidateToken = () => {
   }, [isError, router, error, clearUser]);
 
   return {
-    isAuthenticated: data?.valid === true,
+    isAuthenticated: !!token && data?.valid === true,
     user: data,
-    isLoading,
+    isLoading: !!token && isLoading,
     isError,
   };
 };

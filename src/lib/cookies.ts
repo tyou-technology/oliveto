@@ -9,13 +9,14 @@ export const cookieManager = {
       expires: 7, // 7 days
       secure: process.env.NODE_ENV === "production",
       sameSite: "strict",
+      path: "/",
     });
   },
   getToken: () => {
     return Cookies.get(TOKEN_KEY);
   },
   removeToken: () => {
-    Cookies.remove(TOKEN_KEY);
+    Cookies.remove(TOKEN_KEY, { path: "/" });
   },
 
   // You can add other cookie-related functions here
