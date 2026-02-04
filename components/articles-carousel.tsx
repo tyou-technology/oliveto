@@ -38,6 +38,14 @@ export function ArticlesCarousel() {
     return () => clearInterval(interval);
   }, [isAutoPlaying, nextSlide, autoPlayInterval]);
 
+  const progressIndicators = useMemo(
+    () =>
+      Array.from({
+        length: articlesPageData.length - itemsPerView + 1,
+      }),
+    [itemsPerView]
+  );
+
   return (
     <section className="py-20 bg-[#0a0a0a]">
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
@@ -111,9 +119,7 @@ export function ArticlesCarousel() {
 
         {/* Progress indicators */}
         <div className="flex justify-center gap-2 mt-8">
-          {Array.from({
-            length: articlesPageData.length - itemsPerView + 1,
-          }).map((_, index) => (
+          {progressIndicators.map((_, index) => (
             <button
               key={index}
               onClick={() => {
