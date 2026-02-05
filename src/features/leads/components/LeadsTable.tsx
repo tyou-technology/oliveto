@@ -1,5 +1,6 @@
 "use client";
 
+import { memo } from "react";
 import {
   Table,
   TableBody,
@@ -20,7 +21,55 @@ interface LeadsTableProps {
   onViewDetails: (lead: LeadResponseDTO) => void;
 }
 
-export function LeadsTable({ leads, isLoading, onViewDetails }: LeadsTableProps) {
+interface LeadRowProps {
+  lead: LeadResponseDTO;
+  onViewDetails: (lead: LeadResponseDTO) => void;
+}
+
+// Optimization: Memoize row component to prevent re-renders when parent state changes
+// (e.g., when opening the details modal or changing filters that don't affect this row).
+const LeadRow = memo(({ lead, onViewDetails }: LeadRowProps) => {
+  return (
+    <TableRow
+      className={cn(
+        "border-white/10 transition-colors",
+        !lead.isRead
+          ? "bg-[#00FF90]/5 font-medium hover:bg-[#00FF90]/10"
+          : "hover:bg-white/5",
+      )}
+    >
+      <TableCell
+        className={cn(!lead.isRead ? "text-white" : "text-neutral-400")}
+      >
+        {format(new Date(lead.createdAt), "dd/MM/yyyy HH:mm", { locale: ptBR })}
+      </TableCell>
+      <TableCell
+        className={cn(!lead.isRead ? "text-white" : "text-neutral-400")}
+      >
+        {lead.name}
+      </TableCell>
+      <TableCell className="text-neutral-400">{lead.email}</TableCell>
+      <TableCell className="text-neutral-400">{lead.phone}</TableCell>
+      <TableCell className="text-right">
+        <button
+          onClick={() => onViewDetails(lead)}
+          className="p-2 hover:bg-[#00FF90]/20 text-[#00FF90] rounded-lg transition-colors"
+          title="Ver Detalhes"
+        >
+          <Eye className="w-4 h-4" />
+        </button>
+      </TableCell>
+    </TableRow>
+  );
+});
+
+LeadRow.displayName = "LeadRow";
+
+export function LeadsTable({
+  leads,
+  isLoading,
+  onViewDetails,
+}: LeadsTableProps) {
   if (isLoading) {
     return (
       <div className="flex justify-center items-center h-64">
@@ -51,31 +100,11 @@ export function LeadsTable({ leads, isLoading, onViewDetails }: LeadsTableProps)
         </TableHeader>
         <TableBody>
           {leads.map((lead) => (
-            <TableRow
+            <LeadRow
               key={lead.id}
-              className={cn(
-                "border-white/10 transition-colors",
-                !lead.isRead ? "bg-[#00FF90]/5 font-medium hover:bg-[#00FF90]/10" : "hover:bg-white/5",
-              )}
-            >
-              <TableCell className={cn(!lead.isRead ? "text-white" : "text-neutral-400")}>
-                {format(new Date(lead.createdAt), "dd/MM/yyyy HH:mm", { locale: ptBR })}
-              </TableCell>
-              <TableCell className={cn(!lead.isRead ? "text-white" : "text-neutral-400")}>
-                {lead.name}
-              </TableCell>
-              <TableCell className="text-neutral-400">{lead.email}</TableCell>
-              <TableCell className="text-neutral-400">{lead.phone}</TableCell>
-              <TableCell className="text-right">
-                <button
-                  onClick={() => onViewDetails(lead)}
-                  className="p-2 hover:bg-[#00FF90]/20 text-[#00FF90] rounded-lg transition-colors"
-                  title="Ver Detalhes"
-                >
-                  <Eye className="w-4 h-4" />
-                </button>
-              </TableCell>
-            </TableRow>
+              lead={lead}
+              onViewDetails={onViewDetails}
+            />
           ))}
         </TableBody>
       </Table>
