@@ -1,6 +1,7 @@
 "use client";
 
 import { Bell, LogOut, Menu, Search, User } from "lucide-react";
+import { useState } from "react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -9,10 +10,17 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/atoms/dropdown-menu";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/atoms/popover";
 import { useUserStore } from "@/stores/useUserStore";
 import { useRouter } from "next/navigation";
 import { ROUTES } from "@/lib/config/routes";
 import { cookieManager } from "@/lib/cookies";
+import { useUnreadLeadsCount } from "@/features/leads/hooks";
+import Link from "next/link";
 
 interface DashboardHeaderProps {
   onMenuClick: () => void;
@@ -27,6 +35,10 @@ export function DashboardHeader({
 }: DashboardHeaderProps) {
   const { user, clearUser } = useUserStore();
   const router = useRouter();
+  const { data: unreadData } = useUnreadLeadsCount();
+  const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+
+  const unreadCount = unreadData?.count || 0;
 
   const handleLogout = () => {
     cookieManager.removeToken();
@@ -51,21 +63,37 @@ export function DashboardHeader({
         </div>
 
         <div className="flex items-center gap-3">
-          {/* Search */}
-          {/*<div className="hidden md:flex items-center gap-2 px-4 py-2 bg-white/5 rounded-xl border border-white/10">*/}
-          {/*  <Search className="w-4 h-4 text-neutral-400" />*/}
-          {/*  <input*/}
-          {/*    type="text"*/}
-          {/*    placeholder="Buscar..."*/}
-          {/*    className="bg-transparent border-none outline-none text-sm w-40 placeholder:text-neutral-500"*/}
-          {/*  />*/}
-          {/*</div>*/}
-
           {/* Notifications */}
-          {/*<button className="relative p-2 hover:bg-white/10 rounded-xl transition-colors">*/}
-          {/*  <Bell className="w-5 h-5" />*/}
-          {/*  <span className="absolute top-1 right-1 w-2 h-2 bg-[#00FF90] rounded-full" />*/}
-          {/*</button>*/}
+          <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
+            <PopoverTrigger asChild>
+              <button className="relative p-2 hover:bg-white/10 rounded-xl transition-colors outline-none">
+                <Bell className="w-5 h-5" />
+                {unreadCount > 0 && (
+                  <span className="absolute top-1 right-1 w-2 h-2 bg-[#00FF90] rounded-full animate-pulse" />
+                )}
+              </button>
+            </PopoverTrigger>
+            <PopoverContent align="end" className="w-80 bg-[#111] border-white/10 text-white p-0">
+              <div className="p-4 border-b border-white/10">
+                <h4 className="font-semibold text-sm">Notificações</h4>
+              </div>
+              <div className="p-2">
+                {unreadCount > 0 ? (
+                  <Link
+                    href={ROUTES.ADMIN.DASHBOARD.CONTATOS}
+                    onClick={() => setIsPopoverOpen(false)}
+                    className="block w-full text-left p-3 hover:bg-white/5 rounded-lg text-sm transition-colors"
+                  >
+                    Você tem <span className="text-[#00FF90] font-bold">{unreadCount}</span> novos contatos.
+                  </Link>
+                ) : (
+                  <p className="p-4 text-center text-sm text-neutral-500">
+                    Nenhuma notificação nova.
+                  </p>
+                )}
+              </div>
+            </PopoverContent>
+          </Popover>
 
           {/* Profile */}
           <DropdownMenu>

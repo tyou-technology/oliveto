@@ -35,6 +35,11 @@ export const navigationItems = [
   //   href: ROUTES.ADMIN.DASHBOARD.AUDITORIAS,
   // },
   { icon: Newspaper, label: "Artigos", href: ROUTES.ADMIN.DASHBOARD.ARTIGOS },
+  {
+    icon: MessageSquare,
+    label: "Contatos",
+    href: ROUTES.ADMIN.DASHBOARD.CONTATOS,
+  },
   // {
   //   icon: MessageSquare,
   //   label: "Mensagens",

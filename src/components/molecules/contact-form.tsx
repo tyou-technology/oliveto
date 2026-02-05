@@ -11,6 +11,8 @@ import { InputField } from "@/components/atoms/input-field";
 import { TextareaField } from "@/components/atoms/textarea-field";
 import { SubmitButton } from "@/components/atoms/submit-button";
 import { toast } from "sonner";
+import { useCreateLead } from "@/features/leads/hooks";
+import { LeadOrigin } from "@/features/leads/types";
 
 const initialFormState: ContactFormData = {
   nome: "",
@@ -21,8 +23,8 @@ const initialFormState: ContactFormData = {
 };
 
 export function ContactForm() {
-  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState<ContactFormData>(initialFormState);
+  const { mutateAsync: createLead, isPending } = useCreateLead();
 
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -33,32 +35,25 @@ export function ContactForm() {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
 
     try {
-      // Simulate API call delay
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      // 1. Save to Database via API
+      await createLead({
+        name: formData.nome,
+        email: formData.email,
+        phone: formData.telefone,
+        message: `${formData.cidade ? `Cidade: ${formData.cidade}\n` : ""}${formData.mensagem}`,
+        origin: LeadOrigin.CONTACT,
+      });
 
-      const message = encodeURIComponent(
-        `*Nova mensagem do site - Oliveto*\\n\\n` +
-          `*Nome:* ${formData.nome}\\n` +
-          `*Email:* ${formData.email}\\n` +
-          `*Cidade:* ${formData.cidade}\\n` +
-          `*Telefone:* ${formData.telefone}\\n\\n` +
-          `*Mensagem:*\\n${formData.mensagem}`
-      );
+      toast.success("Mensagem enviada com sucesso!");
 
-      const whatsappUrl = `https://wa.me/${COMPANY_WHATSAPP}?text=${message}`;
-
-      toast.success("Mensagem pronta! Abrindo WhatsApp...");
-
-      window.open(whatsappUrl, "_blank", "noopener,noreferrer");
+      // 2. Clear Form
       setFormData(initialFormState);
+
     } catch (error) {
       console.error(error);
-      toast.error("Erro ao preparar mensagem. Tente novamente.");
-    } finally {
-      setLoading(false);
+      toast.error("Erro ao enviar mensagem. Tente novamente.");
     }
   };
 
@@ -114,7 +109,7 @@ export function ContactForm() {
           rows={6}
         />
         <SubmitButton
-          loading={loading}
+          loading={isPending}
           loadingText={contactPageContent.submitButtonLoadingText}
           submitText={contactPageContent.submitButtonText}
         />
