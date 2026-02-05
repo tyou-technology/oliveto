@@ -21,6 +21,7 @@ import { ROUTES } from "@/lib/config/routes";
 import { cookieManager } from "@/lib/cookies";
 import { useUnreadLeadsCount } from "@/features/leads/hooks";
 import Link from "next/link";
+import { Button } from "@/components/atoms/button";
 
 interface DashboardHeaderProps {
   onMenuClick: () => void;
@@ -50,12 +51,15 @@ export function DashboardHeader({
     <header className="sticky top-0 z-30 bg-[#0a0a0a]/80 backdrop-blur-xl border-b border-white/10">
       <div className="flex items-center justify-between px-4 lg:px-8 py-4">
         <div className="flex items-center gap-4">
-          <button
+          <Button
+            variant="ghost"
+            size="icon-sm"
             onClick={onMenuClick}
-            className="lg:hidden p-2 hover:bg-white/10 rounded-lg transition-colors"
+            className="lg:hidden hover:bg-white/10 rounded-lg"
+            aria-label="Menu principal"
           >
             <Menu className="w-5 h-5" />
-          </button>
+          </Button>
           <div>
             <h1 className="text-xl lg:text-2xl font-bold">{title}</h1>
             <p className="text-sm text-neutral-400">{subtitle}</p>
@@ -98,9 +102,14 @@ export function DashboardHeader({
           {/* Profile */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
-              <button className="w-10 h-10 bg-[#00FF90]/20 rounded-full flex items-center justify-center cursor-pointer hover:bg-[#00FF90]/30 transition-colors outline-none">
+              <Button
+                variant="ghost"
+                size="icon-lg"
+                className="bg-[#00FF90]/20 rounded-full hover:bg-[#00FF90]/30"
+                aria-label="Perfil do usuário"
+              >
                 <User className="w-5 h-5 text-[#00FF90]" />
-              </button>
+              </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end" className="w-56 bg-[#111] border-white/10 text-white">
               <DropdownMenuLabel className="font-normal">
