@@ -4,14 +4,25 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { navigationItems } from "@/lib/constants/dashboard";
 import { cn } from "@/lib/utils";
+import { useUnreadLeadsCount } from "@/features/leads/hooks";
+import { ROUTES } from "@/lib/config/routes";
 
 export function SidebarNavigation() {
   const pathname = usePathname();
+  const { data: unreadData } = useUnreadLeadsCount();
+  const unreadCount = unreadData?.count || 0;
 
   return (
     <nav className="flex-1 p-4 space-y-1 overflow-y-auto">
       {navigationItems.map((item) => {
         const isActive = pathname === item.href;
+        const isContatos = item.href === ROUTES.ADMIN.DASHBOARD.CONTATOS;
+
+        // Use the static badge from config, or the dynamic unread count for Contatos
+        const badgeValue = isContatos && unreadCount > 0
+          ? unreadCount
+          : (item as any).badge;
+
         return (
           <Link
             key={item.label}
@@ -27,9 +38,9 @@ export function SidebarNavigation() {
               className={cn("w-5 h-5", isActive ? "text-[#00FF90]" : "")}
             />
             <span className="flex-1">{item.label}</span>
-            {item.badge && (
+            {badgeValue && (
               <span className="px-2 py-0.5 text-xs bg-[#00FF90] text-black rounded-full font-medium">
-                {item.badge}
+                {badgeValue}
               </span>
             )}
           </Link>

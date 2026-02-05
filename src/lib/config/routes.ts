@@ -23,6 +23,7 @@ export const ROUTES = {
       CONTABILIDADE: "/admin/dashboard/contabilidade",
       AUDITORIAS: "/admin/dashboard/auditorias",
       ARTIGOS: "/admin/dashboard/artigos",
+      CONTATOS: "/admin/dashboard/contatos",
       MENSAGENS: "/admin/dashboard/mensagens",
       NOTIFICACOES: "/admin/dashboard/notificacoes",
       CONFIGURACOES: "/admin/dashboard/configuracoes",
