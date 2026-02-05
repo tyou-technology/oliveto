@@ -81,6 +81,7 @@ export function NewsletterSection() {
             {/* Form */}
             <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-xl p-6">
               {!isSubmitted ? (
+                /* Security: maxLength limits prevent excessive payload/DoS attacks */
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div>
                     <label className="block text-sm text-gray-400 mb-2">
@@ -92,6 +93,7 @@ export function NewsletterSection() {
                       onChange={(e) => setName(e.target.value)}
                       placeholder="Seu nome"
                       required
+                      maxLength={100}
                       className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[#00FF90]/50 transition-colors"
                     />
                   </div>
@@ -106,6 +108,7 @@ export function NewsletterSection() {
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="seu@email.com"
                       required
+                      maxLength={100}
                       className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[#00FF90]/50 transition-colors"
                     />
                   </div>
@@ -119,6 +122,7 @@ export function NewsletterSection() {
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
                       placeholder="(00) 00000-0000"
+                      maxLength={20}
                       className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[#00FF90]/50 transition-colors"
                     />
                   </div>

@@ -64,6 +64,7 @@ export function ContactForm() {
       </p>
       <p className="text-white mb-8">{contactPageContent.formSubtitle}</p>
 
+      {/* Security: maxLength limits prevent excessive payload/DoS attacks */}
       <form onSubmit={handleSubmit} className="space-y-4">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
           <InputField
@@ -73,6 +74,7 @@ export function ContactForm() {
             onChange={handleChange}
             placeholder={formPlaceholders.nome}
             required
+            maxLength={100}
           />
           <InputField
             type="email"
@@ -81,6 +83,7 @@ export function ContactForm() {
             onChange={handleChange}
             placeholder={formPlaceholders.email}
             required
+            maxLength={100}
           />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -90,6 +93,7 @@ export function ContactForm() {
             value={formData.cidade}
             onChange={handleChange}
             placeholder={formPlaceholders.cidade}
+            maxLength={50}
           />
           <InputField
             type="tel"
@@ -98,6 +102,7 @@ export function ContactForm() {
             onChange={handleChange}
             placeholder={formPlaceholders.telefone}
             required
+            maxLength={20}
           />
         </div>
         <TextareaField
@@ -107,6 +112,7 @@ export function ContactForm() {
           placeholder={formPlaceholders.mensagem}
           required
           rows={6}
+          maxLength={1000}
         />
         <SubmitButton
           loading={isPending}
