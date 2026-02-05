@@ -5,27 +5,33 @@ import type React from "react";
 import { useState } from "react";
 import { ArrowRight, FileText, CheckCircle } from "lucide-react";
 import { toast } from "sonner";
+import { useCreateLead } from "@/features/leads/hooks";
+import { LeadOrigin } from "@/features/leads/types";
 
 export function NewsletterSection() {
+  const [name, setName] = useState("");
   const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
   const [isSubmitted, setIsSubmitted] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const { mutateAsync: createLead, isPending } = useCreateLead();
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setIsLoading(true);
 
     try {
-      // Simulate API call
-      await new Promise((resolve) => setTimeout(resolve, 1000));
+      await createLead({
+        name,
+        email,
+        phone,
+        message: "Inscrição em Newsletter / Download E-book",
+        origin: LeadOrigin.RICH_MATERIAL,
+      });
 
       setIsSubmitted(true);
       toast.success("Inscrição realizada com sucesso!");
     } catch (error) {
       console.error(error);
       toast.error("Erro ao realizar inscrição. Tente novamente.");
-    } finally {
-      setIsLoading(false);
     }
   };
 
@@ -82,6 +88,8 @@ export function NewsletterSection() {
                     </label>
                     <input
                       type="text"
+                      value={name}
+                      onChange={(e) => setName(e.target.value)}
                       placeholder="Seu nome"
                       required
                       className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[#00FF90]/50 transition-colors"
@@ -108,6 +116,8 @@ export function NewsletterSection() {
                     </label>
                     <input
                       type="tel"
+                      value={phone}
+                      onChange={(e) => setPhone(e.target.value)}
                       placeholder="(00) 00000-0000"
                       className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[#00FF90]/50 transition-colors"
                     />
@@ -115,10 +125,10 @@ export function NewsletterSection() {
 
                   <button
                     type="submit"
-                    disabled={isLoading}
+                    disabled={isPending}
                     className="w-full bg-[#00FF90] text-black font-semibold py-3 rounded-lg flex items-center justify-center gap-2 hover:bg-[#00FF90]/90 transition-colors disabled:opacity-50"
                   >
-                    {isLoading ? (
+                    {isPending ? (
                       "Enviando..."
                     ) : (
                       <>

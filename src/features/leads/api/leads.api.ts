@@ -1,5 +1,5 @@
 import { api } from "@/lib/api-client";
-import { LeadResponseDTO, UnreadLeadsCountDTO, LeadOrigin } from "../types";
+import { LeadResponseDTO, UnreadLeadsCountDTO, LeadOrigin, CreateLeadDTO } from "../types";
 
 export interface PaginatedResponse<T> {
   content: T[];
@@ -14,7 +14,8 @@ export interface PaginatedResponse<T> {
 // TOGGLE MOCK HERE
 const USE_MOCK = false;
 
-const MOCK_LEADS: LeadResponseDTO[] = [
+// Mock database simulation
+let MOCK_LEADS: LeadResponseDTO[] = [
   {
     id: "1",
     name: "João Silva",
@@ -60,6 +61,24 @@ const MOCK_LEADS: LeadResponseDTO[] = [
 const mockDelay = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export const leadsApi = {
+  create: async (data: CreateLeadDTO): Promise<LeadResponseDTO> => {
+    if (USE_MOCK) {
+      await mockDelay(1000);
+      const newLead: LeadResponseDTO = {
+        id: Math.random().toString(36).substr(2, 9),
+        ...data,
+        message: data.message || "",
+        isRead: false,
+        createdAt: new Date().toISOString(),
+      };
+      MOCK_LEADS = [newLead, ...MOCK_LEADS];
+      return newLead;
+    }
+
+    const response = await api.post<LeadResponseDTO>("/leads", data);
+    return response.data;
+  },
+
   findAll: async (page = 0, size = 10, isRead?: boolean | null): Promise<PaginatedResponse<LeadResponseDTO>> => {
     if (USE_MOCK) {
       await mockDelay(500);

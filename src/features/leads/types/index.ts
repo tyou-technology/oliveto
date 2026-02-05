@@ -25,3 +25,11 @@ export interface LeadFilters {
   page?: number;
   size?: number;
 }
+
+export interface CreateLeadDTO {
+  name: string;
+  email: string;
+  phone: string;
+  message?: string;
+  origin: LeadOrigin;
+}
