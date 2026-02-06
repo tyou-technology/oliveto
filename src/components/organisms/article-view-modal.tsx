@@ -80,7 +80,7 @@ export function ArticleViewModal({
 
           {/* Content */}
           <div className="prose prose-invert max-w-none">
-            <div dangerouslySetInnerHTML={{ __html: article.content }} />
+            <div dangerouslySetInnerHTML={{ __html: article.content || '' }} />
           </div>
         </div>
       </DialogContent>
