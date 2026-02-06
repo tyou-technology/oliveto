@@ -11,7 +11,6 @@ interface ArticleCardProps {
 }
 
 export function ArticleCard({article, className}: Readonly<ArticleCardProps>) {
-  console.log(article)
   return (
       <Link
           href={`/artigos/${article.id}`}
