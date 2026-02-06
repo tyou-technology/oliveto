@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { IMAGES } from "@/constants/images";
+import { IMAGES } from "@/lib/constants/images";
 
 export function Footer() {
   return (

@@ -51,7 +51,7 @@ export const getLeadsColumns = ({
     accessorKey: "isRead",
     header: "Status",
     cell: ({ row }) => {
-      const isRead = row.getValue("isRead");
+      const isRead = row.original.isRead;
       return (
         <Badge
           variant={isRead ? "secondary" : "default"}
@@ -75,7 +75,7 @@ export const getLeadsColumns = ({
           variant="ghost"
           size="icon-sm"
           onClick={() => onViewDetails(lead)}
-          className="text-[#00FF90] hover:text-[#00FF90] hover:bg-[#00FF90]/10"
+          className="text-[#00FF90] hover:text-[#00FF90] hover:bg-[#00FF90]/10 cursor-pointer"
           aria-label="Ver detalhes"
         >
           <Eye className="w-4 h-4" />

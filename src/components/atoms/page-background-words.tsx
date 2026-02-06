@@ -2,7 +2,7 @@
 
 import Image from "next/image";
 import { usePathname } from "next/navigation";
-import { IMAGES } from "@/constants/images";
+import { IMAGES } from "@/lib/constants/images";
 
 export function PageBackgroundWords() {
   const pathname = usePathname();

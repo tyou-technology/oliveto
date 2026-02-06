@@ -7,7 +7,7 @@ import { ROUTES } from "@/lib/config/routes";
 import { CheckCircle2, XCircle, Loader2, ShieldCheck } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
-import { IMAGES } from "@/constants/images";
+import { IMAGES } from "@/lib/constants/images";
 
 function VerifyContent() {
   const searchParams = useSearchParams();

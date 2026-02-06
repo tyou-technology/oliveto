@@ -7,7 +7,7 @@ import { ROUTES } from "@/lib/config/routes";
 import { SidebarUserInfo } from "@/components/molecules/sidebar-user-info";
 import { SidebarNavigation } from "@/components/molecules/sidebar-navigation";
 import { SidebarLogoutButton } from "@/components/molecules/sidebar-logout-button";
-import { IMAGES } from "@/constants/images";
+import { IMAGES } from "@/lib/constants/images";
 
 interface DashboardSidebarProps {
   isOpen: boolean;

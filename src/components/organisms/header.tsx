@@ -15,7 +15,7 @@ import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { ROUTES } from "@/lib/config/routes";
 import { useArticleCount } from "@/features/articles/hooks/useArticleCount";
-import { IMAGES } from "@/constants/images";
+import { IMAGES } from "@/lib/constants/images";
 
 interface HeaderProps {
   bg?: string;

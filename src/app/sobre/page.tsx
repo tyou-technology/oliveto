@@ -4,7 +4,7 @@ import Image from "next/image";
 import { PageBackgroundWords } from "@/components/atoms/page-background-words";
 import { FounderProfile } from "@/components/molecules/founder-profile";
 import { sobrePageContent, founders } from "@/lib/constants/sobre-page";
-import { IMAGES } from "@/constants/images";
+import { IMAGES } from "@/lib/constants/images";
 
 export default function SobrePage() {
   return (

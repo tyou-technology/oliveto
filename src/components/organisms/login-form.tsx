@@ -8,7 +8,7 @@ import { LoginRequest, LoginSchema } from "@/features/auth/types/auth.types";
 import { useLogin } from "@/features/auth/hooks/useLogin";
 import { ROUTES } from "@/lib/config/routes";
 import { useEffect, useState } from "react";
-import { IMAGES } from "@/constants/images";
+import { IMAGES } from "@/lib/constants/images";
 
 interface LoginFormProps {
   setIsLoggingIn?: (isLoggingIn: boolean) => void;

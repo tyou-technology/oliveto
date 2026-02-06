@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { loginPageContent } from "@/lib/constants/login-page";
-import { IMAGES } from "@/constants/images";
+import { IMAGES } from "@/lib/constants/images";
 
 export function LoginBranding() {
   return (

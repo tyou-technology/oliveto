@@ -1,4 +1,4 @@
-import { IMAGES } from "@/constants/images";
+import { IMAGES } from "@/lib/constants/images";
 
 export const heroContent = {
   tagline: "olhar atual, técnico e estratégico",

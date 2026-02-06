@@ -4,7 +4,7 @@ import { ArrowRight } from "lucide-react";
 import type { ArticleResponseDTO } from "@/lib/types/article";
 import { CategoryBadge } from "@/components/atoms/category-badge";
 import { Key } from "react";
-import { IMAGES } from "@/constants/images";
+import { IMAGES } from "@/lib/constants/images";
 
 interface ArticleCardProps {
   article: ArticleResponseDTO;
