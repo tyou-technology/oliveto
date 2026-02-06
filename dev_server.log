@@ -1,0 +1,19 @@
+
+> oliveto-contabilidade@0.1.0 dev /app
+> next dev
+
+   ▲ Next.js 16.0.10 (Turbopack)
+   - Local:         http://localhost:3000
+   - Network:       http://192.168.0.2:3000
+
+ ✓ Starting...
+[baseline-browser-mapping] The data in this module is over two months old.  To ensure accurate Baseline data, please update: `npm i baseline-browser-mapping@latest -D`
+ ✓ Ready in 934ms
+ ○ Compiling / ...
+ GET / 200 in 8.7s (compile: 7.4s, render: 1214ms)
+ GET /articles/published/by-firm/00000000-0000-0000-0000-000000000000/?page=0&size=10 404 in 2.4s (compile: 2.1s, render: 309ms)
+ GET /articles/published/by-firm/00000000-0000-0000-0000-000000000000/?page=0&size=1 404 in 2.4s (compile: 2.3s, render: 105ms)
+ GET /artigos/ 200 in 2.1s (compile: 1396ms, render: 748ms)
+ GET /articles/published/by-firm/00000000-0000-0000-0000-000000000000/?page=0&size=1 404 in 289ms (compile: 50ms, render: 239ms)
+ GET /articles/published/by-firm/00000000-0000-0000-0000-000000000000/?page=0&size=6 404 in 288ms (compile: 76ms, render: 212ms)
+ GET /tags/by-firm/00000000-0000-0000-0000-000000000000/?page=0&size=100 404 in 286ms (compile: 185ms, render: 101ms)
