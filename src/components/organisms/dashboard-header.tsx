@@ -18,7 +18,7 @@ import {
 import { useUserStore } from "@/stores/useUserStore";
 import { useRouter } from "next/navigation";
 import { ROUTES } from "@/lib/config/routes";
-import { cookieManager } from "@/lib/cookies";
+import { authStorage } from "@/lib/auth-storage";
 import { useUnreadLeadsCount } from "@/features/leads/hooks";
 import Link from "next/link";
 import { Button } from "@/components/atoms/button";
@@ -42,7 +42,7 @@ export function DashboardHeader({
   const unreadCount = unreadData?.count || 0;
 
   const handleLogout = () => {
-    cookieManager.removeToken();
+    authStorage.removeToken();
     clearUser();
     router.push(ROUTES.ADMIN.LOGIN);
   };

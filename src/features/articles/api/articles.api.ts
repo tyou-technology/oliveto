@@ -25,6 +25,11 @@ export const articlesApi = {
     return response.data;
   },
 
+  count: async (): Promise<number> => {
+    const response = await api.get<number>("/articles/count");
+    return response.data;
+  },
+
   getAllByFirmId: async (firmId: string, page = 0, size = 10): Promise<PaginatedResponse<ArticleResponseDTO>> => {
     const response = await api.get<PaginatedResponse<ArticleResponseDTO>>(`/articles/by-firm/${firmId}`, {
       params: { page, size },

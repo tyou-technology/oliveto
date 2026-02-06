@@ -78,7 +78,7 @@ export function ArticleView({ article, onBack }: ArticleViewProps) {
 
           {/* Content */}
           <div className="prose prose-invert max-w-none">
-            <div dangerouslySetInnerHTML={{ __html: sanitizeHtml(article.content) }} />
+            <div dangerouslySetInnerHTML={{ __html: sanitizeHtml(article.content)  || '' }} />
           </div>
         </div>
       </div>

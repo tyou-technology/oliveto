@@ -4,7 +4,7 @@ import { LoginRequest, LoginResponse } from "../types/auth.types";
 import { useRouter } from "next/navigation";
 import { ROUTES } from "@/lib/config/routes";
 import { toast } from "sonner";
-import { cookieManager } from "@/lib/cookies";
+import { authStorage } from "@/lib/auth-storage";
 import { getFriendlyErrorMessage } from "@/lib/utils/error-handler";
 
 export const useLogin = () => {
@@ -15,7 +15,7 @@ export const useLogin = () => {
       return authApi.login(data);
     },
     onSuccess: (data) => {
-      cookieManager.setToken(data.token);
+      authStorage.setToken(data.token);
       
       toast.success("Login realizado com sucesso!");
       router.push(ROUTES.ADMIN.DASHBOARD.HOME);
