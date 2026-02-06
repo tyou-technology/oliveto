@@ -4,6 +4,7 @@ import type React from "react";
 
 import { useState } from "react";
 import { ArrowRight, FileText, CheckCircle } from "lucide-react";
+import { toast } from "sonner";
 
 export function NewsletterSection() {
   const [email, setEmail] = useState("");
@@ -17,6 +18,7 @@ export function NewsletterSection() {
     // Simulate API call
     await new Promise((resolve) => setTimeout(resolve, 1000));
 
+    toast.success("Cadastro realizado com sucesso! Verifique seu e-mail.");
     setIsSubmitted(true);
     setIsLoading(false);
   };
@@ -69,10 +71,14 @@ export function NewsletterSection() {
               {!isSubmitted ? (
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div>
-                    <label className="block text-sm text-gray-400 mb-2">
+                    <label
+                      htmlFor="newsletter-name"
+                      className="block text-sm text-gray-400 mb-2"
+                    >
                       Nome completo
                     </label>
                     <input
+                      id="newsletter-name"
                       type="text"
                       placeholder="Seu nome"
                       required
@@ -81,10 +87,14 @@ export function NewsletterSection() {
                   </div>
 
                   <div>
-                    <label className="block text-sm text-gray-400 mb-2">
+                    <label
+                      htmlFor="newsletter-email"
+                      className="block text-sm text-gray-400 mb-2"
+                    >
                       E-mail
                     </label>
                     <input
+                      id="newsletter-email"
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
@@ -95,10 +105,14 @@ export function NewsletterSection() {
                   </div>
 
                   <div>
-                    <label className="block text-sm text-gray-400 mb-2">
+                    <label
+                      htmlFor="newsletter-whatsapp"
+                      className="block text-sm text-gray-400 mb-2"
+                    >
                       WhatsApp
                     </label>
                     <input
+                      id="newsletter-whatsapp"
                       type="tel"
                       placeholder="(00) 00000-0000"
                       className="w-full bg-white/5 border border-white/10 rounded-lg px-4 py-3 text-white placeholder-gray-500 focus:outline-none focus:border-[#00FF90]/50 transition-colors"
