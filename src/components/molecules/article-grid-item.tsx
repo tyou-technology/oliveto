@@ -6,18 +6,18 @@ import { useState, memo, useMemo } from "react";
 
 interface ArticleGridItemProps {
   article: ArticleResponseDTO;
-  allTags: TagResponseDTO[];
+  tagsMap: Map<string, TagResponseDTO>;
 }
 
-export const ArticleGridItem = memo(function ArticleGridItem({ article, allTags }: Readonly<ArticleGridItemProps>) {
+export const ArticleGridItem = memo(function ArticleGridItem({ article, tagsMap }: Readonly<ArticleGridItemProps>) {
   const [isExpanded, setIsExpanded] = useState(false);
 
-  // Resolve tags: prefer article.tags (populated), fallback to matching tagIds with allTags
+  // Resolve tags: prefer article.tags (populated), fallback to lookup in tagsMap
   const resolvedTags = useMemo(() => {
     return article.tags && article.tags.length > 0
       ? article.tags
-      : (article.tagIds?.map(id => allTags.find(t => t.id === id)).filter(Boolean) as TagResponseDTO[]) || [];
-  }, [article.tags, article.tagIds, allTags]);
+      : (article.tagIds?.map(id => tagsMap.get(id)).filter(Boolean) as TagResponseDTO[]) || [];
+  }, [article.tags, article.tagIds, tagsMap]);
 
   const visibleTags = isExpanded ? resolvedTags : resolvedTags.slice(0, 3);
   const hasMoreTags = resolvedTags.length > 3;

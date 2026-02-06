@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useMemo } from "react";
 import { notFound } from "next/navigation";
 import { Header } from "@/components/organisms/header";
 import { Footer } from "@/components/organisms/footer";
@@ -13,6 +13,7 @@ import { useArticles } from "@/features/articles/hooks/useArticles";
 import { useTags } from "@/features/articles/hooks/useTags";
 import { env } from "@/lib/env";
 import { Loader2 } from "lucide-react";
+import { TagResponseDTO } from "@/lib/types/article";
 
 export default function ArtigosPage() {
   const [page, setPage] = useState(0);
@@ -25,6 +26,10 @@ export default function ArtigosPage() {
   );
 
   const { tags, isLoadingTags } = useTags(env.NEXT_PUBLIC_FIRM_ID);
+
+  const tagsMap = useMemo(() => {
+    return new Map<string, TagResponseDTO>(tags.map((t) => [t.id, t]));
+  }, [tags]);
 
   if (!isLoadingArticles && totalElements === 0) {
     notFound();
@@ -67,7 +72,7 @@ export default function ArtigosPage() {
               <ArticleGridItem 
                 key={artigo.id} 
                 article={artigo} 
-                allTags={tags} // Pass all tags to resolve names
+                tagsMap={tagsMap} // Pass tagsMap instead of allTags
               />
             ))}
           </div>
