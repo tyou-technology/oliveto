@@ -7,6 +7,7 @@ import {format} from "date-fns";
 import {ptBR} from "date-fns/locale";
 import {env} from "@/lib/env";
 import {CategoryBadge} from "@/components/atoms/category-badge";
+import {sanitizeHtml} from "@/lib/utils/sanitizer";
 
 /**
  * This function is required for `output: "export"` config.
@@ -164,7 +165,7 @@ export default async function ArtigoPage({
           {article.content && (
             <div
               className="prose prose-invert max-w-none prose-custom prose-p:text-gray-300 prose-headings:text-white prose-a:text-primary hover:prose-a:text-primary/80"
-              dangerouslySetInnerHTML={{ __html: article.content }}
+              dangerouslySetInnerHTML={{ __html: sanitizeHtml(article.content) }}
             />
           )}
 

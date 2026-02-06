@@ -5,6 +5,7 @@ import {
   DialogTitle,
 } from "@/components/atoms/dialog";
 import { ArticleResponseDTO, ArticleStatus } from "@/lib/types/article";
+import { sanitizeHtml } from "@/lib/utils/sanitizer";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { Tag } from "lucide-react";
@@ -80,7 +81,7 @@ export function ArticleViewModal({
 
           {/* Content */}
           <div className="prose prose-invert max-w-none">
-            <div dangerouslySetInnerHTML={{ __html: article.content }} />
+            <div dangerouslySetInnerHTML={{ __html: sanitizeHtml(article.content) }} />
           </div>
         </div>
       </DialogContent>
