@@ -12,6 +12,9 @@ export const authApi = {
     const response = await api.post<LoginResponse>("/auth/login", data);
     return response.data;
   },
+  logout: async (): Promise<void> => {
+    await api.post("/auth/logout");
+  },
   validateToken: async (): Promise<TokenValidationResponse> => {
     const response = await api.get<TokenValidationResponse>("/auth/validate");
     return response.data;

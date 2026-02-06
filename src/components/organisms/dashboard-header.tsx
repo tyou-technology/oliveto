@@ -16,12 +16,11 @@ import {
   PopoverTrigger,
 } from "@/components/atoms/popover";
 import { useUserStore } from "@/stores/useUserStore";
-import { useRouter } from "next/navigation";
-import { ROUTES } from "@/lib/config/routes";
-import { authStorage } from "@/lib/auth-storage";
 import { useUnreadLeadsCount } from "@/features/leads/hooks";
 import Link from "next/link";
 import { Button } from "@/components/atoms/button";
+import { useLogout } from "@/features/auth/hooks/useLogout";
+import { ROUTES } from "@/lib/config/routes";
 
 interface DashboardHeaderProps {
   onMenuClick: () => void;
@@ -34,18 +33,12 @@ export function DashboardHeader({
   title,
   subtitle,
 }: DashboardHeaderProps) {
-  const { user, clearUser } = useUserStore();
-  const router = useRouter();
+  const { user } = useUserStore();
   const { data: unreadData } = useUnreadLeadsCount();
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
+  const { mutate: logout } = useLogout();
 
   const unreadCount = unreadData?.count || 0;
-
-  const handleLogout = () => {
-    authStorage.removeToken();
-    clearUser();
-    router.push(ROUTES.ADMIN.LOGIN);
-  };
 
   return (
     <header className="sticky top-0 z-30 bg-[#0a0a0a]/80 backdrop-blur-xl border-b border-white/10">
@@ -122,7 +115,7 @@ export function DashboardHeader({
               </DropdownMenuLabel>
               <DropdownMenuSeparator className="bg-white/10" />
               <DropdownMenuItem
-                onClick={handleLogout}
+                onClick={() => logout()}
                 className="text-red-400 focus:text-red-400 focus:bg-red-400/10 cursor-pointer"
               >
                 <LogOut className="mr-2 h-4 w-4" />

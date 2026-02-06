@@ -5,34 +5,25 @@ import { ROUTES } from "@/lib/config/routes";
 import { toast } from "sonner";
 import { useEffect } from "react";
 import { useUserStore } from "@/stores/useUserStore";
-import { authStorage } from "@/lib/auth-storage";
 
 export const useValidateToken = () => {
   const router = useRouter();
   const { setUser, clearUser } = useUserStore();
-  const token = authStorage.getToken();
 
   const { data, isError, isLoading, error, isSuccess } = useQuery({
     queryKey: ["validateToken"],
     queryFn: authApi.validateToken,
     retry: false,
     refetchOnWindowFocus: false,
-    enabled: !!token,
+    // Always try to validate session on load
+    enabled: true,
   });
-
-  useEffect(() => {
-    if (!token) {
-      clearUser();
-      router.push(ROUTES.ADMIN.LOGIN);
-    }
-  }, [token, clearUser, router]);
 
   useEffect(() => {
     if (isSuccess && data) {
       if (data.valid) {
         setUser(data);
       } else {
-        authStorage.removeToken();
         clearUser();
         router.push(ROUTES.ADMIN.LOGIN);
         toast.error(data.message || "Sessão inválida. Faça login novamente.");
@@ -42,7 +33,6 @@ export const useValidateToken = () => {
 
   useEffect(() => {
     if (isError) {
-      authStorage.removeToken();
       clearUser();
       router.push(ROUTES.ADMIN.LOGIN);
       const message =
@@ -53,9 +43,9 @@ export const useValidateToken = () => {
   }, [isError, router, error, clearUser]);
 
   return {
-    isAuthenticated: !!token && data?.valid === true,
+    isAuthenticated: data?.valid === true,
     user: data,
-    isLoading: !!token && isLoading,
+    isLoading,
     isError,
   };
 };

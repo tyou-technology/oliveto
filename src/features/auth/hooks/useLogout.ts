@@ -1,24 +1,27 @@
 import { useMutation } from "@tanstack/react-query";
 import { authApi } from "../api/auth.api";
-import { LoginRequest, LoginResponse } from "../types/auth.types";
 import { useRouter } from "next/navigation";
 import { ROUTES } from "@/lib/config/routes";
+import { useUserStore } from "@/stores/useUserStore";
 import { toast } from "sonner";
 import { getFriendlyErrorMessage } from "@/lib/utils/error-handler";
 
-export const useLogin = () => {
+export const useLogout = () => {
   const router = useRouter();
+  const { clearUser } = useUserStore();
 
-  return useMutation<LoginResponse, Error, LoginRequest>({
-    mutationFn: async (data) => {
-      return authApi.login(data);
+  return useMutation({
+    mutationFn: async () => {
+      return authApi.logout();
     },
     onSuccess: () => {
-      // Token is now handled via HttpOnly cookie
-      toast.success("Login realizado com sucesso!");
-      router.push(ROUTES.ADMIN.DASHBOARD.HOME);
+      clearUser();
+      router.push(ROUTES.ADMIN.LOGIN);
     },
     onError: (error: any) => {
+      // Even if logout API fails, we should clear local state
+      clearUser();
+      router.push(ROUTES.ADMIN.LOGIN);
       toast.error(getFriendlyErrorMessage(error));
     },
   });

@@ -7,20 +7,18 @@ import { ROUTES } from "@/lib/config/routes";
 import { FullPageLoader } from "@/components/molecules/FullPageLoader";
 import { useEffect } from "react";
 import { useUserStore } from "@/stores/useUserStore";
-import { authStorage } from "@/lib/auth-storage";
 
 export const PublicRoute = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
   const { setUser } = useUserStore();
   
-  // We only want to check validation if there is a token
-  const token = authStorage.getToken();
-
+  // Always check validation
   const { data, isLoading, isSuccess } = useQuery({
     queryKey: ["validateTokenPublic"],
     queryFn: authApi.validateToken,
     retry: 0,
-    enabled: !!token, // Only run if token exists
+    // We expect 401 if not logged in, which will be handled by isSuccess being false
+    enabled: true,
   });
 
   useEffect(() => {
@@ -30,7 +28,7 @@ export const PublicRoute = ({ children }: { children: React.ReactNode }) => {
     }
   }, [isSuccess, data, router, setUser]);
 
-  if (token && isLoading) {
+  if (isLoading) {
     return <FullPageLoader />;
   }
 

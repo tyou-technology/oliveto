@@ -4,26 +4,29 @@ import {
   ConfirmRegistrationRequest,
   ConfirmRegistrationResponse,
 } from "../types/auth.types";
+import { useRouter } from "next/navigation";
+import { ROUTES } from "@/lib/config/routes";
 import { toast } from "sonner";
-import { authStorage } from "@/lib/auth-storage";
+import { getFriendlyErrorMessage } from "@/lib/utils/error-handler";
 
 export const useConfirmRegistration = () => {
+  const router = useRouter();
+
   return useMutation<
     ConfirmRegistrationResponse,
     Error,
     ConfirmRegistrationRequest
   >({
-    mutationFn: authApi.confirmRegistration,
-    onSuccess: (data) => {
-      // Store token if needed, or just let the user login
-      authStorage.setToken(data.token);
-      toast.success("Conta verificada com sucesso!");
+    mutationFn: async (data) => {
+      return authApi.confirmRegistration(data);
+    },
+    onSuccess: () => {
+      // Token is now handled via HttpOnly cookie
+      toast.success("Cadastro confirmado com sucesso!");
+      router.push(ROUTES.ADMIN.DASHBOARD.HOME);
     },
     onError: (error: any) => {
-      const message =
-        error.response?.data?.message ||
-        "Erro ao verificar conta. O link pode ter expirado.";
-      toast.error(message);
+      toast.error(getFriendlyErrorMessage(error));
     },
   });
 };
