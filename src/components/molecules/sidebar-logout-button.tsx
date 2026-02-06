@@ -4,14 +4,14 @@ import { LogOut } from "lucide-react";
 import { useUserStore } from "@/stores/useUserStore";
 import { useRouter } from "next/navigation";
 import { ROUTES } from "@/lib/config/routes";
-import { cookieManager } from "@/lib/cookies";
+import { authStorage } from "@/lib/auth-storage";
 
 export function SidebarLogoutButton() {
   const { clearUser } = useUserStore();
   const router = useRouter();
 
   const handleLogout = () => {
-    cookieManager.removeToken();
+    authStorage.removeToken();
     clearUser();
     router.push(ROUTES.ADMIN.LOGIN);
   };

@@ -1,6 +1,6 @@
 import axios from "axios";
 import { env } from "@/lib/env";
-import { cookieManager } from "./cookies";
+import { authStorage } from "./auth-storage";
 import { useUserStore } from "@/stores/useUserStore";
 import { ROUTES } from "@/lib/config/routes";
 
@@ -13,7 +13,7 @@ export const api = axios.create({
 
 api.interceptors.request.use((config) => {
   if (typeof window !== "undefined") {
-    const token = cookieManager.getToken();
+    const token = authStorage.getToken();
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -25,7 +25,7 @@ api.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      cookieManager.removeToken();
+      authStorage.removeToken();
       useUserStore.getState().clearUser();
 
       if (typeof window !== "undefined" && !window.location.pathname.includes(ROUTES.ADMIN.LOGIN)) {

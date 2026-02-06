@@ -5,12 +5,12 @@ import { ROUTES } from "@/lib/config/routes";
 import { toast } from "sonner";
 import { useEffect } from "react";
 import { useUserStore } from "@/stores/useUserStore";
-import { cookieManager } from "@/lib/cookies";
+import { authStorage } from "@/lib/auth-storage";
 
 export const useValidateToken = () => {
   const router = useRouter();
   const { setUser, clearUser } = useUserStore();
-  const token = cookieManager.getToken();
+  const token = authStorage.getToken();
 
   const { data, isError, isLoading, error, isSuccess } = useQuery({
     queryKey: ["validateToken"],
@@ -32,7 +32,7 @@ export const useValidateToken = () => {
       if (data.valid) {
         setUser(data);
       } else {
-        cookieManager.removeToken();
+        authStorage.removeToken();
         clearUser();
         router.push(ROUTES.ADMIN.LOGIN);
         toast.error(data.message || "Sessão inválida. Faça login novamente.");
@@ -42,7 +42,7 @@ export const useValidateToken = () => {
 
   useEffect(() => {
     if (isError) {
-      cookieManager.removeToken();
+      authStorage.removeToken();
       clearUser();
       router.push(ROUTES.ADMIN.LOGIN);
       const message =
