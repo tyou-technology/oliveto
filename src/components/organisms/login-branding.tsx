@@ -1,6 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { loginPageContent } from "@/lib/constants/login-page";
+import { IMAGES } from "@/constants/images";
 
 export function LoginBranding() {
   return (
@@ -9,7 +10,7 @@ export function LoginBranding() {
       <div className="absolute inset-0 opacity-10">
         <div className="absolute select-none">
           <Image
-            src="/simbolo_branco.png"
+            src={IMAGES.SYMBOL_WHITE}
             alt="Logo"
             width={2000}
             height={2000}
@@ -23,7 +24,7 @@ export function LoginBranding() {
 
       {/* Logo */}
       <Link href="/public" className="relative z-10">
-        <Image src="/logo.png" alt="Logo" width={150} height={150} />
+        <Image src={IMAGES.LOGO} alt="Logo" width={150} height={150} />
       </Link>
 
       {/* Content */}

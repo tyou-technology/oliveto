@@ -1,7 +1,7 @@
 'use client';
 
 interface ImageLoaderProps {
-  src: string; // Aqui você passará o "Public ID" da imagem
+  src: string;
   width: number;
   quality?: number;
 }
@@ -9,22 +9,26 @@ interface ImageLoaderProps {
 export default function cloudinaryLoader({ src, width, quality }: ImageLoaderProps): string {
   const cloudName = 'dvrq9mc1u';
 
-  // Parâmetros de otimização
+  // Optimization parameters
   const params = [
-    'f_auto',             // Formato automático (WebP/AVIF)
-    'c_limit',            // Redimensiona respeitando o limite
-    `w_${width}`,         // Largura dinâmica
-    `q_${quality || 'auto'}` // Qualidade automática
+    'f_auto',             // Automatic format selection (WebP/AVIF)
+    'c_limit',            // Resize ensuring it fits within dimensions
+    `w_${width}`,         // Dynamic width
+    `q_${quality || 'auto'}` // Automatic quality
   ];
 
-  // Se o src for uma URL completa, ainda usamos o fetch (opcional)
+  // If it's a full URL, use Cloudinary Fetch API
   if (src.startsWith('http')) {
     return `https://res.cloudinary.com/${cloudName}/image/fetch/${params.join(',')}/${src}`;
   }
 
-  // Se for apenas o nome/ID da imagem (ex: "logo-empresa")
-  // Removemos a barra inicial se existir para evitar erro na URL
-  const publicId = src.startsWith('/') ? src.slice(1) : src;
+  // Remove leading slash if present
+  let publicId = src.startsWith('/') ? src.slice(1) : src;
+
+  // Enforce 'oliveto/' prefix if not present
+  if (!publicId.startsWith('oliveto/')) {
+    publicId = `oliveto/${publicId}`;
+  }
 
   return `https://res.cloudinary.com/${cloudName}/image/upload/${params.join(',')}/${publicId}`;
 }

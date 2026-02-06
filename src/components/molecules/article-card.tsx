@@ -4,6 +4,7 @@ import { ArrowRight } from "lucide-react";
 import type { ArticleResponseDTO } from "@/lib/types/article";
 import { CategoryBadge } from "@/components/atoms/category-badge";
 import { Key } from "react";
+import { IMAGES } from "@/constants/images";
 
 interface ArticleCardProps {
   article: ArticleResponseDTO;
@@ -20,7 +21,7 @@ export function ArticleCard({article, className}: Readonly<ArticleCardProps>) {
           {/* Image */}
           <div className="relative h-56 overflow-hidden mb-4">
             <Image
-                src={article.imageUrl || "/placeholder.svg"}
+                src={article.imageUrl || IMAGES.PLACEHOLDER}
                 alt={article.title}
                 fill
                 className="object-cover transition-transform duration-500 group-hover:scale-110"

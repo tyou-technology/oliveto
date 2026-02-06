@@ -8,6 +8,7 @@ import { LoginRequest, LoginSchema } from "@/features/auth/types/auth.types";
 import { useLogin } from "@/features/auth/hooks/useLogin";
 import { ROUTES } from "@/lib/config/routes";
 import { useEffect, useState } from "react";
+import { IMAGES } from "@/constants/images";
 
 interface LoginFormProps {
   setIsLoggingIn?: (isLoggingIn: boolean) => void;
@@ -53,7 +54,7 @@ export function LoginForm({ setIsLoggingIn }: LoginFormProps) {
   return (
     <div className="w-full max-w-md">
       <Link href={ROUTES.PUBLIC.HOME} className="lg:hidden block mb-12">
-        <Image src="/logo.png" alt="Logo" width={150} height={150} />
+        <Image src={IMAGES.LOGO} alt="Logo" width={150} height={150} />
       </Link>
 
       <div className="mb-10">
