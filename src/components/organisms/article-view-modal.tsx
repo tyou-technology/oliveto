@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import {
   Dialog,
   DialogContent,
@@ -21,6 +22,11 @@ export function ArticleViewModal({
   isOpen,
   onClose,
 }: ArticleViewModalProps) {
+  const sanitizedContent = useMemo(
+    () => (article?.content ? sanitizeHtml(article.content) : "") || "",
+    [article?.content]
+  );
+
   if (!article) return null;
 
   return (
@@ -81,7 +87,7 @@ export function ArticleViewModal({
 
           {/* Content */}
           <div className="prose prose-invert max-w-none">
-            <div dangerouslySetInnerHTML={{ __html: sanitizeHtml(article.content) || '' }} />
+            <div dangerouslySetInnerHTML={{ __html: sanitizedContent }} />
           </div>
         </div>
       </DialogContent>
