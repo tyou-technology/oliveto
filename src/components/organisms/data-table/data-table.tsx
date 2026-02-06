@@ -26,6 +26,7 @@ import {
 } from "@/components/atoms/table";
 import { DataTablePagination } from "./data-table-pagination";
 import { Input } from "@/components/atoms/input";
+import { useDebounce } from "@/hooks/use-debounce";
 
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
@@ -72,18 +73,35 @@ export function DataTable<TData, TValue>({
     onColumnVisibilityChange: setColumnVisibility,
   });
 
+  const filterValue = searchKey
+    ? (table.getColumn(searchKey)?.getFilterValue() as string) ?? ""
+    : "";
+
+  // Local state for search input
+  const [searchTerm, setSearchTerm] = React.useState<string>(filterValue);
+
+  // Sync from table to local (for external updates)
+  React.useEffect(() => {
+    setSearchTerm(filterValue);
+  }, [filterValue]);
+
+  const debouncedSearchTerm = useDebounce(searchTerm, 300);
+
+  // Sync local to table (debounced)
+  React.useEffect(() => {
+    if (searchKey && debouncedSearchTerm !== filterValue) {
+      table.getColumn(searchKey)?.setFilterValue(debouncedSearchTerm);
+    }
+  }, [debouncedSearchTerm, searchKey, table, filterValue]);
+
   return (
     <div className="space-y-4">
       {searchKey && (
         <div className="flex items-center py-4">
           <Input
             placeholder="Filtrar..."
-            value={
-              (table.getColumn(searchKey)?.getFilterValue() as string) ?? ""
-            }
-            onChange={(event) =>
-              table.getColumn(searchKey)?.setFilterValue(event.target.value)
-            }
+            value={searchTerm}
+            onChange={(event) => setSearchTerm(event.target.value)}
             className="max-w-sm"
           />
         </div>
