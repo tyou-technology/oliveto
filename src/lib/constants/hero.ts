@@ -1,3 +1,5 @@
+import { IMAGES } from "@/constants/images";
+
 export const heroContent = {
   tagline: "olhar atual, técnico e estratégico",
   slides: [
@@ -22,5 +24,5 @@ export const heroContent = {
       suffix: "PELA CONTABILIDADE ORGANIZACIONAL",
     },
   ],
-  backgroundImage: "/banner-words.png",
+  backgroundImage: IMAGES.BANNER_WORDS,
 };

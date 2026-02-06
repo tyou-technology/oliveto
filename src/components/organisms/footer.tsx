@@ -1,5 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
+import { IMAGES } from "@/constants/images";
 
 export function Footer() {
   return (
@@ -8,7 +9,7 @@ export function Footer() {
         <div className="grid md:grid-cols-4 gap-8 mb-16">
           <div>
             <Link href="/public" className="text-2xl font-bold tracking-wider">
-              <Image src="/logo-min.png" alt="Logo" width={80} height={80} />
+              <Image src={IMAGES.LOGO_MIN} alt="Logo" width={80} height={80} priority />
             </Link>
           </div>
 

@@ -2,6 +2,7 @@
 
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import { IMAGES } from "@/constants/images";
 
 export function PageBackgroundWords() {
   const pathname = usePathname();
@@ -11,14 +12,14 @@ export function PageBackgroundWords() {
         <Image
           src={
             pathname === "/sobre"
-              ? "/sobre-words.png"
+              ? IMAGES.BG_WORDS.SOBRE
               : pathname === "/servicos"
-              ? "/servicos-words.png"
+              ? IMAGES.BG_WORDS.SERVICOS
               : pathname === "/artigos"
-              ? "/artigos-words.png"
+              ? IMAGES.BG_WORDS.ARTIGOS
               : pathname === "/contatos"
-              ? "/contato-words.png"
-              : "/sobre-words.png"
+              ? IMAGES.BG_WORDS.CONTATO
+              : IMAGES.BG_WORDS.SOBRE
           }
           alt="Banner Words"
           fill

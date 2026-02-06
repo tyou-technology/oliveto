@@ -4,6 +4,7 @@ import Image from "next/image";
 import { PageBackgroundWords } from "@/components/atoms/page-background-words";
 import { FounderProfile } from "@/components/molecules/founder-profile";
 import { sobrePageContent, founders } from "@/lib/constants/sobre-page";
+import { IMAGES } from "@/constants/images";
 
 export default function SobrePage() {
   return (
@@ -59,7 +60,7 @@ export default function SobrePage() {
               {/* Founders Image */}
               <div className="relative aspect-[3/4] bg-gradient-to-b from-gray-800 to-gray-900 overflow-hidden">
                 <Image
-                  src="/socios.png"
+                  src={IMAGES.SOCIOS}
                   alt="Augusto Favareto e Murilo de Oliveira - Sócios fundadores da Oliveto"
                   fill
                   className="object-cover"

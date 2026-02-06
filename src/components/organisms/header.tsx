@@ -15,6 +15,7 @@ import { usePathname } from "next/navigation";
 import Image from "next/image";
 import { ROUTES } from "@/lib/config/routes";
 import { useArticleCount } from "@/features/articles/hooks/useArticleCount";
+import { IMAGES } from "@/constants/images";
 
 interface HeaderProps {
   bg?: string;
@@ -37,8 +38,8 @@ export function Header({ bg = "bg-black", noLinks = false }: HeaderProps) {
     <header
       className={`flex items-center justify-between px-4 py-4 sm:px-8 sm:py-6 lg:px-16 ${bg}`}
     >
-      <Link href={ROUTES.PUBLIC.HOME} className="text-xl font-bold tracking-wider">
-        <Image src="/logo.png" alt="Logo" width={150} height={150} />
+      <Link href={ROUTES.PUBLIC.HOME} className="text-xl font-bold tunoptimizedracking-wider">
+        <Image src={IMAGES.LOGO} alt="Logo da Empresa" width={150} height={150} priority/>
       </Link>
       {!noLinks && (
         <nav className="hidden lg:flex items-center gap-6 xl:gap-8">
@@ -88,7 +89,7 @@ export function Header({ bg = "bg-black", noLinks = false }: HeaderProps) {
                 <SheetTitle className="text-left text-lg font-bold tracking-wider">
                   <Link href={ROUTES.PUBLIC.HOME} className="text-xl font-bold tracking-wider">
                     <Image
-                      src="/logo.png"
+                      src={IMAGES.LOGO}
                       alt="Logo"
                       width={100}
                       height={100}
