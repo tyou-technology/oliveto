@@ -1,4 +1,5 @@
 import { api } from "@/lib/api-client";
+import { env } from "@/lib/env";
 import {
   ArticleResponseDTO,
   CreateArticleDTO,
@@ -44,9 +45,35 @@ export const articlesApi = {
     return response.data;
   },
 
+  getPublicPublishedByFirmId: async (firmId: string, page = 0, size = 10): Promise<PaginatedResponse<ArticleResponseDTO>> => {
+    const url = new URL(`${env.NEXT_PUBLIC_API_URL}/articles/published/by-firm/${firmId}`);
+    url.searchParams.set("page", page.toString());
+    url.searchParams.set("size", size.toString());
+
+    const response = await fetch(url.toString(), {
+      next: { revalidate: 3600 },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch published articles: ${response.statusText}`);
+    }
+    return response.json();
+  },
+
   getById: async (id: string): Promise<ArticleResponseDTO> => {
     const response = await api.get<ArticleResponseDTO>(`/articles/${id}`);
     return response.data;
+  },
+
+  getPublicById: async (id: string): Promise<ArticleResponseDTO> => {
+    const response = await fetch(`${env.NEXT_PUBLIC_API_URL}/articles/${id}`, {
+      next: { revalidate: 3600 },
+    });
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch article ${id}: ${response.statusText}`);
+    }
+    return response.json();
   },
 
   update: async (id: string, data: UpdateArticleDTO): Promise<ArticleResponseDTO> => {
