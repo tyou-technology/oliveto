@@ -2,20 +2,22 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArticleResponseDTO, TagResponseDTO } from "@/lib/types/article";
 import { CategoryBadge } from "@/components/atoms/category-badge";
-import { useState } from "react";
+import { useState, memo, useMemo } from "react";
 
 interface ArticleGridItemProps {
   article: ArticleResponseDTO;
   allTags: TagResponseDTO[];
 }
 
-export function ArticleGridItem({ article, allTags }: Readonly<ArticleGridItemProps>) {
+export const ArticleGridItem = memo(function ArticleGridItem({ article, allTags }: Readonly<ArticleGridItemProps>) {
   const [isExpanded, setIsExpanded] = useState(false);
 
   // Resolve tags: prefer article.tags (populated), fallback to matching tagIds with allTags
-  const resolvedTags = article.tags && article.tags.length > 0 
-    ? article.tags 
-    : (article.tagIds?.map(id => allTags.find(t => t.id === id)).filter(Boolean) as TagResponseDTO[]) || [];
+  const resolvedTags = useMemo(() => {
+    return article.tags && article.tags.length > 0
+      ? article.tags
+      : (article.tagIds?.map(id => allTags.find(t => t.id === id)).filter(Boolean) as TagResponseDTO[]) || [];
+  }, [article.tags, article.tagIds, allTags]);
 
   const visibleTags = isExpanded ? resolvedTags : resolvedTags.slice(0, 3);
   const hasMoreTags = resolvedTags.length > 3;
@@ -71,4 +73,6 @@ export function ArticleGridItem({ article, allTags }: Readonly<ArticleGridItemPr
       </Link>
     </div>
   );
-}
+});
+
+ArticleGridItem.displayName = "ArticleGridItem";
