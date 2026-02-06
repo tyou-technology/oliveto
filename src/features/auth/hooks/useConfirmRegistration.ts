@@ -5,7 +5,7 @@ import {
   ConfirmRegistrationResponse,
 } from "../types/auth.types";
 import { toast } from "sonner";
-import { cookieManager } from "@/lib/cookies";
+import { authStorage } from "@/lib/auth-storage";
 
 export const useConfirmRegistration = () => {
   return useMutation<
@@ -16,7 +16,7 @@ export const useConfirmRegistration = () => {
     mutationFn: authApi.confirmRegistration,
     onSuccess: (data) => {
       // Store token if needed, or just let the user login
-      cookieManager.setToken(data.token);
+      authStorage.setToken(data.token);
       toast.success("Conta verificada com sucesso!");
     },
     onError: (error: any) => {
