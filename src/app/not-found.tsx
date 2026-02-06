@@ -5,7 +5,6 @@ import type React from "react";
 import Link from "next/link";
 import { Home, ArrowLeft, Search, MessageCircle } from "lucide-react";
 import { Button } from "@/components/atoms/button";
-import Image from "next/image";
 import { useMemo, useState } from "react";
 import { Header } from "@/components/organisms/header";
 import { useArticles } from "@/features/articles/hooks/useArticles";

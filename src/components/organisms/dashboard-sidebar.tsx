@@ -1,12 +1,13 @@
 "use client";
 
-import Link from "next/link";
 import Image from "next/image";
+import Link from "next/link";
 import { X } from "lucide-react";
 import { ROUTES } from "@/lib/config/routes";
 import { SidebarUserInfo } from "@/components/molecules/sidebar-user-info";
 import { SidebarNavigation } from "@/components/molecules/sidebar-navigation";
 import { SidebarLogoutButton } from "@/components/molecules/sidebar-logout-button";
+import { IMAGES } from "@/constants/images";
 
 interface DashboardSidebarProps {
   isOpen: boolean;
@@ -38,7 +39,7 @@ export function DashboardSidebar({ isOpen, onClose }: DashboardSidebarProps) {
                 href={ROUTES.PUBLIC.HOME}
                 className="text-2xl font-bold tracking-tight"
               >
-                <Image src="/logo.png" alt="Logo" width={100} height={100} />
+                <Image src={IMAGES.LOGO} alt="Logo" width={100} height={100} />
               </Link>
               <button
                 onClick={onClose}

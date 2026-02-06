@@ -7,6 +7,7 @@ import { ROUTES } from "@/lib/config/routes";
 import { CheckCircle2, XCircle, Loader2, ShieldCheck } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
+import { IMAGES } from "@/constants/images";
 
 function VerifyContent() {
   const searchParams = useSearchParams();
@@ -108,7 +109,7 @@ export default function VerifyPage() {
   return (
     <div className="min-h-screen bg-[#0a0a0a] flex flex-col items-center justify-center p-4 text-white">
       <div className="mb-12">
-        <Image src="/logo.png" alt="Logo" width={150} height={150} />
+        <Image src={IMAGES.LOGO} alt="Logo" width={150} height={150} />
       </div>
       
       <Suspense fallback={<Loader2 className="w-10 h-10 text-[#00FF90] animate-spin" />}>
