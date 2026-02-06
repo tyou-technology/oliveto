@@ -8,6 +8,7 @@ import {ptBR} from "date-fns/locale";
 import {env} from "@/lib/env";
 import {CategoryBadge} from "@/components/atoms/category-badge";
 import {sanitizeHtml} from "@/lib/utils/sanitizer";
+import { Metadata } from "next";
 
 /**
  * This function is required for `output: "export"` config.
@@ -22,7 +23,8 @@ export async function generateStaticParams(): Promise<{ slug: string }[]> {
 
   // We intentionally allow this to throw if the API fails, ensuring the build fails
   // instead of silently generating 0 pages.
-  const response = await articlesApi.getPublishedByFirmId(firmId, 0, 1000);
+  // Performance: Using fetch-based 'getPublicPublishedByFirmId' to enable Data Cache
+  const response = await articlesApi.getPublicPublishedByFirmId(firmId, 0, 1000);
 
   if (!response || !Array.isArray(response.content)) {
     throw new Error("Invalid API response format: 'content' array missing.");
@@ -50,11 +52,41 @@ export async function generateStaticParams(): Promise<{ slug: string }[]> {
 
 async function getArticle(slug: string) {
   try {
-    return await articlesApi.getById(slug);
+    // Performance: Using fetch-based 'getPublicById' to enable Request Memoization and Data Cache
+    return await articlesApi.getPublicById(slug);
   } catch (error) {
     console.error(`Failed to fetch article with slug/id: ${slug}`, error);
     return null;
   }
+}
+
+export async function generateMetadata({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}): Promise<Metadata> {
+  const { slug } = await params;
+  const article = await getArticle(slug);
+
+  if (!article) {
+    return {
+      title: "Artigo não encontrado | Oliveto Contabilidade",
+      description: "O artigo que você procura não foi encontrado.",
+    };
+  }
+
+  return {
+    title: `${article.title} | Oliveto Contabilidade`,
+    description: article.briefing || article.subtitle || `Leia o artigo completo sobre ${article.title}.`,
+    openGraph: {
+      title: article.title,
+      description: article.briefing || article.subtitle || "",
+      type: "article",
+      authors: article.authorName ? [article.authorName] : undefined,
+      publishedTime: article.publishedAt,
+      // images: article.imageUrl ? [{ url: article.imageUrl }] : undefined,
+    },
+  };
 }
 
 export default async function ArtigoPage({
