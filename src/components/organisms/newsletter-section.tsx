@@ -84,10 +84,11 @@ export function NewsletterSection() {
                 /* Security: maxLength limits prevent excessive payload/DoS attacks */
                 <form onSubmit={handleSubmit} className="space-y-4">
                   <div>
-                    <label className="block text-sm text-gray-400 mb-2">
+                    <label htmlFor="newsletter-name" className="block text-sm text-gray-400 mb-2">
                       Nome completo
                     </label>
                     <input
+                      id="newsletter-name"
                       type="text"
                       value={name}
                       onChange={(e) => setName(e.target.value)}
@@ -99,10 +100,11 @@ export function NewsletterSection() {
                   </div>
 
                   <div>
-                    <label className="block text-sm text-gray-400 mb-2">
+                    <label htmlFor="newsletter-email" className="block text-sm text-gray-400 mb-2">
                       E-mail
                     </label>
                     <input
+                      id="newsletter-email"
                       type="email"
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
@@ -114,10 +116,11 @@ export function NewsletterSection() {
                   </div>
 
                   <div>
-                    <label className="block text-sm text-gray-400 mb-2">
+                    <label htmlFor="newsletter-phone" className="block text-sm text-gray-400 mb-2">
                       WhatsApp
                     </label>
                     <input
+                      id="newsletter-phone"
                       type="tel"
                       value={phone}
                       onChange={(e) => setPhone(e.target.value)}
