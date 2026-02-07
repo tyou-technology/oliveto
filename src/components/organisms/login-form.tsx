@@ -75,6 +75,7 @@ export function LoginForm({ setIsLoggingIn }: LoginFormProps) {
           {...register("email")}
           placeholder="seu@email.com"
           error={errors.email?.message}
+          maxLength={255}
         />
 
         <FormField
@@ -83,6 +84,7 @@ export function LoginForm({ setIsLoggingIn }: LoginFormProps) {
           {...register("password")}
           placeholder="Sua senha"
           error={errors.password?.message}
+          maxLength={100}
         />
 
         <div className="flex items-center justify-between">

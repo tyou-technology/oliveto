@@ -73,6 +73,7 @@ export function TagForm({ onSubmit, isPending, initialData, onCancel }: TagFormP
             {...register("name")}
             placeholder="Ex: Tributário, Agro, Notícias..."
             className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-lg font-medium placeholder:text-neutral-600 focus:outline-none focus:border-[#00FF90]/50 transition-colors"
+            maxLength={100}
           />
           {errors.name && (
             <p className="text-red-500 text-sm mt-1">{errors.name.message}</p>
@@ -88,6 +89,7 @@ export function TagForm({ onSubmit, isPending, initialData, onCancel }: TagFormP
             placeholder="Breve descrição sobre a tag..."
             rows={3}
             className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 placeholder:text-neutral-600 focus:outline-none focus:border-[#00FF90]/50 transition-colors resize-none"
+            maxLength={500}
           />
         </div>
 
@@ -107,6 +109,7 @@ export function TagForm({ onSubmit, isPending, initialData, onCancel }: TagFormP
               {...register("color")}
               placeholder="#000000"
               className="flex-1 bg-white/5 border border-white/10 rounded-xl px-4 py-3 placeholder:text-neutral-600 focus:outline-none focus:border-[#00FF90]/50 transition-colors uppercase"
+              maxLength={7}
             />
           </div>
           {errors.color && (
