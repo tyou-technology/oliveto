@@ -1,3 +1,5 @@
+import { z } from "zod";
+
 export enum LeadOrigin {
   NEWSLETTER = "NEWSLETTER",
   CONTACT = "CONTACT",
@@ -33,3 +35,11 @@ export interface CreateLeadDTO {
   message?: string;
   origin: LeadOrigin;
 }
+
+export const NewsletterSchema = z.object({
+  name: z.string().min(2, "Nome é obrigatório").max(100),
+  email: z.string().email("Email inválido").max(100),
+  phone: z.string().max(20).optional(),
+});
+
+export type NewsletterFormValues = z.infer<typeof NewsletterSchema>;
