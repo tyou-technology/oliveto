@@ -18,6 +18,9 @@ const outfit = Outfit({
   display: "swap",
 });
 
+const CSP =
+  "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://va.vercel-scripts.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https:; frame-ancestors 'none'; object-src 'none'; base-uri 'self';";
+
 export const metadata: Metadata = {
   metadataBase: new URL("https://olivetocontabilidade.com"),
   title: {
@@ -101,6 +104,9 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR" suppressHydrationWarning>
+      <head>
+        <meta httpEquiv="Content-Security-Policy" content={CSP} />
+      </head>
       <body
         className={`${golos.variable} ${outfit.variable} font-sans antialiased`}
       >
