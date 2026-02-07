@@ -1,10 +1,11 @@
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { articlesApi } from "../api/articles.api";
-import { UpdateArticleDTO } from "@/lib/types/article";
+import { UpdateArticleDTO, ArticleResponseDTO } from "@/lib/types/article";
 import { toast } from "sonner";
 import { getFriendlyErrorMessage } from "@/lib/utils/error-handler";
 
 const STALE_TIME = 1000 * 60 * 5; // 5 minutes
+const EMPTY_ARRAY: ArticleResponseDTO[] = [];
 
 export const useArticles = (firmId?: string, page = 0, size = 10, publishedOnly = false) => {
   const queryClient = useQueryClient();
@@ -53,7 +54,7 @@ export const useArticles = (firmId?: string, page = 0, size = 10, publishedOnly 
   });
 
   return {
-    articles: articlesData?.content || [],
+    articles: articlesData?.content || EMPTY_ARRAY,
     totalPages: articlesData?.page?.totalPages || 0,
     totalElements: articlesData?.page?.totalElements || 0,
     isLoadingArticles,

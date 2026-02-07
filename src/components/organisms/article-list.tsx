@@ -3,6 +3,7 @@ import { ArticleResponseDTO, ArticleStatus } from "@/lib/types/article";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { Button } from "@/components/atoms/button";
+import { memo } from "react";
 
 interface ArticleListProps {
   articles: ArticleResponseDTO[];
@@ -11,7 +12,7 @@ interface ArticleListProps {
   onDelete: (id: string) => void;
 }
 
-export function ArticleList({ articles, onView, onEdit, onDelete }: ArticleListProps) {
+export const ArticleList = memo(function ArticleList({ articles, onView, onEdit, onDelete }: ArticleListProps) {
   return (
     <div className="bg-[#111111] border border-white/10 rounded-2xl overflow-hidden">
       <div className="overflow-x-auto">
@@ -99,4 +100,4 @@ export function ArticleList({ articles, onView, onEdit, onDelete }: ArticleListP
       </div>
     </div>
   );
-}
+});
