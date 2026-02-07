@@ -55,12 +55,12 @@ export function DataTable<TData, TValue>({
   const table = useReactTable({
     data,
     columns,
-    pageCount: pageCount ?? -1,
+    pageCount: pageCount,
     state: {
       sorting,
       columnFilters,
       columnVisibility,
-      pagination: pagination,
+      ...(pagination ? { pagination } : {}),
     },
     manualPagination: !!pageCount,
     onPaginationChange: onPaginationChange,
