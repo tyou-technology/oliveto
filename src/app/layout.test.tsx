@@ -51,5 +51,6 @@ describe("RootLayout Security", () => {
     expect(cspMeta.props.content).toContain("script-src 'self'");
     expect(cspMeta.props.content).toContain("unsafe-inline");
     expect(cspMeta.props.content).toContain("https://va.vercel-scripts.com");
+    expect(cspMeta.props.content).toContain("http://localhost:8080");
   });
 });

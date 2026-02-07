@@ -9,6 +9,7 @@ import { useMemo, useState } from "react";
 import { Header } from "@/components/organisms/header";
 import { useArticles } from "@/features/articles/hooks/useArticles";
 import { env } from "@/lib/env";
+import {ROUTES} from "@/lib/config/routes";
 
 const WHATSAPP_NUMBER = "5543991231726";
 const WHATSAPP_MESSAGE =
@@ -95,7 +96,7 @@ export default function NotFound() {
               asChild
               className="bg-primary text-black hover:bg-primary/90 rounded-full px-8"
             >
-              <Link href="/public">
+              <Link href={ROUTES.PUBLIC.HOME}>
                 <Home className="w-4 h-4 mr-2" />
                 Voltar ao início
               </Link>

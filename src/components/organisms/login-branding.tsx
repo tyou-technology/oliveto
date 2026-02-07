@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { loginPageContent } from "@/lib/constants/login-page";
 import { IMAGES } from "@/lib/constants/images";
+import {ROUTES} from "@/lib/config/routes";
 
 export function LoginBranding() {
   return (
@@ -23,7 +24,7 @@ export function LoginBranding() {
       <div className="absolute bottom-20 left-12 right-12 h-px bg-gradient-to-r from-primary/50 to-transparent" />
 
       {/* Logo */}
-      <Link href="/public" className="relative z-10">
+      <Link href={ROUTES.PUBLIC.HOME} className="relative z-10">
         <Image src={IMAGES.LOGO} alt="Logo" width={150} height={150} />
       </Link>
 

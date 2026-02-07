@@ -4,7 +4,7 @@ import { useUserStore } from "@/stores/useUserStore";
 import { ROUTES } from "@/lib/config/routes";
 
 export const api = axios.create({
-  baseURL: env.NEXT_PUBLIC_API_URL,
+  baseURL: env.NEXT_PUBLIC_API_URL.replace(/\/$/, ""),
   headers: {
     "Content-Type": "application/json",
   },
