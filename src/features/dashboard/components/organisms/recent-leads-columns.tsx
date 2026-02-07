@@ -55,14 +55,18 @@ export const recentLeadsColumns: ColumnDef<DashboardLead>[] = [
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Ações</DropdownMenuLabel>
             <DropdownMenuItem
-              onClick={() => console.log("View lead", lead.id)}
+              onClick={() => {
+                // TODO: Implement view lead
+              }}
               className="cursor-pointer"
             >
               <Eye className="mr-2 h-4 w-4" aria-hidden="true" />
               <span>Visualizar</span>
             </DropdownMenuItem>
             <DropdownMenuItem
-              onClick={() => console.log("Edit lead", lead.id)}
+              onClick={() => {
+                // TODO: Implement edit lead
+              }}
               className="cursor-pointer"
             >
               <Edit2 className="mr-2 h-4 w-4" aria-hidden="true" />
