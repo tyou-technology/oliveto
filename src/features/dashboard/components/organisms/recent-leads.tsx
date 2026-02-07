@@ -4,7 +4,9 @@ import { DataTable } from "@/components/organisms/data-table/data-table";
 import { recentLeadsColumns } from "./recent-leads-columns";
 import { DashboardLead } from "../../types";
 import { Skeleton } from "@/components/atoms/skeleton";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/atoms/card";
+import { ChevronRight } from "lucide-react";
+import Link from "next/link";
+import { ROUTES } from "@/lib/config/routes";
 
 interface RecentLeadsProps {
   data: DashboardLead[];
@@ -14,38 +16,37 @@ interface RecentLeadsProps {
 export function RecentLeads({ data, isLoading }: RecentLeadsProps) {
   if (isLoading) {
     return (
-      <Card className="col-span-1 md:col-span-2 lg:col-span-3">
-        <CardHeader>
-          <Skeleton className="h-8 w-[200px]" />
-          <Skeleton className="h-4 w-[300px]" />
-        </CardHeader>
-        <CardContent>
-          <div className="space-y-2">
-            <Skeleton className="h-10 w-full" />
-            <Skeleton className="h-10 w-full" />
-            <Skeleton className="h-10 w-full" />
-            <Skeleton className="h-10 w-full" />
-            <Skeleton className="h-10 w-full" />
-          </div>
-        </CardContent>
-      </Card>
+      <div className="bg-[#111111] border border-white/10 rounded-2xl overflow-hidden p-6">
+        <div className="flex items-center justify-between mb-6">
+          <Skeleton className="h-6 w-48" />
+          <Skeleton className="h-4 w-24" />
+        </div>
+        <div className="space-y-4">
+          <Skeleton className="h-12 w-full" />
+          <Skeleton className="h-12 w-full" />
+          <Skeleton className="h-12 w-full" />
+        </div>
+      </div>
     );
   }
 
   return (
-    <Card className="col-span-1 md:col-span-2 lg:col-span-3 border-none shadow-none bg-transparent p-0">
-      <CardHeader className="px-0 pt-0 pb-4">
-        <CardTitle>Leads Recentes</CardTitle>
-        <CardDescription>
-          Visualize e gerencie os últimos leads capturados.
-        </CardDescription>
-      </CardHeader>
-      <CardContent className="p-0">
+    <div className="bg-[#111111] border border-white/10 rounded-2xl overflow-hidden">
+      <div className="flex items-center justify-between p-6 border-b border-white/10">
+        <h2 className="text-lg font-semibold text-white">Leads Recentes</h2>
+        <Link
+          href={ROUTES.ADMIN.DASHBOARD.CONTATOS || "#"}
+          className="text-sm text-[#00FF90] hover:underline flex items-center gap-1"
+        >
+          Ver todos <ChevronRight className="w-4 h-4" />
+        </Link>
+      </div>
+      <div className="p-0">
         <DataTable
           columns={recentLeadsColumns}
           data={data}
         />
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }

@@ -1,7 +1,5 @@
 import Image from "next/image";
 import { Eye, Clock } from "lucide-react";
-import { Card, CardContent } from "@/components/atoms/card";
-import { Badge } from "@/components/atoms/badge";
 import { DashboardArticle } from "../../types";
 import { cn } from "@/lib/utils";
 
@@ -13,7 +11,7 @@ export function ArticlePerformanceCard({ article }: ArticlePerformanceCardProps)
   const isPublished = article.status === "PUBLISHED";
 
   return (
-    <Card className="group overflow-hidden border-white/10 bg-card transition-all duration-200 hover:border-primary/50 hover:shadow-lg">
+    <div className="group bg-[#111111] border border-white/10 rounded-2xl overflow-hidden hover:border-[#00FF90]/30 transition-all duration-300">
       <div className="relative aspect-video w-full overflow-hidden bg-neutral-900">
         {article.imageUrl ? (
           <Image
@@ -24,44 +22,43 @@ export function ArticlePerformanceCard({ article }: ArticlePerformanceCardProps)
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
         ) : (
-          <div className="flex h-full items-center justify-center text-muted-foreground bg-white/5">
+          <div className="flex h-full items-center justify-center text-neutral-500 bg-white/5">
             Sem imagem
           </div>
         )}
-        <div className="absolute top-2 right-2">
-          <Badge
-            variant={isPublished ? "default" : "secondary"}
-            className={cn(
-              "shadow-sm backdrop-blur-md",
-              isPublished ? "bg-emerald-500/90 hover:bg-emerald-500" : "bg-neutral-500/90 hover:bg-neutral-500"
-            )}
-          >
+        <div className="absolute top-3 right-3">
+          <span className={cn(
+            "text-xs px-2 py-1 rounded-full backdrop-blur-md font-medium",
+            isPublished 
+              ? "bg-[#00FF90]/90 text-black" 
+              : "bg-white/10 text-white"
+          )}>
             {isPublished ? "Publicado" : "Rascunho"}
-          </Badge>
+          </span>
         </div>
       </div>
 
-      <CardContent className="flex flex-col gap-3 p-4">
+      <div className="flex flex-col gap-3 p-4">
         <div className="space-y-1">
-          <h3 className="line-clamp-1 font-semibold tracking-tight group-hover:text-primary transition-colors">
+          <h3 className="line-clamp-1 font-semibold text-white group-hover:text-[#00FF90] transition-colors">
             {article.title}
           </h3>
-          <p className="line-clamp-2 text-xs text-muted-foreground">
+          <p className="line-clamp-2 text-xs text-neutral-400">
             {article.briefing || "Sem descrição..."}
           </p>
         </div>
 
-        <div className="mt-auto flex items-center gap-4 text-xs text-muted-foreground">
-          <div className="flex items-center gap-1">
-            <Eye className="h-3.5 w-3.5" />
+        <div className="mt-auto flex items-center gap-4 text-xs text-neutral-500 pt-2 border-t border-white/5">
+          <div className="flex items-center gap-1.5">
+            <Eye className="h-3.5 w-3.5 text-[#00FF90]" />
             <span>{article.views.toLocaleString()}</span>
           </div>
-          <div className="flex items-center gap-1">
-            <Clock className="h-3.5 w-3.5" />
+          <div className="flex items-center gap-1.5">
+            <Clock className="h-3.5 w-3.5 text-[#00FF90]" />
             <span>{article.readingTime}</span>
           </div>
         </div>
-      </CardContent>
-    </Card>
+      </div>
+    </div>
   );
 }

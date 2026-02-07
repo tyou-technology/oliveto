@@ -19,11 +19,15 @@ interface ArticlesInsightProps {
 
 function ArticleCardSkeleton() {
   return (
-    <div className="flex flex-col space-y-3">
-      <Skeleton className="h-[125px] w-full rounded-xl" />
-      <div className="space-y-2">
-        <Skeleton className="h-4 w-[250px]" />
-        <Skeleton className="h-4 w-[200px]" />
+    <div className="bg-[#111111] border border-white/10 rounded-2xl overflow-hidden">
+      <Skeleton className="h-[160px] w-full" />
+      <div className="p-4 space-y-3">
+        <Skeleton className="h-4 w-3/4" />
+        <Skeleton className="h-3 w-full" />
+        <div className="flex justify-between pt-2">
+          <Skeleton className="h-3 w-12" />
+          <Skeleton className="h-3 w-12" />
+        </div>
       </div>
     </div>
   );
@@ -42,23 +46,21 @@ export function ArticlesInsight({ articles, isLoading }: ArticlesInsightProps) {
 
   if (articles.length === 0) {
     return (
-      <Empty className="bg-card">
-        <EmptyHeader>
-          <EmptyMedia variant="icon">
-            <Newspaper className="h-6 w-6" />
-          </EmptyMedia>
-          <EmptyTitle>Nenhum artigo encontrado</EmptyTitle>
-          <EmptyDescription>
-            Comece a publicar conteúdo para ver métricas de performance aqui.
-          </EmptyDescription>
-        </EmptyHeader>
-        <EmptyContent>
-          <Button>
-            <Plus className="mr-2 h-4 w-4" />
-            Criar Artigo
-          </Button>
-        </EmptyContent>
-      </Empty>
+      <div className="bg-[#111111] border border-white/10 rounded-2xl p-8 text-center">
+        <div className="flex justify-center mb-4">
+          <div className="p-4 bg-white/5 rounded-full">
+            <Newspaper className="h-8 w-8 text-neutral-400" />
+          </div>
+        </div>
+        <h3 className="text-lg font-medium text-white mb-2">Nenhum artigo encontrado</h3>
+        <p className="text-neutral-400 mb-6 max-w-md mx-auto">
+          Comece a publicar conteúdo para ver métricas de performance aqui.
+        </p>
+        <Button className="bg-[#00FF90] text-black hover:bg-[#00dd00]">
+          <Plus className="mr-2 h-4 w-4" />
+          Criar Artigo
+        </Button>
+      </div>
     );
   }
 
