@@ -25,7 +25,7 @@ export default function ArtigosPage() {
     true // publishedOnly
   );
 
-  const { tags, isLoadingTags } = useTags(env.NEXT_PUBLIC_FIRM_ID);
+  const { tags, isLoadingTags } = useTags(env.NEXT_PUBLIC_FIRM_ID, true);
 
   const tagsMap = useMemo(() => {
     return new Map<string, TagResponseDTO>(tags.map((t) => [t.id, t]));
