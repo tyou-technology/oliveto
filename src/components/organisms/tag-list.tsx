@@ -3,14 +3,15 @@ import { TagResponseDTO } from "@/lib/types/article";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { Button } from "@/components/atoms/button";
+import { memo } from "react";
 
 interface TagListProps {
   tags: TagResponseDTO[];
   onEdit: (tag: TagResponseDTO) => void;
-  onDelete: (id: string) => void;
+  onDelete: (tag: TagResponseDTO) => void;
 }
 
-export function TagList({ tags, onEdit, onDelete }: TagListProps) {
+export const TagList = memo(function TagList({ tags, onEdit, onDelete }: TagListProps) {
   return (
     <div className="bg-[#111111] border border-white/10 rounded-2xl overflow-hidden">
       <div className="overflow-x-auto">
@@ -84,7 +85,7 @@ export function TagList({ tags, onEdit, onDelete }: TagListProps) {
                       className="hover:bg-red-500/10 text-red-400 hover:text-red-300 rounded-lg"
                       aria-label="Excluir tag"
                       title="Excluir"
-                      onClick={() => onDelete(tag.id)}
+                      onClick={() => onDelete(tag)}
                     >
                       <Trash2 className="w-4 h-4" />
                     </Button>
@@ -97,4 +98,4 @@ export function TagList({ tags, onEdit, onDelete }: TagListProps) {
       </div>
     </div>
   );
-}
+});
