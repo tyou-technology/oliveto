@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { cn } from "@/lib/utils";
 
 const testimonials = [
@@ -30,7 +30,6 @@ const testimonials = [
 export function TestimonialsSection() {
   const [currentPage, setCurrentPage] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
-  const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   const AUTO_PLAY_INTERVAL = 8000; // 8 segundos —
   const itemsPerPage = 2;
@@ -43,37 +42,19 @@ export function TestimonialsSection() {
     (currentPage + 1) * itemsPerPage
   );
 
-  const advance = () => {
-    setCurrentPage((prev) => (prev + 1) % totalPages);
-  };
-
-  const startAutoPlay = () => {
-    if (timerRef.current) clearTimeout(timerRef.current);
-    timerRef.current = setTimeout(() => {
-      advance();
-      startAutoPlay();
-    }, AUTO_PLAY_INTERVAL);
-  };
-
   const handleIndexChange = (index: number) => {
     setCurrentPage(index);
-    startAutoPlay(); // reinicia o timer após clique manual
   };
 
   useEffect(() => {
-    startAutoPlay();
-    return () => {
-      if (timerRef.current) clearTimeout(timerRef.current);
-    };
-  }, []);
+    if (isHovered) return;
 
-  useEffect(() => {
-    if (isHovered) {
-      if (timerRef.current) clearTimeout(timerRef.current);
-    } else {
-      startAutoPlay();
-    }
-  }, [isHovered]);
+    const interval = setInterval(() => {
+      setCurrentPage((prev) => (prev + 1) % totalPages);
+    }, AUTO_PLAY_INTERVAL);
+
+    return () => clearInterval(interval);
+  }, [isHovered, totalPages, currentPage]);
 
   return (
     <section className="px-8 py-16 md:px-16 md:py-24 border-t border-gray-800 bg-black">
