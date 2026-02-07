@@ -150,18 +150,15 @@ export default function ArtigosPage() {
     setIsDeleteArticleOpen(true);
   }, []);
 
-  const openEditTag = (tag: TagResponseDTO) => {
+  const openEditTag = useCallback((tag: TagResponseDTO) => {
     setSelectedTag(tag);
     setActiveTab("edit-tag");
-  };
+  }, []);
 
-  const openDeleteTag = (id: string) => {
-    const tag = tags.find(t => t.id === id);
-    if (tag) {
-      setSelectedTag(tag);
-      setIsDeleteTagOpen(true);
-    }
-  };
+  const openDeleteTag = useCallback((tag: TagResponseDTO) => {
+    setSelectedTag(tag);
+    setIsDeleteTagOpen(true);
+  }, []);
 
   // Helper to get article title for delete modal
   const getSelectedArticleTitle = () => {

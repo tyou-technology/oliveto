@@ -6,6 +6,9 @@ import {getFriendlyErrorMessage} from "@/lib/utils/error-handler";
 
 const STALE_TIME = 1000 * 60 * 5; // 5 minutes
 
+// Performance: Stable empty array reference to prevent unnecessary re-renders in memoized consumers
+const EMPTY_ARRAY: TagResponseDTO[] = [];
+
 export const useTags = (firmId?: string, publishedOnly = false, initialData?: { content: TagResponseDTO[] }) => {
   const queryClient = useQueryClient();
 
@@ -54,7 +57,7 @@ export const useTags = (firmId?: string, publishedOnly = false, initialData?: { 
   });
 
   return {
-    tags: tagsData?.content || [],
+    tags: tagsData?.content || EMPTY_ARRAY,
     isLoadingTags,
     createTag,
     updateTag,
