@@ -109,10 +109,18 @@ export const articlesApi = {
   },
 
   getPublishedTagsByFirmId: async (firmId: string, page = 0, size = 100): Promise<{ content: TagResponseDTO[] }> => {
-    const response = await api.get<{ content: TagResponseDTO[] }>(`/tags/published/by-firm/${firmId}`, {
-      params: { page, size },
+    const url = new URL(`${env.NEXT_PUBLIC_API_URL}/tags/published/by-firm/${firmId}`);
+    url.searchParams.set("page", page.toString());
+    url.searchParams.set("size", size.toString());
+
+    const response = await fetch(url.toString(), {
+      next: { revalidate: 3600 },
     });
-    return response.data;
+
+    if (!response.ok) {
+      throw new Error(`Failed to fetch published tags: ${response.statusText}`);
+    }
+    return response.json();
   },
 
   updateTag: async (id: string, data: UpdateTagDTO): Promise<TagResponseDTO> => {
