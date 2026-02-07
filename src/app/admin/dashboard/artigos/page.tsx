@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useCallback } from "react";
 import { Plus, Tag, Loader2 } from "lucide-react";
 import { useUserStore } from "@/stores/useUserStore";
 import { ArticleList } from "@/components/organisms/article-list";
@@ -135,20 +135,20 @@ export default function ArtigosPage() {
   };
 
   // Navigation Triggers
-  const openViewArticle = (article: ArticleResponseDTO) => {
+  const openViewArticle = useCallback((article: ArticleResponseDTO) => {
     setSelectedArticleId(article.id);
     setActiveTab("view");
-  };
+  }, []);
 
-  const openEditArticle = (article: ArticleResponseDTO) => {
+  const openEditArticle = useCallback((article: ArticleResponseDTO) => {
     setSelectedArticleId(article.id);
     setActiveTab("edit");
-  };
+  }, []);
 
-  const openDeleteArticle = (id: string) => {
+  const openDeleteArticle = useCallback((id: string) => {
     setSelectedArticleId(id);
     setIsDeleteArticleOpen(true);
-  };
+  }, []);
 
   const openEditTag = (tag: TagResponseDTO) => {
     setSelectedTag(tag);
