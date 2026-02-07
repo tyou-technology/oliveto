@@ -151,6 +151,7 @@ export function ArticleForm({
               disabled={readOnly}
               placeholder="Digite o título do artigo..."
               className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-lg font-medium placeholder:text-neutral-600 focus:outline-none focus:border-[#00FF90]/50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              maxLength={255}
             />
             {errors.title && (
               <p className="text-red-500 text-sm mt-1">
@@ -170,6 +171,7 @@ export function ArticleForm({
               placeholder="Uma breve descrição que aparecerá na listagem de artigos..."
               rows={3}
               className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 placeholder:text-neutral-600 focus:outline-none focus:border-[#00FF90]/50 transition-colors resize-none disabled:opacity-50 disabled:cursor-not-allowed"
+              maxLength={500}
             />
           </div>
 
@@ -370,6 +372,7 @@ export function ArticleForm({
               disabled={readOnly}
               placeholder="https://exemplo.com/imagem.jpg"
               className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm placeholder:text-neutral-600 focus:outline-none focus:border-[#00FF90]/50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed mb-4"
+              maxLength={2048}
             />
             {errors.imageUrl && (
               <p className="text-red-500 text-sm mt-1 mb-2">
