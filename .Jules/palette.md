@@ -5,3 +5,7 @@
 ## 2024-05-23 - Form Label Association
 **Learning:** Found visible `label` elements that were not programmatically associated with their `input` fields using `htmlFor` and `id`. This prevents screen readers from announcing the label when the input is focused and breaks the click-to-focus behavior.
 **Action:** Always ensure `label` elements have a `htmlFor` attribute that matches the `id` of the corresponding `input`.
+
+## 2024-05-24 - Custom Form Field Accessibility
+**Learning:** The `CustomFormField` component (used in `ContactForm`) rendered inputs without accessible names when the `label` prop was omitted, relying solely on `placeholder` which is not sufficient for screen readers.
+**Action:** Updated `CustomFormField` to automatically fallback to using `placeholder` as `aria-label` when no explicit `label` is provided, ensuring all form inputs have an accessible name without requiring visual design changes.

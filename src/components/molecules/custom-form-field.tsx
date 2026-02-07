@@ -23,6 +23,7 @@ interface CustomFormFieldProps<T extends FieldValues> {
   containerClassName?: string; // For the FormItem
   rows?: number;
   maxLength?: number;
+  ariaLabel?: string;
 }
 
 export function CustomFormField<T extends FieldValues>({
@@ -36,7 +37,11 @@ export function CustomFormField<T extends FieldValues>({
   containerClassName,
   rows,
   maxLength,
+  ariaLabel,
 }: CustomFormFieldProps<T>) {
+  // If no label is provided, use ariaLabel or fallback to placeholder as accessible name
+  const accessibleName = ariaLabel || (!label ? placeholder : undefined);
+
   return (
     <FormField
       control={control}
@@ -51,6 +56,7 @@ export function CustomFormField<T extends FieldValues>({
                 className={cn("resize-none", className)}
                 rows={rows}
                 maxLength={maxLength}
+                aria-label={accessibleName}
                 {...field}
               />
             ) : (
@@ -59,6 +65,7 @@ export function CustomFormField<T extends FieldValues>({
                 type={type}
                 className={className}
                 maxLength={maxLength}
+                aria-label={accessibleName}
                 {...field}
               />
             )}
