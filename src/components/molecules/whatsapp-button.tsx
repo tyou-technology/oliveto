@@ -25,7 +25,7 @@ export function WhatsAppButton() {
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
-                <MessageCircle className="w-5 h-5 text-white" />
+                <MessageCircle className="w-5 h-5 text-white" aria-hidden="true" />
               </div>
               <div>
                 <h4 className="font-semibold text-white text-sm">Oliveto</h4>
@@ -35,8 +35,9 @@ export function WhatsAppButton() {
             <button
               onClick={() => setIsOpen(false)}
               className="text-white/80 hover:text-white transition-colors cursor-pointer"
+              aria-label="Fechar chat"
             >
-              <X className="w-5 h-5" />
+              <X className="w-5 h-5" aria-hidden="true" />
             </button>
           </div>
         </div>
@@ -68,8 +69,10 @@ export function WhatsAppButton() {
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="w-14 h-14 bg-[#25D366] rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform relative cursor-pointer"
+        aria-label={isOpen ? "Fechar chat do WhatsApp" : "Abrir chat do WhatsApp"}
+        aria-expanded={isOpen}
       >
-        <MessageCircle className="w-7 h-7 text-white" />
+        <MessageCircle className="w-7 h-7 text-white" aria-hidden="true" />
 
         {/* Pulse Animation */}
         <span className="absolute w-full h-full rounded-full bg-[#25D366] animate-ping opacity-30" />
