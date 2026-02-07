@@ -34,7 +34,7 @@ export function NewsletterSection() {
       });
 
       setIsSubmitted(true);
-      toast.success("Inscrição realizada com sucesso!");
+      toast.success("Cadastro realizado com sucesso! Verifique seu e-mail.");
     } catch (error) {
       console.error(error);
       toast.error("Erro ao realizar inscrição. Tente novamente.");
