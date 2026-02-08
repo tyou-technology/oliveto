@@ -40,4 +40,16 @@ describe('WhatsAppButton', () => {
     expect(screen.getByRole('button', { name: /Abrir chat do WhatsApp/i })).toBeTruthy()
     expect(mainButton.getAttribute('aria-expanded')).toBe('false')
   })
+
+  it('hides the popup content from accessibility tree when closed', () => {
+    render(<WhatsAppButton />)
+
+    // The popup container should be invisible when closed
+    const popupText = screen.getByText('Oliveto')
+    const popupContainer = popupText.closest('.absolute')
+
+    expect(popupContainer).toBeTruthy()
+    // It MUST contain invisible to be accessible
+    expect(popupContainer?.className).toContain('invisible')
+  })
 })
