@@ -44,12 +44,23 @@ describe('WhatsAppButton', () => {
   it('hides the popup content from accessibility tree when closed', () => {
     render(<WhatsAppButton />)
 
-    // The popup container should be invisible when closed
+    // Find the popup container by text inside it
     const popupText = screen.getByText('Oliveto')
     const popupContainer = popupText.closest('.absolute')
 
     expect(popupContainer).toBeTruthy()
-    // It MUST contain invisible to be accessible
+
+    // Verify it has invisible class when closed
     expect(popupContainer?.className).toContain('invisible')
+    expect(popupContainer?.getAttribute('aria-hidden')).toBe('true')
+
+    // Open the popup
+    const mainButton = screen.getByRole('button', { name: /Abrir chat do WhatsApp/i })
+    fireEvent.click(mainButton)
+
+    // Verify it is visible
+    expect(popupContainer?.className).toContain('visible')
+    expect(popupContainer?.className).not.toContain('invisible')
+    expect(popupContainer?.getAttribute('aria-hidden')).toBe('false')
   })
 })

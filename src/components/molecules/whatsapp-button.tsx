@@ -15,13 +15,13 @@ export function WhatsAppButton() {
     <div className="fixed bottom-6 right-6 z-50">
       {/* Popup */}
       <div
+        aria-hidden={!isOpen}
         className={cn(
           "absolute bottom-20 right-0 w-72 bg-white rounded-2xl shadow-2xl overflow-hidden transition-all duration-300",
           isOpen
             ? "opacity-100 translate-y-0 visible"
             : "opacity-0 translate-y-4 invisible pointer-events-none"
         )}
-        aria-hidden={!isOpen}
       >
         {/* Header */}
         <div className="bg-[#25D366] p-4">
