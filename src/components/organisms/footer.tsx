@@ -10,7 +10,7 @@ export function Footer() {
         <div className="grid md:grid-cols-4 gap-8 mb-16">
           <div>
             <Link href={ROUTES.PUBLIC.HOME} className="text-2xl font-bold tracking-wider">
-              <Image src={IMAGES.LOGO_MIN} alt="Logo" width={80} height={80} priority />
+              <Image src={IMAGES.LOGO_MIN} alt="Logo" width={80} height={80} />
             </Link>
           </div>
 
