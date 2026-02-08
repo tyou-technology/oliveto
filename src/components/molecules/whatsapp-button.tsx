@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { MessageCircle, X } from "lucide-react";
+import { cn } from "@/lib/utils";
 
 export function WhatsAppButton() {
   const [isOpen, setIsOpen] = useState(false);
@@ -14,18 +15,23 @@ export function WhatsAppButton() {
     <div className="fixed bottom-6 right-6 z-50">
       {/* Popup */}
       <div
-        className={`absolute bottom-20 right-0 w-72 bg-white rounded-2xl shadow-2xl overflow-hidden transition-all duration-300 ${
+        aria-hidden={!isOpen}
+        className={cn(
+          "absolute bottom-20 right-0 w-72 bg-white rounded-2xl shadow-2xl overflow-hidden transition-all duration-300",
           isOpen
-            ? "opacity-100 translate-y-0"
-            : "opacity-0 translate-y-4 pointer-events-none"
-        }`}
+            ? "opacity-100 translate-y-0 visible"
+            : "opacity-0 translate-y-4 invisible pointer-events-none"
+        )}
       >
         {/* Header */}
         <div className="bg-[#25D366] p-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
-                <MessageCircle className="w-5 h-5 text-white" aria-hidden="true" />
+                <MessageCircle
+                  className="w-5 h-5 text-white"
+                  aria-hidden="true"
+                />
               </div>
               <div>
                 <h4 className="font-semibold text-white text-sm">Oliveto</h4>
@@ -69,16 +75,24 @@ export function WhatsAppButton() {
       <button
         onClick={() => setIsOpen(!isOpen)}
         className="w-14 h-14 bg-[#25D366] rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform relative cursor-pointer"
-        aria-label={isOpen ? "Fechar chat do WhatsApp" : "Abrir chat do WhatsApp"}
+        aria-label={
+          isOpen ? "Fechar chat do WhatsApp" : "Abrir chat do WhatsApp"
+        }
         aria-expanded={isOpen}
       >
         <MessageCircle className="w-7 h-7 text-white" aria-hidden="true" />
 
         {/* Pulse Animation */}
-        <span className="absolute w-full h-full rounded-full bg-[#25D366] animate-ping opacity-30" />
+        <span
+          className="absolute w-full h-full rounded-full bg-[#25D366] animate-ping opacity-30"
+          aria-hidden="true"
+        />
 
         {/* Online Badge */}
-        <span className="absolute top-0 right-0 w-4 h-4 bg-primary rounded-full border-2 border-white" />
+        <span
+          className="absolute top-0 right-0 w-4 h-4 bg-primary rounded-full border-2 border-white"
+          aria-hidden="true"
+        />
       </button>
     </div>
   );

@@ -103,6 +103,7 @@ export function DataTable<TData, TValue>({
             value={searchTerm}
             onChange={(event) => setSearchTerm(event.target.value)}
             className="max-w-sm"
+            maxLength={100}
           />
         </div>
       )}
