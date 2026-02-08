@@ -1,3 +1,4 @@
+import { memo } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
@@ -11,7 +12,8 @@ interface ArticleCardProps {
   className?: string;
 }
 
-export function ArticleCard({article, className}: Readonly<ArticleCardProps>) {
+// Memoized to prevent unnecessary re-renders in the ArticlesCarousel autoplay loop
+export const ArticleCard = memo(function ArticleCard({article, className}: Readonly<ArticleCardProps>) {
   return (
       <Link
           href={`/artigos/${article.id}`}
@@ -51,4 +53,4 @@ export function ArticleCard({article, className}: Readonly<ArticleCardProps>) {
       </article>
     </Link>
   );
-}
+});
