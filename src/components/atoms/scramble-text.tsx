@@ -63,8 +63,10 @@ export function ScrambleText({
           }
         }
 
-        currentTextRef.value = result;
-        setDisplayText(result);
+        if (result !== currentTextRef.value) {
+          currentTextRef.value = result;
+          setDisplayText(result);
+        }
 
         if (progress < 1) {
           frameRef.current = requestAnimationFrame(animate);
