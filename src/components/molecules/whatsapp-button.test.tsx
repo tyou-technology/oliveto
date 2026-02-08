@@ -40,4 +40,27 @@ describe('WhatsAppButton', () => {
     expect(screen.getByRole('button', { name: /Abrir chat do WhatsApp/i })).toBeTruthy()
     expect(mainButton.getAttribute('aria-expanded')).toBe('false')
   })
+
+  it('hides the popup content from accessibility tree when closed', () => {
+    render(<WhatsAppButton />)
+
+    // Find the popup container by text inside it
+    const popupText = screen.getByText('Oliveto')
+    const popupContainer = popupText.closest('.absolute')
+
+    expect(popupContainer).toBeTruthy()
+
+    // Verify it has invisible class when closed
+    expect(popupContainer?.className).toContain('invisible')
+    expect(popupContainer?.getAttribute('aria-hidden')).toBe('true')
+
+    // Open the popup
+    const mainButton = screen.getByRole('button', { name: /Abrir chat do WhatsApp/i })
+    fireEvent.click(mainButton)
+
+    // Verify it is visible
+    expect(popupContainer?.className).toContain('visible')
+    expect(popupContainer?.className).not.toContain('invisible')
+    expect(popupContainer?.getAttribute('aria-hidden')).toBe('false')
+  })
 })
