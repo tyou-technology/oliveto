@@ -7,3 +7,8 @@
 **Vulnerability:** Missing `maxLength` attributes on user input fields (Login, Articles, Tags). While server-side validation exists via Zod, lack of client-side limits allows sending excessively large payloads, potentially causing DoS or buffer issues, and misalignment with backend constraints.
 **Learning:** Even with Zod schemas defining limits (e.g., `max(255)`), HTML inputs default to unlimited length unless explicitly constrained.
 **Prevention:** Always mirror backend/schema length constraints to the frontend HTML `maxLength` attribute to provide immediate feedback and reduce server load.
+
+## 2026-02-08 - Target Attribute Case Sensitivity (Defense in Depth)
+**Vulnerability:** The HTML sanitizer hook for `rel="noopener noreferrer"` enforcement was case-sensitive, only checking for `target="_blank"`. This allowed links with `target="_BLANK"` (or other case variations) to bypass the protection, potentially exposing users to reverse tabnabbing attacks.
+**Learning:** HTML attribute values are case-sensitive for frame names, but reserved keywords like `_blank` are case-insensitive in browser behavior. Security checks must account for this.
+**Prevention:** Always normalize attribute values (e.g., `.toLowerCase()`) before checking against reserved keywords like `_blank`, `_self`, etc.
