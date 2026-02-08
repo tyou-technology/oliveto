@@ -3,7 +3,7 @@ import DOMPurify from "isomorphic-dompurify";
 // Add a hook to enforce rel="noopener noreferrer" for links with target="_blank"
 // This prevents reverse tabnabbing attacks.
 DOMPurify.addHook("afterSanitizeAttributes", (node) => {
-  if (node.tagName === "A" && node.getAttribute("target") === "_blank") {
+  if (node.tagName === "A" && node.getAttribute("target")?.toLowerCase() === "_blank") {
     const rel = node.getAttribute("rel") || "";
     const parts = rel.split(/\s+/).filter(Boolean);
 
