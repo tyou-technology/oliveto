@@ -7,7 +7,7 @@ import { FormField } from "@/components/atoms/form-field";
 import { LoginRequest, LoginSchema } from "@/features/auth/types/auth.types";
 import { useLogin } from "@/features/auth/hooks/useLogin";
 import { ROUTES } from "@/lib/config/routes";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { IMAGES } from "@/lib/constants/images";
 
 interface LoginFormProps {
@@ -15,12 +15,9 @@ interface LoginFormProps {
 }
 
 export function LoginForm({ setIsLoggingIn }: LoginFormProps) {
-  const [rememberMe, setRememberMe] = useState(false);
-
   const {
     register,
     handleSubmit,
-    setValue,
     formState: { errors },
   } = useForm<LoginRequest>({
     resolver: zodResolver(LoginSchema),
@@ -34,20 +31,7 @@ export function LoginForm({ setIsLoggingIn }: LoginFormProps) {
     }
   }, [isPending, setIsLoggingIn]);
 
-  useEffect(() => {
-    const savedEmail = localStorage.getItem("rememberedEmail");
-    if (savedEmail) {
-      setValue("email", savedEmail);
-      setRememberMe(true);
-    }
-  }, [setValue]);
-
   const onSubmit = (data: LoginRequest) => {
-    if (rememberMe) {
-      localStorage.setItem("rememberedEmail", data.email);
-    } else {
-      localStorage.removeItem("rememberedEmail");
-    }
     login(data);
   };
 
@@ -89,23 +73,14 @@ export function LoginForm({ setIsLoggingIn }: LoginFormProps) {
           autoComplete="current-password"
         />
 
-        <div className="flex items-center justify-between">
-          <label className="flex items-center gap-2 cursor-pointer">
-            <input
-              type="checkbox"
-              className="w-4 h-4 bg-[#111] border border-[#222] rounded accent-primary"
-              checked={rememberMe}
-              onChange={(e) => setRememberMe(e.target.checked)}
-            />
-            <span className="text-sm text-gray-400">Lembrar-me</span>
-          </label>
-          {/*<Link*/}
-          {/*  href="/recuperar-senha" // TODO: Create this route*/}
-          {/*  className="text-sm text-primary hover:underline"*/}
-          {/*>*/}
-          {/*  Esqueceu a senha?*/}
-          {/*</Link>*/}
-        </div>
+        {/* Removed "Remember Me" checkbox for security reasons */}
+
+        {/*<Link*/}
+        {/*  href="/recuperar-senha" // TODO: Create this route*/}
+        {/*  className="text-sm text-primary hover:underline"*/}
+        {/*>*/}
+        {/*  Esqueceu a senha?*/}
+        {/*</Link>*/}
 
         <button
           type="submit"
