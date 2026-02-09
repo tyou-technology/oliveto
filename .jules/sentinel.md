@@ -17,3 +17,8 @@
 **Vulnerability:** Missing `.max(255)` constraint on the email field in the `LoginSchema`. This could allow excessively large email strings to be processed, potentially leading to DoS or memory issues.
 **Learning:** Zod `email()` validation does not implicitly limit the length of the string to standard email limits (254/255 characters).
 **Prevention:** Always include a `.max()` constraint on all string fields in Zod schemas, especially those that accept user input, to enforce defense-in-depth and prevent DoS.
+
+## 2026-02-09 - PII Exposure in Console Logs
+**Vulnerability:** The `useContactForm` hook was logging the full error object to the console upon submission failure (`console.error(error)`). In Axios-based requests, this error object often contains the request configuration and data payload (including PII like name, email, phone), exposing sensitive user information in the browser console.
+**Learning:** Standard error logging practices (`console.error(err)`) can inadvertently leak sensitive data when error objects contain request context.
+**Prevention:** Always sanitize error logs. Log generic messages or specific error codes instead of raw error objects, especially in client-side code handling user input.
