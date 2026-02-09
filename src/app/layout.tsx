@@ -18,8 +18,13 @@ const outfit = Outfit({
   display: "swap",
 });
 
-const CSP =
-  "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://va.vercel-scripts.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https: http://localhost:8080; frame-ancestors 'none'; object-src 'none'; base-uri 'self';";
+const isDev = process.env.NODE_ENV === "development";
+
+const CSP = `default-src 'self'; script-src 'self' 'unsafe-inline'${
+  isDev ? " 'unsafe-eval'" : ""
+} https://va.vercel-scripts.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https:${
+  isDev ? " http://localhost:8080" : ""
+}; frame-ancestors 'none'; object-src 'none'; base-uri 'self';`;
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://olivetocontabilidade.com"),
