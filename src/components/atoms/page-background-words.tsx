@@ -23,6 +23,7 @@ export function PageBackgroundWords() {
           }
           alt="Banner Words"
           fill
+          sizes="(max-width: 500px) 100vw, 500px"
           className="object-contain object-bottom"
           priority
         />

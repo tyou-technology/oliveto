@@ -1,5 +1,5 @@
 import { api } from "@/lib/api-client";
-import { LeadResponseDTO, UnreadLeadsCountDTO, CreateLeadDTO } from "../types";
+import { LeadResponseDTO, UnreadLeadsCountDTO, CreateLeadDTO, LeadQueryParams } from "../types";
 
 export interface PaginatedResponse<T> {
   content: T[];
@@ -18,7 +18,7 @@ export const leadsApi = {
   },
 
   findAll: async (page = 0, size = 10, isRead?: boolean | null): Promise<PaginatedResponse<LeadResponseDTO>> => {
-    const params: any = {
+    const params: LeadQueryParams = {
       page,
       size,
       sort: "createdAt,desc"

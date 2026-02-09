@@ -4,6 +4,9 @@ import {UpdateTagDTO, TagResponseDTO} from "@/lib/types/article";
 import {toast} from "sonner";
 import {getFriendlyErrorMessage} from "@/lib/utils/error-handler";
 import {QUERY_CONFIG} from "@/lib/config/query";
+import { useMemo } from "react";
+
+const STALE_TIME = 1000 * 60 * 5; // 5 minutes
 
 // Performance: Stable empty array reference to prevent unnecessary re-renders in memoized consumers
 const EMPTY_ARRAY: TagResponseDTO[] = [];
@@ -27,7 +30,7 @@ export const useTags = (firmId?: string, publishedOnly = false, initialData?: { 
       queryClient.invalidateQueries({ queryKey: ["tags"] });
       toast.success("Tag criada com sucesso!");
     },
-    onError: (error: any) => {
+    onError: (error) => {
       toast.error(getFriendlyErrorMessage(error));
     },
   });
@@ -39,7 +42,7 @@ export const useTags = (firmId?: string, publishedOnly = false, initialData?: { 
       queryClient.invalidateQueries({ queryKey: ["tags"] });
       toast.success("Tag atualizada com sucesso!");
     },
-    onError: (error: any) => {
+    onError: (error) => {
       toast.error(getFriendlyErrorMessage(error));
     },
   });
@@ -50,16 +53,19 @@ export const useTags = (firmId?: string, publishedOnly = false, initialData?: { 
       queryClient.invalidateQueries({ queryKey: ["tags"] });
       toast.success("Tag excluída com sucesso!");
     },
-    onError: (error: any) => {
+    onError: (error) => {
       toast.error(getFriendlyErrorMessage(error));
     },
   });
 
-  return {
-    tags: tagsData?.content || EMPTY_ARRAY,
-    isLoadingTags,
-    createTag,
-    updateTag,
-    deleteTag,
-  };
+  return useMemo(
+    () => ({
+      tags: tagsData?.content || EMPTY_ARRAY,
+      isLoadingTags,
+      createTag,
+      updateTag,
+      deleteTag,
+    }),
+    [tagsData?.content, isLoadingTags, createTag, updateTag, deleteTag]
+  );
 };

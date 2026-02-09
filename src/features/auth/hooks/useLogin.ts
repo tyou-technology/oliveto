@@ -18,7 +18,7 @@ export const useLogin = () => {
       toast.success("Login realizado com sucesso!");
       router.push(ROUTES.ADMIN.DASHBOARD.HOME);
     },
-    onError: (error: any) => {
+    onError: (error) => {
       toast.error(getFriendlyErrorMessage(error));
     },
   });

@@ -18,7 +18,7 @@ export const useLogout = () => {
       clearUser();
       router.push(ROUTES.ADMIN.LOGIN);
     },
-    onError: (error: any) => {
+    onError: (error) => {
       // Even if logout API fails, we should clear local state
       clearUser();
       router.push(ROUTES.ADMIN.LOGIN);

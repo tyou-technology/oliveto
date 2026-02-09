@@ -28,6 +28,13 @@ export interface LeadFilters {
   size?: number;
 }
 
+export interface LeadQueryParams {
+  page: number;
+  size: number;
+  sort: string;
+  isRead?: boolean;
+}
+
 export interface CreateLeadDTO {
   name: string;
   email: string;

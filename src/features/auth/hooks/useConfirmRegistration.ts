@@ -25,7 +25,7 @@ export const useConfirmRegistration = () => {
       toast.success("Cadastro confirmado com sucesso!");
       router.push(ROUTES.ADMIN.DASHBOARD.HOME);
     },
-    onError: (error: any) => {
+    onError: (error) => {
       toast.error(getFriendlyErrorMessage(error));
     },
   });

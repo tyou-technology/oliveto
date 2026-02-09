@@ -25,7 +25,7 @@ export const useArticles = (firmId?: string, page = 0, size = 10, publishedOnly 
       queryClient.invalidateQueries({ queryKey: ["articles"] });
       toast.success("Artigo criado com sucesso!");
     },
-    onError: (error: any) => {
+    onError: (error) => {
       toast.error(getFriendlyErrorMessage(error));
     },
   });
@@ -37,7 +37,7 @@ export const useArticles = (firmId?: string, page = 0, size = 10, publishedOnly 
       queryClient.invalidateQueries({ queryKey: ["articles"] });
       toast.success("Artigo atualizado com sucesso!");
     },
-    onError: (error: any) => {
+    onError: (error) => {
       toast.error(getFriendlyErrorMessage(error));
     },
   });
@@ -48,7 +48,7 @@ export const useArticles = (firmId?: string, page = 0, size = 10, publishedOnly 
       queryClient.invalidateQueries({ queryKey: ["articles"] });
       toast.success("Artigo excluído com sucesso!");
     },
-    onError: (error: any) => {
+    onError: (error) => {
       toast.error(getFriendlyErrorMessage(error));
     },
   });
