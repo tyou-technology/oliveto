@@ -23,7 +23,7 @@ export default function DashboardLayout({
 
   return (
     <PrivateRoute>
-      <div className="min-h-screen bg-[#0a0a0a] text-white flex">
+      <div className="min-h-screen bg-neutral-950 text-white flex">
         <DashboardSidebar
           isOpen={sidebarOpen}
           onClose={() => setSidebarOpen(false)}

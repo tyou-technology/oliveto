@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { UseFormRegister, UseFormWatch, UseFormSetValue, FieldErrors } from "react-hook-form";
+import { cn } from "@/lib/utils";
 import {
   RotateCcw,
   Save,
@@ -71,7 +72,7 @@ export function ArticleSidebar({
   return (
     <div className="space-y-6">
       {/* Publish Card */}
-      <div className="bg-[#111111] border border-white/10 rounded-2xl p-6">
+      <div className="bg-surface border border-white/10 rounded-2xl p-6">
         <h3 className="font-semibold mb-4">Publicação</h3>
         <div className="space-y-4">
           <div className="flex items-center justify-between text-sm">
@@ -104,7 +105,7 @@ export function ArticleSidebar({
                       type="button"
                       onClick={() => onStatusChange(ArticleStatus.PUBLISHED)}
                       disabled={isPending}
-                      className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-[#00FF90] text-black font-medium rounded-xl hover:bg-[#00FF90]/90 transition-colors disabled:opacity-50"
+                      className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-primary text-black font-medium rounded-xl hover:bg-primary/90 transition-colors disabled:opacity-50"
                     >
                       <Save className="w-4 h-4" />
                       Salvar Alterações
@@ -125,7 +126,7 @@ export function ArticleSidebar({
                       type="button"
                       onClick={() => onStatusChange(ArticleStatus.PUBLISHED)}
                       disabled={isPending}
-                      className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-[#00FF90] text-black font-medium rounded-xl hover:bg-[#00FF90]/90 transition-colors disabled:opacity-50"
+                      className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-primary text-black font-medium rounded-xl hover:bg-primary/90 transition-colors disabled:opacity-50"
                     >
                       <Send className="w-4 h-4" />
                       Publicar Artigo
@@ -152,9 +153,9 @@ export function ArticleSidebar({
       </div>
 
       {/* Category / Tags */}
-      <div className="bg-[#111111] border border-white/10 rounded-2xl p-6">
+      <div className="bg-surface border border-white/10 rounded-2xl p-6">
         <h3 className="font-semibold mb-4 flex items-center gap-2">
-          <Tag className="w-4 h-4 text-[#00FF90]" />
+          <Tag className="w-4 h-4 text-primary" />
           Tags
         </h3>
 
@@ -164,12 +165,15 @@ export function ArticleSidebar({
             {getSelectedTags().map(tag => (
               <span
                 key={tag.id}
-                className="inline-flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium border"
-                style={{
-                  backgroundColor: tag.color ? `${tag.color}20` : '#00FF9020',
-                  color: tag.color || '#00FF90',
-                  borderColor: tag.color ? `${tag.color}40` : '#00FF9040'
-                }}
+                className={cn(
+                  "inline-flex items-center gap-1 px-2 py-1 rounded-md text-xs font-medium border",
+                  !tag.color && "bg-primary/10 text-primary border-primary/20"
+                )}
+                style={tag.color ? {
+                  backgroundColor: `${tag.color}20`,
+                  color: tag.color,
+                  borderColor: `${tag.color}40`
+                } : undefined}
               >
                 {tag.name}
                 {!readOnly && (
@@ -203,7 +207,7 @@ export function ArticleSidebar({
               />
             </button>
             {showCategoryDropdown && (
-              <div className="absolute top-full left-0 right-0 mt-2 bg-[#1a1a1a] border border-white/10 rounded-xl overflow-hidden z-10 max-h-60 overflow-y-auto">
+              <div className="absolute top-full left-0 right-0 mt-2 bg-surface-highlight border border-white/10 rounded-xl overflow-hidden z-10 max-h-60 overflow-y-auto">
                 {tags.length === 0 ? (
                   <div className="px-4 py-3 text-sm text-neutral-500">
                     Nenhuma tag encontrada. Crie uma nova tag primeiro.
@@ -218,14 +222,14 @@ export function ArticleSidebar({
                         // Don't close dropdown to allow multiple selection
                       }}
                       className={`w-full px-4 py-3 text-left hover:bg-white/5 transition-colors text-sm flex items-center justify-between ${
-                        selectedTagIds.includes(tag.id) ? "text-[#00FF90]" : "text-white"
+                        selectedTagIds.includes(tag.id) ? "text-primary" : "text-white"
                       }`}
                     >
                       <span style={{ color: tag.color || undefined }}>{tag.name}</span>
                       {selectedTagIds.includes(tag.id) && (
                         <span
-                          className="w-2 h-2 rounded-full"
-                          style={{ backgroundColor: tag.color || '#00FF90' }}
+                          className={cn("w-2 h-2 rounded-full", !tag.color && "bg-primary")}
+                          style={tag.color ? { backgroundColor: tag.color } : undefined}
                         />
                       )}
                     </button>
@@ -238,9 +242,9 @@ export function ArticleSidebar({
       </div>
 
       {/* Cover Image */}
-      <div className="bg-[#111111] border border-white/10 rounded-2xl p-6">
+      <div className="bg-surface border border-white/10 rounded-2xl p-6">
         <h3 className="font-semibold mb-4 flex items-center gap-2">
-          <ImageIcon className="w-4 h-4 text-[#00FF90]" />
+          <ImageIcon className="w-4 h-4 text-primary" />
           Imagem de Capa (URL)
         </h3>
         <input
@@ -248,7 +252,7 @@ export function ArticleSidebar({
           {...register("imageUrl")}
           disabled={readOnly}
           placeholder="https://exemplo.com/imagem.jpg"
-          className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm placeholder:text-neutral-600 focus:outline-none focus:border-[#00FF90]/50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed mb-4"
+          className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm placeholder:text-neutral-600 focus:outline-none focus:border-primary/50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed mb-4"
           maxLength={2048}
         />
         {errors.imageUrl && (
@@ -275,16 +279,16 @@ export function ArticleSidebar({
       </div>
 
       {/* Author */}
-      <div className="bg-[#111111] border border-white/10 rounded-2xl p-6">
+      <div className="bg-surface border border-white/10 rounded-2xl p-6">
         <h3 className="font-semibold mb-4 flex items-center gap-2">
-          <User className="w-4 h-4 text-[#00FF90]" />
+          <User className="w-4 h-4 text-primary" />
           Autor
         </h3>
         <input
           type="text"
           disabled
           value={currentAuthorName}
-          className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 placeholder:text-neutral-600 focus:outline-none focus:border-[#00FF90]/50 transition-colors opacity-50 cursor-not-allowed"
+          className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 placeholder:text-neutral-600 focus:outline-none focus:border-primary/50 transition-colors opacity-50 cursor-not-allowed"
         />
       </div>
     </div>

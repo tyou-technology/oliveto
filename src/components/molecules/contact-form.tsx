@@ -14,7 +14,7 @@ export function ContactForm() {
   const { form, onSubmit, isPending } = useContactForm();
 
   const inputClasses =
-    "bg-[#111] border-border px-4 py-3 text-white placeholder:text-muted-foreground focus:outline-none focus:border-primary focus-visible:ring-0 focus-visible:ring-offset-0 transition-colors h-auto rounded-none border";
+    "bg-surface border-border px-4 py-3 text-white placeholder:text-muted-foreground focus:outline-none focus:border-primary focus-visible:ring-0 focus-visible:ring-offset-0 transition-colors h-auto rounded-none border";
 
   return (
     <div className="pt-12">

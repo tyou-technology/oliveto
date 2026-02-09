@@ -24,7 +24,7 @@ export function ToastNotification({ toast, onClose }: ToastNotificationProps) {
   return (
     <div className="fixed top-6 right-6 z-50 animate-in slide-in-from-top-2 fade-in duration-300">
       <div
-        className={`bg-[#111] border ${
+        className={`bg-surface border ${
           borderColorMap[toast.type]
         } rounded-lg p-4 shadow-xl max-w-sm`}
       >

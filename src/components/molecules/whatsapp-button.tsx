@@ -24,7 +24,7 @@ export function WhatsAppButton() {
         )}
       >
         {/* Header */}
-        <div className="bg-[#25D366] p-4">
+        <div className="bg-whatsapp p-4">
           <div className="flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="w-10 h-10 bg-white/20 rounded-full flex items-center justify-center">
@@ -64,7 +64,7 @@ export function WhatsAppButton() {
             )}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="block w-full bg-[#25D366] text-white text-center py-3 rounded-lg font-medium hover:bg-[#20BD5A] transition-colors"
+            className="block w-full bg-whatsapp text-white text-center py-3 rounded-lg font-medium hover:bg-whatsapp-hover transition-colors"
           >
             Iniciar Conversa
           </a>
@@ -74,7 +74,7 @@ export function WhatsAppButton() {
       {/* Main Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-14 h-14 bg-[#25D366] rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform relative cursor-pointer"
+        className="w-14 h-14 bg-whatsapp rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform relative cursor-pointer"
         aria-label={
           isOpen ? "Fechar chat do WhatsApp" : "Abrir chat do WhatsApp"
         }
@@ -84,7 +84,7 @@ export function WhatsAppButton() {
 
         {/* Pulse Animation */}
         <span
-          className="absolute w-full h-full rounded-full bg-[#25D366] animate-ping opacity-30"
+          className="absolute w-full h-full rounded-full bg-whatsapp animate-ping opacity-30"
           aria-hidden="true"
         />
 

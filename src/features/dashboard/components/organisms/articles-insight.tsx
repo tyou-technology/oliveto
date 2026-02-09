@@ -19,7 +19,7 @@ interface ArticlesInsightProps {
 
 function ArticleCardSkeleton() {
   return (
-    <div className="bg-[#111111] border border-white/10 rounded-2xl overflow-hidden">
+    <div className="bg-surface border border-white/10 rounded-2xl overflow-hidden">
       <Skeleton className="h-[160px] w-full" />
       <div className="p-4 space-y-3">
         <Skeleton className="h-4 w-3/4" />
@@ -46,7 +46,7 @@ export function ArticlesInsight({ articles, isLoading }: ArticlesInsightProps) {
 
   if (articles.length === 0) {
     return (
-      <div className="bg-[#111111] border border-white/10 rounded-2xl p-8 text-center">
+      <div className="bg-surface border border-white/10 rounded-2xl p-8 text-center">
         <div className="flex justify-center mb-4">
           <div className="p-4 bg-white/5 rounded-full">
             <Newspaper className="h-8 w-8 text-neutral-400" />
@@ -56,7 +56,7 @@ export function ArticlesInsight({ articles, isLoading }: ArticlesInsightProps) {
         <p className="text-neutral-400 mb-6 max-w-md mx-auto">
           Comece a publicar conteúdo para ver métricas de performance aqui.
         </p>
-        <Button className="bg-[#00FF90] text-black hover:bg-[#00dd00]">
+        <Button className="bg-primary text-black hover:bg-primary-dark">
           <Plus className="mr-2 h-4 w-4" />
           Criar Artigo
         </Button>

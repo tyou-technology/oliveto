@@ -2,13 +2,13 @@ export function SocialLogin() {
   return (
     <>
       <div className="my-8 flex items-center gap-4">
-        <div className="flex-1 h-px bg-[#222]" />
+        <div className="flex-1 h-px bg-neutral-800" />
         <span className="text-gray-500 text-sm">ou continue com</span>
-        <div className="flex-1 h-px bg-[#222]" />
+        <div className="flex-1 h-px bg-neutral-800" />
       </div>
 
       <div className="grid grid-cols-2 gap-4">
-        <button className="flex items-center justify-center gap-3 py-3 bg-[#111] border border-[#222] rounded-lg hover:border-primary transition-colors group">
+        <button className="flex items-center justify-center gap-3 py-3 bg-surface border border-neutral-800 rounded-lg hover:border-primary transition-colors group">
           <svg
             className="w-5 h-5 text-gray-400 group-hover:text-white transition-colors"
             viewBox="0 0 24 24"
@@ -35,7 +35,7 @@ export function SocialLogin() {
           </span>
         </button>
 
-        <button className="flex items-center justify-center gap-3 py-3 bg-[#111] border border-[#222] rounded-lg hover:border-primary transition-colors group">
+        <button className="flex items-center justify-center gap-3 py-3 bg-surface border border-neutral-800 rounded-lg hover:border-primary transition-colors group">
           <svg
             className="w-5 h-5 text-gray-400 group-hover:text-white transition-colors"
             fill="currentColor"

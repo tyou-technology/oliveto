@@ -34,7 +34,7 @@ export function Footer() {
             <p className="text-sm text-gray-500 mb-4">Fale agora.</p>
             <a
               href="tel:+5543991231726"
-              className="inline-block border border-[#00FF90] text-[#00FF90] px-4 py-2 text-sm hover:bg-[#00FF90] hover:text-black transition-colors"
+              className="inline-block border border-primary text-primary px-4 py-2 text-sm hover:bg-primary hover:text-black transition-colors"
             >
               +55 (43) 99123.1726
             </a>
@@ -82,7 +82,7 @@ export function Footer() {
             <p>
               DESENVOLVIMENTO -{" "}
               <span className="text-white font-medium">
-                T<span className="text-[#00A5B4]">_</span>YOU
+                T<span className="text-brand-tyou">_</span>YOU
               </span>
             </p>
           </Link>

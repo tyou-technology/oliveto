@@ -15,7 +15,7 @@ import { Footer } from "@/components/organisms/footer";
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-[#0a0a0a] text-white">
+    <main className="min-h-screen bg-neutral-950 text-white">
       <Header />
       <HeroSection />
       <AboutSection />
