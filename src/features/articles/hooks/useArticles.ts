@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { articlesApi } from "../api/articles.api";
 import { UpdateArticleDTO, ArticleResponseDTO } from "@/lib/types/article";
@@ -53,7 +54,7 @@ export const useArticles = (firmId?: string, page = 0, size = 10, publishedOnly 
     },
   });
 
-  return {
+  return useMemo(() => ({
     articles: articlesData?.content || EMPTY_ARRAY,
     totalPages: articlesData?.page?.totalPages || 0,
     totalElements: articlesData?.page?.totalElements || 0,
@@ -61,5 +62,11 @@ export const useArticles = (firmId?: string, page = 0, size = 10, publishedOnly 
     createArticle,
     updateArticle,
     deleteArticle,
-  };
+  }), [
+    articlesData,
+    isLoadingArticles,
+    createArticle,
+    updateArticle,
+    deleteArticle
+  ]);
 };
