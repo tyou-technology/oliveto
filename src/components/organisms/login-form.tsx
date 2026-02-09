@@ -76,6 +76,7 @@ export function LoginForm({ setIsLoggingIn }: LoginFormProps) {
           placeholder="seu@email.com"
           error={errors.email?.message}
           maxLength={255}
+          autoComplete="username"
         />
 
         <FormField
@@ -85,6 +86,7 @@ export function LoginForm({ setIsLoggingIn }: LoginFormProps) {
           placeholder="Sua senha"
           error={errors.password?.message}
           maxLength={100}
+          autoComplete="current-password"
         />
 
         <div className="flex items-center justify-between">
