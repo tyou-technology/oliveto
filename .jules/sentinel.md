@@ -22,3 +22,8 @@
 **Vulnerability:** The `useContactForm` hook was logging the full error object to the console upon submission failure (`console.error(error)`). In Axios-based requests, this error object often contains the request configuration and data payload (including PII like name, email, phone), exposing sensitive user information in the browser console.
 **Learning:** Standard error logging practices (`console.error(err)`) can inadvertently leak sensitive data when error objects contain request context.
 **Prevention:** Always sanitize error logs. Log generic messages or specific error codes instead of raw error objects, especially in client-side code handling user input.
+
+## 2026-02-12 - Zod URL Validation Gaps
+**Vulnerability:** Zod's `.url()` validation allows schemes like `javascript:`, `data:`, and `vbscript:`, which can lead to XSS if the URL is used in a context that executes scripts (e.g., `href`, `src` with specific exploits).
+**Learning:** `z.string().url()` only validates compliance with the URL standard, not safety. It does not enforce specific protocols like `http` or `https`.
+**Prevention:** Always use `.refine()` or regex to strictly enforce allowed protocols (e.g., `^https?://`) when validating URLs that will be rendered or stored.
