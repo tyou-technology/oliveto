@@ -40,4 +40,49 @@ describe('Auth Security', () => {
      // but we can verify the API call was made.
      expect(api.post).toHaveBeenCalledWith('/auth/login', expect.any(Object));
   });
+
+  it('should not return token in login response', async () => {
+    (api.post as any).mockResolvedValueOnce({
+      data: {
+        token: 'secret-token',
+        type: 'Bearer',
+        email: 'test@example.com',
+        userId: '123',
+      },
+    });
+
+    const response = await authApi.login({
+      email: 'test@test.com',
+      password: 'Password123!',
+    });
+
+    expect(response).toEqual({
+      type: 'Bearer',
+      email: 'test@example.com',
+      userId: '123',
+    });
+    expect((response as any).token).toBeUndefined();
+  });
+
+  it('should not return token in confirmRegistration response', async () => {
+    (api.post as any).mockResolvedValueOnce({
+      data: {
+        token: 'secret-token',
+        type: 'Bearer',
+        email: 'test@example.com',
+        userId: '123',
+      },
+    });
+
+    const response = await authApi.confirmRegistration({
+      verificationToken: 'verify-123',
+    });
+
+    expect(response).toEqual({
+      type: 'Bearer',
+      email: 'test@example.com',
+      userId: '123',
+    });
+    expect((response as any).token).toBeUndefined();
+  });
 });
