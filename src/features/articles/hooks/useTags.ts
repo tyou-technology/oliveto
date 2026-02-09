@@ -3,6 +3,7 @@ import {articlesApi} from "../api/articles.api";
 import {UpdateTagDTO, TagResponseDTO} from "@/lib/types/article";
 import {toast} from "sonner";
 import {getFriendlyErrorMessage} from "@/lib/utils/error-handler";
+import { useMemo } from "react";
 
 const STALE_TIME = 1000 * 60 * 5; // 5 minutes
 
@@ -56,11 +57,14 @@ export const useTags = (firmId?: string, publishedOnly = false, initialData?: { 
     },
   });
 
-  return {
-    tags: tagsData?.content || EMPTY_ARRAY,
-    isLoadingTags,
-    createTag,
-    updateTag,
-    deleteTag,
-  };
+  return useMemo(
+    () => ({
+      tags: tagsData?.content || EMPTY_ARRAY,
+      isLoadingTags,
+      createTag,
+      updateTag,
+      deleteTag,
+    }),
+    [tagsData?.content, isLoadingTags, createTag, updateTag, deleteTag]
+  );
 };
