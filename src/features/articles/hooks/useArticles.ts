@@ -3,8 +3,8 @@ import { articlesApi } from "../api/articles.api";
 import { UpdateArticleDTO, ArticleResponseDTO } from "@/lib/types/article";
 import { toast } from "sonner";
 import { getFriendlyErrorMessage } from "@/lib/utils/error-handler";
+import { QUERY_CONFIG } from "@/lib/config/query";
 
-const STALE_TIME = 1000 * 60 * 5; // 5 minutes
 const EMPTY_ARRAY: ArticleResponseDTO[] = [];
 
 export const useArticles = (firmId?: string, page = 0, size = 10, publishedOnly = false) => {
@@ -16,7 +16,7 @@ export const useArticles = (firmId?: string, page = 0, size = 10, publishedOnly 
       ? articlesApi.getPublishedByFirmId(firmId!, page, size)
       : articlesApi.getAllByFirmId(firmId!, page, size),
     enabled: !!firmId,
-    staleTime: STALE_TIME,
+    staleTime: QUERY_CONFIG.ARTICLES_STALE_TIME,
   });
 
   const createArticle = useMutation({

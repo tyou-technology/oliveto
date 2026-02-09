@@ -1,7 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { articlesApi } from "../api/articles.api";
-
-const STALE_TIME = 1000 * 60 * 5; // 5 minutes
+import { QUERY_CONFIG } from "@/lib/config/query";
 
 interface UseArticleCountOptions {
   enabled?: boolean;
@@ -14,7 +13,7 @@ export const useArticleCount = (options: UseArticleCountOptions = {}) => {
     queryKey: ["articles", "count"],
     queryFn: articlesApi.count,
     enabled,
-    staleTime: STALE_TIME,
+    staleTime: QUERY_CONFIG.ARTICLES_STALE_TIME,
   });
 
   return {

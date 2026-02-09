@@ -3,8 +3,7 @@ import {articlesApi} from "../api/articles.api";
 import {UpdateTagDTO, TagResponseDTO} from "@/lib/types/article";
 import {toast} from "sonner";
 import {getFriendlyErrorMessage} from "@/lib/utils/error-handler";
-
-const STALE_TIME = 1000 * 60 * 5; // 5 minutes
+import {QUERY_CONFIG} from "@/lib/config/query";
 
 // Performance: Stable empty array reference to prevent unnecessary re-renders in memoized consumers
 const EMPTY_ARRAY: TagResponseDTO[] = [];
@@ -18,7 +17,7 @@ export const useTags = (firmId?: string, publishedOnly = false, initialData?: { 
       ? articlesApi.getPublishedTagsByFirmId(firmId!)
       : articlesApi.getAllTagsByFirmId(firmId!),
     enabled: !!firmId,
-    staleTime: STALE_TIME,
+    staleTime: QUERY_CONFIG.ARTICLES_STALE_TIME,
     initialData,
   });
 
