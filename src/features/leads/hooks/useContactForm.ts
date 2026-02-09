@@ -43,8 +43,8 @@ export function useContactForm() {
 
       toast.success("Mensagem enviada com sucesso!");
       form.reset();
-    } catch (error) {
-      console.error(error);
+    } catch {
+      console.error("Error submitting contact form");
       toast.error("Erro ao enviar mensagem. Tente novamente.");
     }
   };
