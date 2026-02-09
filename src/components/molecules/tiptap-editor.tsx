@@ -25,6 +25,7 @@ import {
 } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useEffect } from "react";
+import { useDebouncedCallback } from "@/hooks/use-debounced-callback";
 
 interface TiptapEditorProps {
   content: string;
@@ -39,6 +40,10 @@ export function TiptapEditor({
   placeholder = "Escreva o conteúdo aqui...",
   readOnly = false,
 }: TiptapEditorProps) {
+  const debouncedOnChange = useDebouncedCallback((html: string) => {
+    onChange?.(html);
+  }, 300);
+
   const editor = useEditor({
     editable: !readOnly,
     extensions: [
@@ -65,7 +70,7 @@ export function TiptapEditor({
     ],
     content,
     onUpdate: ({ editor }) => {
-      onChange?.(editor.getHTML());
+      debouncedOnChange(editor.getHTML());
     },
     editorProps: {
       attributes: {
@@ -86,7 +91,7 @@ export function TiptapEditor({
 
   // Update content if it changes externally (e.g. initial load)
   useEffect(() => {
-    if (editor && content !== editor.getHTML()) {
+    if (editor && content !== editor.getHTML() && !editor.isFocused) {
       editor.commands.setContent(content);
     }
   }, [editor, content]);
