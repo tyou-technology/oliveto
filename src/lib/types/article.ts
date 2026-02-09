@@ -45,7 +45,15 @@ export const CreateArticleSchema = z.object({
   subtitle: z.string().max(255).optional(),
   briefing: z.string().max(500).optional(),
   content: z.string().min(1, "Conteúdo é obrigatório").max(16777215),
-  imageUrl: z.string().url().optional().or(z.literal("")),
+  imageUrl: z
+    .string()
+    .url()
+    .refine(
+      (url) => url.startsWith("http://") || url.startsWith("https://"),
+      "URL deve começar com http:// ou https://"
+    )
+    .optional()
+    .or(z.literal("")),
   status: z.nativeEnum(ArticleStatus).optional(),
   publishedAt: z.string().datetime().optional(),
   tagIds: z.array(z.string().uuid()).optional(),
@@ -58,7 +66,15 @@ export const UpdateArticleSchema = z.object({
   subtitle: z.string().max(255).optional(),
   briefing: z.string().max(500).optional(),
   content: z.string().max(16777215).optional(),
-  imageUrl: z.string().url().optional().or(z.literal("")),
+  imageUrl: z
+    .string()
+    .url()
+    .refine(
+      (url) => url.startsWith("http://") || url.startsWith("https://"),
+      "URL deve começar com http:// ou https://"
+    )
+    .optional()
+    .or(z.literal("")),
   status: z.nativeEnum(ArticleStatus).optional(),
   publishedAt: z.string().datetime().optional(),
   tagIds: z.array(z.string().uuid()).optional(),
