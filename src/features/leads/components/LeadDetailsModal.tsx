@@ -12,7 +12,7 @@ import { LeadResponseDTO } from "../types";
 import { useMarkLeadAsRead } from "../hooks";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
-import { Mail, Phone, User, MessageSquare, Info } from "lucide-react";
+import { Mail, Phone, User, MessageSquare, Info, LucideIcon } from "lucide-react";
 
 interface LeadDetailsModalProps {
   lead: LeadResponseDTO;
@@ -61,7 +61,13 @@ export function LeadDetailsModal({ lead, onClose }: LeadDetailsModalProps) {
   );
 }
 
-function InfoItem({ icon: Icon, label, value }: any) {
+interface InfoItemProps {
+  icon: LucideIcon;
+  label: string;
+  value: string;
+}
+
+function InfoItem({ icon: Icon, label, value }: InfoItemProps) {
   return (
     <div className="space-y-1">
       <div className="flex items-center gap-2 text-neutral-400">
