@@ -23,7 +23,7 @@ export function ArticleView({ article, onBack }: ArticleViewProps) {
         <h2 className="text-xl font-semibold">Visualizar Artigo</h2>
       </div>
 
-      <div className="bg-[#111] border border-white/10 rounded-2xl p-8">
+      <div className="bg-surface border border-white/10 rounded-2xl p-8">
         {/* Article Header */}
         <div className="border-b border-white/10 pb-6 mb-6">
           <h1 className="text-3xl font-bold mb-4">{article.title}</h1>
@@ -39,7 +39,7 @@ export function ArticleView({ article, onBack }: ArticleViewProps) {
             <span
               className={`${
                 article.status === ArticleStatus.PUBLISHED
-                  ? "text-[#00FF90]"
+                  ? "text-primary"
                   : "text-amber-400"
               }`}
             >
@@ -57,7 +57,7 @@ export function ArticleView({ article, onBack }: ArticleViewProps) {
               {article.tags.map((tag) => (
                 <span
                   key={tag.id}
-                  className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-[#00FF90]/10 text-[#00FF90] border border-[#00FF90]/20"
+                  className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary border border-primary/20"
                 >
                   <Tag className="w-3 h-3" />
                   {tag.name}

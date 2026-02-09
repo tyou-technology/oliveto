@@ -19,7 +19,7 @@ export function SuccessModal({ isOpen, onClose, name }: SuccessModalProps) {
       />
 
       {/* Modal */}
-      <div className="relative bg-[#111] border border-[#222] rounded-2xl p-8 max-w-md w-full animate-in fade-in zoom-in duration-300">
+      <div className="relative bg-surface border border-neutral-800 rounded-2xl p-8 max-w-md w-full animate-in fade-in zoom-in duration-300">
         {/* Close button */}
         <button
           onClick={onClose}
@@ -47,7 +47,7 @@ export function SuccessModal({ isOpen, onClose, name }: SuccessModalProps) {
             <span className="text-primary font-medium">{name}</span>,{" "}
             {loginPageContent.successModalMessage}
           </p>
-          <div className="bg-[#0a0a0a] border border-[#222] rounded-lg p-4 space-y-2">
+          <div className="bg-neutral-950 border border-neutral-800 rounded-lg p-4 space-y-2">
             <p className="text-sm text-gray-500">
               {loginPageContent.successModalStepsTitle}
             </p>
@@ -71,7 +71,7 @@ export function SuccessModal({ isOpen, onClose, name }: SuccessModalProps) {
             href={`https://wa.me/${COMPANY_WHATSAPP}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="flex items-center justify-center gap-2 py-3 bg-[#0a0a0a] border border-[#222] rounded-lg text-white hover:border-primary transition-colors"
+            className="flex items-center justify-center gap-2 py-3 bg-neutral-950 border border-neutral-800 rounded-lg text-white hover:border-primary transition-colors"
           >
             <Phone className="w-4 h-4" />
             <span className="text-sm">
@@ -80,7 +80,7 @@ export function SuccessModal({ isOpen, onClose, name }: SuccessModalProps) {
           </a>
           <button
             onClick={onClose}
-            className="py-3 bg-primary text-black font-semibold rounded-lg hover:bg-[#00dd00] transition-colors cursor-pointer"
+            className="py-3 bg-primary text-black font-semibold rounded-lg hover:bg-primary-dark transition-colors cursor-pointer"
           >
             {loginPageContent.successModalUnderstood}
           </button>

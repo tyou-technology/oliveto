@@ -16,7 +16,7 @@ interface RecentLeadsProps {
 export function RecentLeads({ data, isLoading }: RecentLeadsProps) {
   if (isLoading) {
     return (
-      <div className="bg-[#111111] border border-white/10 rounded-2xl overflow-hidden p-6">
+      <div className="bg-surface border border-white/10 rounded-2xl overflow-hidden p-6">
         <div className="flex items-center justify-between mb-6">
           <Skeleton className="h-6 w-48" />
           <Skeleton className="h-4 w-24" />
@@ -31,12 +31,12 @@ export function RecentLeads({ data, isLoading }: RecentLeadsProps) {
   }
 
   return (
-    <div className="bg-[#111111] border border-white/10 rounded-2xl overflow-hidden">
+    <div className="bg-surface border border-white/10 rounded-2xl overflow-hidden">
       <div className="flex items-center justify-between p-6 border-b border-white/10">
         <h2 className="text-lg font-semibold text-white">Leads Recentes</h2>
         <Link
           href={ROUTES.ADMIN.DASHBOARD.CONTATOS || "#"}
-          className="text-sm text-[#00FF90] hover:underline flex items-center gap-1"
+          className="text-sm text-primary hover:underline flex items-center gap-1"
         >
           Ver todos <ChevronRight className="w-4 h-4" />
         </Link>

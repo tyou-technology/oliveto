@@ -102,12 +102,12 @@ export function TiptapEditor({
 
   return (
     <div className={cn(
-      "bg-[#111111] border border-white/10 rounded-2xl overflow-hidden flex flex-col",
+      "bg-surface border border-white/10 rounded-2xl overflow-hidden flex flex-col",
       readOnly && "opacity-80"
     )}>
       {/* Toolbar - Hide if readOnly */}
       {!readOnly && (
-        <div className="border-b border-white/10 p-2 flex flex-wrap gap-1 bg-[#1a1a1a]">
+        <div className="border-b border-white/10 p-2 flex flex-wrap gap-1 bg-surface-highlight">
           <div className="flex items-center gap-1 mr-2 border-r border-white/10 pr-2">
             <button
               type="button"
@@ -138,7 +138,7 @@ export function TiptapEditor({
               className={cn(
                 "p-2 hover:bg-white/10 rounded-lg transition-colors",
                 editor.isActive("heading", { level: 1 }) &&
-                  "bg-white/20 text-[#00FF90]"
+                  "bg-white/20 text-primary"
               )}
               title="Título 1"
             >
@@ -152,7 +152,7 @@ export function TiptapEditor({
               className={cn(
                 "p-2 hover:bg-white/10 rounded-lg transition-colors",
                 editor.isActive("heading", { level: 2 }) &&
-                  "bg-white/20 text-[#00FF90]"
+                  "bg-white/20 text-primary"
               )}
               title="Título 2"
             >
@@ -166,7 +166,7 @@ export function TiptapEditor({
               className={cn(
                 "p-2 hover:bg-white/10 rounded-lg transition-colors",
                 editor.isActive("heading", { level: 3 }) &&
-                  "bg-white/20 text-[#00FF90]"
+                  "bg-white/20 text-primary"
               )}
               title="Título 3"
             >
@@ -180,7 +180,7 @@ export function TiptapEditor({
               onClick={() => editor.chain().focus().toggleBold().run()}
               className={cn(
                 "p-2 hover:bg-white/10 rounded-lg transition-colors",
-                editor.isActive("bold") && "bg-white/20 text-[#00FF90]"
+                editor.isActive("bold") && "bg-white/20 text-primary"
               )}
               title="Negrito"
             >
@@ -191,7 +191,7 @@ export function TiptapEditor({
               onClick={() => editor.chain().focus().toggleItalic().run()}
               className={cn(
                 "p-2 hover:bg-white/10 rounded-lg transition-colors",
-                editor.isActive("italic") && "bg-white/20 text-[#00FF90]"
+                editor.isActive("italic") && "bg-white/20 text-primary"
               )}
               title="Itálico"
             >
@@ -202,7 +202,7 @@ export function TiptapEditor({
               onClick={() => editor.chain().focus().toggleUnderline().run()}
               className={cn(
                 "p-2 hover:bg-white/10 rounded-lg transition-colors",
-                editor.isActive("underline") && "bg-white/20 text-[#00FF90]"
+                editor.isActive("underline") && "bg-white/20 text-primary"
               )}
               title="Sublinhado"
             >
@@ -213,7 +213,7 @@ export function TiptapEditor({
               onClick={() => editor.chain().focus().toggleStrike().run()}
               className={cn(
                 "p-2 hover:bg-white/10 rounded-lg transition-colors",
-                editor.isActive("strike") && "bg-white/20 text-[#00FF90]"
+                editor.isActive("strike") && "bg-white/20 text-primary"
               )}
               title="Tachado"
             >
@@ -228,7 +228,7 @@ export function TiptapEditor({
               className={cn(
                 "p-2 hover:bg-white/10 rounded-lg transition-colors",
                 editor.isActive({ textAlign: "left" }) &&
-                  "bg-white/20 text-[#00FF90]"
+                  "bg-white/20 text-primary"
               )}
               title="Alinhar à Esquerda"
             >
@@ -240,7 +240,7 @@ export function TiptapEditor({
               className={cn(
                 "p-2 hover:bg-white/10 rounded-lg transition-colors",
                 editor.isActive({ textAlign: "center" }) &&
-                  "bg-white/20 text-[#00FF90]"
+                  "bg-white/20 text-primary"
               )}
               title="Centralizar"
             >
@@ -252,7 +252,7 @@ export function TiptapEditor({
               className={cn(
                 "p-2 hover:bg-white/10 rounded-lg transition-colors",
                 editor.isActive({ textAlign: "right" }) &&
-                  "bg-white/20 text-[#00FF90]"
+                  "bg-white/20 text-primary"
               )}
               title="Alinhar à Direita"
             >
@@ -264,7 +264,7 @@ export function TiptapEditor({
               className={cn(
                 "p-2 hover:bg-white/10 rounded-lg transition-colors",
                 editor.isActive({ textAlign: "justify" }) &&
-                  "bg-white/20 text-[#00FF90]"
+                  "bg-white/20 text-primary"
               )}
               title="Justificar"
             >
@@ -278,7 +278,7 @@ export function TiptapEditor({
               onClick={() => editor.chain().focus().toggleBulletList().run()}
               className={cn(
                 "p-2 hover:bg-white/10 rounded-lg transition-colors",
-                editor.isActive("bulletList") && "bg-white/20 text-[#00FF90]"
+                editor.isActive("bulletList") && "bg-white/20 text-primary"
               )}
               title="Lista com Marcadores"
             >
@@ -289,7 +289,7 @@ export function TiptapEditor({
               onClick={() => editor.chain().focus().toggleOrderedList().run()}
               className={cn(
                 "p-2 hover:bg-white/10 rounded-lg transition-colors",
-                editor.isActive("orderedList") && "bg-white/20 text-[#00FF90]"
+                editor.isActive("orderedList") && "bg-white/20 text-primary"
               )}
               title="Lista Numerada"
             >
@@ -303,7 +303,7 @@ export function TiptapEditor({
               onClick={() => editor.chain().focus().toggleBlockquote().run()}
               className={cn(
                 "p-2 hover:bg-white/10 rounded-lg transition-colors",
-                editor.isActive("blockquote") && "bg-white/20 text-[#00FF90]"
+                editor.isActive("blockquote") && "bg-white/20 text-primary"
               )}
               title="Citação"
             >
@@ -318,12 +318,12 @@ export function TiptapEditor({
 
       <style jsx global>{`
         .ProseMirror blockquote {
-          border-left: 3px solid #00ff90;
+          border-left: 3px solid var(--primary);
           padding-left: 1rem;
           margin-left: 0;
           margin-right: 0;
           font-style: italic;
-          color: #a3a3a3;
+          color: var(--muted-foreground);
         }
         .ProseMirror h1 {
           font-size: 2.25rem;

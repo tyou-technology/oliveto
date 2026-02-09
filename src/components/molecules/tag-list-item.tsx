@@ -4,6 +4,7 @@ import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { Button } from "@/components/atoms/button";
 import { memo } from "react";
+import { cn } from "@/lib/utils";
 
 interface TagListItemProps {
   tag: TagResponseDTO;
@@ -17,14 +18,12 @@ export const TagListItem = memo(function TagListItem({ tag, onEdit, onDelete }: 
       <td className="px-6 py-4">
         <div className="flex items-center gap-3">
           <div
-            className="p-2 rounded-lg"
-            style={{
-              backgroundColor: tag.color ? `${tag.color}20` : "#333",
-            }}
+            className={cn("p-2 rounded-lg", !tag.color && "bg-neutral-800")}
+            style={tag.color ? { backgroundColor: `${tag.color}20` } : undefined}
           >
             <Tag
-              className="w-5 h-5"
-              style={{ color: tag.color || "#fff" }}
+              className={cn("w-5 h-5", !tag.color && "text-white")}
+              style={tag.color ? { color: tag.color } : undefined}
             />
           </div>
           <span className="font-medium max-w-xs truncate text-white">
@@ -38,8 +37,8 @@ export const TagListItem = memo(function TagListItem({ tag, onEdit, onDelete }: 
       <td className="px-6 py-4">
         <div className="flex items-center gap-2">
           <div
-            className="w-4 h-4 rounded-full border border-white/10"
-            style={{ backgroundColor: tag.color || "#fff" }}
+            className={cn("w-4 h-4 rounded-full border border-white/10", !tag.color && "bg-white")}
+            style={tag.color ? { backgroundColor: tag.color } : undefined}
           />
           <span className="text-sm text-neutral-400">
             {tag.color || "-"}

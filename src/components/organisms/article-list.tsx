@@ -11,7 +11,7 @@ interface ArticleListProps {
 
 export const ArticleList = memo(function ArticleList({ articles, onView, onEdit, onDelete }: ArticleListProps) {
   return (
-    <div className="bg-[#111111] border border-white/10 rounded-2xl overflow-hidden">
+    <div className="bg-surface border border-white/10 rounded-2xl overflow-hidden">
       <div className="overflow-x-auto">
         <table className="w-full">
           <thead>

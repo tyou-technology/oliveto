@@ -10,7 +10,7 @@ interface TagListProps {
 
 export const TagList = memo(function TagList({ tags, onEdit, onDelete }: TagListProps) {
   return (
-    <div className="bg-[#111111] border border-white/10 rounded-2xl overflow-hidden">
+    <div className="bg-surface border border-white/10 rounded-2xl overflow-hidden">
       <div className="overflow-x-auto">
         <table className="w-full">
           <thead>

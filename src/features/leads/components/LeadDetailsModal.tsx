@@ -30,7 +30,7 @@ export function LeadDetailsModal({ lead, onClose }: LeadDetailsModalProps) {
 
   return (
     <Dialog open={true} onOpenChange={(open) => !open && onClose()}>
-      <DialogContent className="bg-[#111] border-white/10 text-white sm:max-w-2xl">
+      <DialogContent className="bg-surface border-white/10 text-white sm:max-w-2xl">
         <DialogHeader>
           <DialogTitle className="text-xl font-bold">Detalhes do Contato</DialogTitle>
           <DialogDescription className="text-neutral-400">

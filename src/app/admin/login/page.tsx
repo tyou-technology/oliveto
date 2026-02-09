@@ -37,7 +37,7 @@ export default function LoginPage() {
         }
       `}</style>
 
-      <main className="h-screen bg-[#0a0a0a] flex overflow-hidden">
+      <main className="h-screen bg-neutral-950 flex overflow-hidden">
         {/* Left Side - Branding */}
         <LoginBranding />
 

@@ -40,7 +40,7 @@ export const FormField = forwardRef<HTMLInputElement, FormFieldProps>(
             aria-invalid={!!error ? "true" : undefined}
             aria-describedby={error ? errorId : undefined}
             className={cn(
-              "w-full px-4 py-4 bg-[#111] border border-[#222] text-white rounded-lg focus:outline-none focus:border-primary transition-colors placeholder:text-gray-600",
+              "w-full px-4 py-4 bg-surface border border-neutral-800 text-white rounded-lg focus:outline-none focus:border-primary transition-colors placeholder:text-gray-600",
               error && "border-red-500",
               isPassword && "pr-12", // Add padding for the eye icon
               className

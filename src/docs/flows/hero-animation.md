@@ -40,5 +40,5 @@ sequenceDiagram
 ## Data Dictionary
 
 - `prefix`: Text appearing before the highlighted word.
-- `highlight`: The key phrase styled with the brand's primary color (`#00FF90`).
+- `highlight`: The key phrase styled with the brand's primary color (`var(--primary)`).
 - `suffix`: Text appearing after the highlighted word, usually on a new line.
