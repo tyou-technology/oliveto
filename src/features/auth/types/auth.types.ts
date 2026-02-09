@@ -21,7 +21,6 @@ export const LoginSchema = z.object({
 export type LoginRequest = z.infer<typeof LoginSchema>;
 
 export interface LoginResponse {
-  token: string;
   type: string;
   email: string;
   userId: string;
@@ -44,7 +43,6 @@ export interface ConfirmRegistrationRequest {
 }
 
 export interface ConfirmRegistrationResponse {
-  token: string;
   type: string;
   email: string;
   userId: string;
