@@ -1,4 +1,5 @@
 import { getCsp } from "./src/lib/config/csp.mjs";
+import { getSecurityHeaders } from "./src/lib/config/security-headers.mjs";
 
 const isDev = process.env.NODE_ENV === "development";
 
@@ -17,6 +18,7 @@ const nextConfig = {
           key: "Content-Security-Policy",
           value: getCsp(isDev),
         },
+        ...getSecurityHeaders(),
       ],
     },
   ],
