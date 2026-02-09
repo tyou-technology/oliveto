@@ -28,6 +28,7 @@ export function HeroSection() {
             src={heroContent.backgroundImage}
             alt="Banner Words"
             fill
+            sizes="(max-width: 1920px) 100vw, 1920px"
             className="object-contain object-bottom"
             priority
           />
