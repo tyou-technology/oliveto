@@ -5,6 +5,7 @@ import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import { QueryProvider } from "@/components/providers/query-provider";
 import { Toaster } from "@/components/atoms/sonner";
+import { getCsp } from "@/lib/config/csp";
 
 const golos = Golos_Text({
   subsets: ["latin"],
@@ -20,11 +21,7 @@ const outfit = Outfit({
 
 const isDev = process.env.NODE_ENV === "development";
 
-const CSP = `default-src 'self'; script-src 'self' 'unsafe-inline'${
-  isDev ? " 'unsafe-eval'" : ""
-} https://va.vercel-scripts.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https:${
-  isDev ? " http://localhost:8080" : ""
-}; frame-ancestors 'none'; object-src 'none'; base-uri 'self';`;
+const CSP = getCsp(isDev);
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://olivetocontabilidade.com"),
