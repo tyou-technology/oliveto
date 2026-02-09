@@ -19,7 +19,10 @@ export const ArticleGridItem = memo(function ArticleGridItem({ article, tagsMap 
       : (article.tagIds?.map(id => tagsMap.get(id)).filter(Boolean) as TagResponseDTO[]) || [];
   }, [article.tags, article.tagIds, tagsMap]);
 
-  const visibleTags = isExpanded ? resolvedTags : resolvedTags.slice(0, 3);
+  const visibleTags = useMemo(() => {
+    return isExpanded ? resolvedTags : resolvedTags.slice(0, 3);
+  }, [isExpanded, resolvedTags]);
+
   const hasMoreTags = resolvedTags.length > 3;
 
   const handleExpand = (e: React.MouseEvent) => {
