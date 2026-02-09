@@ -28,7 +28,7 @@ export const useTags = (firmId?: string, publishedOnly = false, initialData?: { 
       queryClient.invalidateQueries({ queryKey: ["tags"] });
       toast.success("Tag criada com sucesso!");
     },
-    onError: (error: any) => {
+    onError: (error) => {
       toast.error(getFriendlyErrorMessage(error));
     },
   });
@@ -40,7 +40,7 @@ export const useTags = (firmId?: string, publishedOnly = false, initialData?: { 
       queryClient.invalidateQueries({ queryKey: ["tags"] });
       toast.success("Tag atualizada com sucesso!");
     },
-    onError: (error: any) => {
+    onError: (error) => {
       toast.error(getFriendlyErrorMessage(error));
     },
   });
@@ -51,7 +51,7 @@ export const useTags = (firmId?: string, publishedOnly = false, initialData?: { 
       queryClient.invalidateQueries({ queryKey: ["tags"] });
       toast.success("Tag excluída com sucesso!");
     },
-    onError: (error: any) => {
+    onError: (error) => {
       toast.error(getFriendlyErrorMessage(error));
     },
   });
