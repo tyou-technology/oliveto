@@ -3,7 +3,11 @@ import { z } from "zod";
 export const PASSWORD_REGEX = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@#$%^&+=!])(?=\S+$).{8,100}$/;
 
 export const LoginSchema = z.object({
-  email: z.string().email("Email inválido").min(1, "Email é obrigatório"),
+  email: z
+    .string()
+    .email("Email inválido")
+    .min(1, "Email é obrigatório")
+    .max(255, "O email deve ter no máximo 255 caracteres"),
   password: z
     .string()
     .min(8, "A senha deve ter no mínimo 8 caracteres")

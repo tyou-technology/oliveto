@@ -12,3 +12,8 @@
 **Vulnerability:** The HTML sanitizer hook for `rel="noopener noreferrer"` enforcement was case-sensitive, only checking for `target="_blank"`. This allowed links with `target="_BLANK"` (or other case variations) to bypass the protection, potentially exposing users to reverse tabnabbing attacks.
 **Learning:** HTML attribute values are case-sensitive for frame names, but reserved keywords like `_blank` are case-insensitive in browser behavior. Security checks must account for this.
 **Prevention:** Always normalize attribute values (e.g., `.toLowerCase()`) before checking against reserved keywords like `_blank`, `_self`, etc.
+
+## 2026-02-08 - Missing Schema Length Validation for Email
+**Vulnerability:** Missing `.max(255)` constraint on the email field in the `LoginSchema`. This could allow excessively large email strings to be processed, potentially leading to DoS or memory issues.
+**Learning:** Zod `email()` validation does not implicitly limit the length of the string to standard email limits (254/255 characters).
+**Prevention:** Always include a `.max()` constraint on all string fields in Zod schemas, especially those that accept user input, to enforce defense-in-depth and prevent DoS.
