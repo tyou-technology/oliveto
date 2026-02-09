@@ -22,17 +22,23 @@ export const FormField = forwardRef<HTMLInputElement, FormFieldProps>(
       inputType = showPassword ? "text" : "password";
     }
 
+    const { id } = props;
+    const inputId = id || name;
+    const errorId = `${inputId}-error`;
+
     return (
       <div className="space-y-2">
-        <label htmlFor={name} className="text-sm text-gray-400">
+        <label htmlFor={inputId} className="text-sm text-gray-400">
           {label}
         </label>
         <div className="relative">
           <input
-            id={name}
+            id={inputId}
             name={name}
             type={inputType}
             ref={ref}
+            aria-invalid={!!error ? "true" : undefined}
+            aria-describedby={error ? errorId : undefined}
             className={cn(
               "w-full px-4 py-4 bg-[#111] border border-[#222] text-white rounded-lg focus:outline-none focus:border-primary transition-colors placeholder:text-gray-600",
               error && "border-red-500",
@@ -45,7 +51,7 @@ export const FormField = forwardRef<HTMLInputElement, FormFieldProps>(
             <button
               type="button"
               onClick={togglePasswordVisibility}
-              className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition-colors focus:outline-none"
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-full p-1"
               aria-label={showPassword ? "Hide password" : "Show password"}
             >
               {showPassword ? (
@@ -56,7 +62,11 @@ export const FormField = forwardRef<HTMLInputElement, FormFieldProps>(
             </button>
           )}
         </div>
-        {error && <p className="text-sm text-red-500">{error}</p>}
+        {error && (
+          <p id={errorId} role="alert" className="text-sm text-red-500">
+            {error}
+          </p>
+        )}
       </div>
     );
   }
