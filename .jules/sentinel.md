@@ -27,3 +27,8 @@
 **Vulnerability:** Zod's `.url()` validation allows schemes like `javascript:`, `data:`, and `vbscript:`, which can lead to XSS if the URL is used in a context that executes scripts (e.g., `href`, `src` with specific exploits).
 **Learning:** `z.string().url()` only validates compliance with the URL standard, not safety. It does not enforce specific protocols like `http` or `https`.
 **Prevention:** Always use `.refine()` or regex to strictly enforce allowed protocols (e.g., `^https?://`) when validating URLs that will be rendered or stored.
+
+## 2026-02-14 - Inconsistent Security Headers Configuration
+**Vulnerability:** Security headers (CSP, HSTS, X-Frame-Options) were defined in both `next.config.mjs` and `.htaccess`, but with inconsistencies (e.g., missing `upgrade-insecure-requests`, conflicting frame options). This creates potential security gaps depending on the deployment environment (Vercel vs. Apache).
+**Learning:** When a project supports multiple deployment targets (e.g., Static Export via Apache and Vercel Edge), security configurations must be manually synchronized across all configuration files (`next.config.mjs`, `vercel.json`, `.htaccess`).
+**Prevention:** Regularly audit all configuration files for consistency. Ideally, generate environment-specific configs from a single source of truth during the build process.

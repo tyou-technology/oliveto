@@ -8,5 +8,5 @@ export function getCsp(isDev) {
     isDev ? " 'unsafe-eval'" : ""
   } https://va.vercel-scripts.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; connect-src 'self' https:${
     isDev ? " http://localhost:8080" : ""
-  }; frame-ancestors 'none'; object-src 'none'; base-uri 'self';`;
+  }; frame-ancestors 'none'; object-src 'none'; base-uri 'self'; upgrade-insecure-requests;`;
 }
