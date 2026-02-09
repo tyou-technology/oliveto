@@ -1,4 +1,4 @@
-import { UseFormRegister, FieldErrors, UseFormWatch, UseFormSetValue } from "react-hook-form";
+import { UseFormRegister, FieldErrors, UseFormWatch, UseFormSetValue, Control, Controller } from "react-hook-form";
 import { CreateArticleDTO } from "@/lib/types/article";
 import { TiptapEditor } from "@/components/molecules/tiptap-editor";
 
@@ -8,14 +8,16 @@ interface ArticleMainContentProps {
   watch: UseFormWatch<CreateArticleDTO>;
   setValue: UseFormSetValue<CreateArticleDTO>;
   readOnly?: boolean;
+  control: Control<CreateArticleDTO>;
 }
 
 export function ArticleMainContent({
   register,
   errors,
-  watch,
+  watch, // keeping watch for now as it might be used elsewhere or passed for consistency, but we won't use it for content
   setValue,
   readOnly = false,
+  control,
 }: ArticleMainContentProps) {
   return (
     <div className="lg:col-span-2 space-y-6">
@@ -59,10 +61,16 @@ export function ArticleMainContent({
         <label className="block text-sm text-neutral-400">
           Conteúdo do Artigo
         </label>
-        <TiptapEditor
-          content={watch("content")}
-          onChange={(content) => setValue("content", content)}
-          readOnly={readOnly}
+        <Controller
+          name="content"
+          control={control}
+          render={({ field }) => (
+            <TiptapEditor
+              content={field.value}
+              onChange={field.onChange}
+              readOnly={readOnly}
+            />
+          )}
         />
         {errors.content && (
           <p className="text-red-500 text-sm">{errors.content.message}</p>

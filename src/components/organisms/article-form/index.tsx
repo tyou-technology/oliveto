@@ -43,6 +43,7 @@ export function ArticleForm({
     setValue,
     watch,
     reset,
+    control,
     formState: { errors },
   } = useForm<CreateArticleDTO>({
     resolver: zodResolver(CreateArticleSchema),
@@ -112,6 +113,7 @@ export function ArticleForm({
           watch={watch}
           setValue={setValue}
           readOnly={readOnly}
+          control={control}
         />
 
         {/* Sidebar */}
