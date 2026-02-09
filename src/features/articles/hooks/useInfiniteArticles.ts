@@ -1,8 +1,7 @@
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { articlesApi, PaginatedResponse } from "../api/articles.api";
 import { ArticleResponseDTO } from "@/lib/types/article";
-
-const STALE_TIME = 1000 * 60 * 5; // 5 minutes
+import { QUERY_CONFIG } from "@/lib/config/query";
 
 export const useInfiniteArticles = (
   firmId?: string,
@@ -30,7 +29,7 @@ export const useInfiniteArticles = (
       return undefined;
     },
     enabled: !!firmId,
-    staleTime: STALE_TIME,
+    staleTime: QUERY_CONFIG.ARTICLES_STALE_TIME,
     initialData,
   });
 
