@@ -1,11 +1,14 @@
 import { z } from "zod";
 
-const envSchema = z.object({
+export const envSchema = z.object({
   NODE_ENV: z
     .enum(["development", "test", "production"])
     .default("development"),
 
-  NEXT_PUBLIC_API_URL: z.string().url(),
+  NEXT_PUBLIC_API_URL: z.string().url().refine(
+    (url) => url.startsWith("http://") || url.startsWith("https://"),
+    "URL must use http or https protocol"
+  ),
   NEXT_PUBLIC_APP_ENV: z
     .enum(["development", "production", "test"])
     .default("development"),
