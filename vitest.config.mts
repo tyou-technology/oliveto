@@ -7,6 +7,10 @@ export default defineConfig({
   test: {
     environment: 'jsdom',
     globals: true,
+    env: {
+      NEXT_PUBLIC_API_URL: 'http://localhost:3000',
+      NEXT_PUBLIC_FIRM_ID: '00000000-0000-0000-0000-000000000000',
+    },
   },
   resolve: {
     alias: {
