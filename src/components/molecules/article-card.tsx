@@ -17,9 +17,9 @@ export const ArticleCard = memo(function ArticleCard({article, className}: Reado
   return (
       <Link
           href={`/artigos/${article.id}`}
-          className={`min-w-[calc(33.333%-16px)] group ${className || ""}`}
+          className={`min-w-[calc(33.333%-16px)] group transition-all duration-200 ease-in-out hover:-translate-y-1 hover:shadow-lg rounded-xl p-2 ${className || ""}`}
       >
-        <article className="relative">
+        <article className="relative h-full">
           {/* Image */}
           <div className="relative h-56 overflow-hidden mb-4">
             <Image

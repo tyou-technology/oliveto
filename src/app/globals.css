@@ -162,6 +162,18 @@
   h6 {
     @apply font-heading;
   }
+  button,
+  a,
+  [role="button"] {
+    @apply cursor-pointer transition-all duration-200 ease-in-out;
+  }
+  button:disabled,
+  input:disabled,
+  select:disabled,
+  textarea:disabled,
+  [aria-disabled="true"] {
+    @apply cursor-not-allowed;
+  }
 }
 .prose-custom h1 {
   font-size: 1.875rem;

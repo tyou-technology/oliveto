@@ -9,7 +9,7 @@ export function LoadMoreButton({ text, onClick, disabled=false }: LoadMoreButton
     <div className="border-t border-muted pt-8">
       <button
         onClick={onClick}
-        className="text-sm font-medium hover:text-primary transition-colors cursor-pointer"
+        className="text-sm font-medium hover:text-primary transition-all duration-200 ease-in-out cursor-pointer disabled:cursor-not-allowed disabled:opacity-50"
         disabled={disabled}
       >
         {text}
