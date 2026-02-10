@@ -55,4 +55,22 @@ describe('ArticleList', () => {
     const viewButtons = screen.getAllByTitle('Visualizar');
     expect(viewButtons).toHaveLength(2);
   });
+
+  it('renders empty state when no articles are provided', () => {
+    const articles: ArticleResponseDTO[] = [];
+    const onView = vi.fn();
+    const onEdit = vi.fn();
+    const onDelete = vi.fn();
+
+    render(
+      <ArticleList
+        articles={articles}
+        onView={onView}
+        onEdit={onEdit}
+        onDelete={onDelete}
+      />
+    );
+
+    expect(screen.getByText('Nenhum artigo encontrado')).toBeTruthy();
+  });
 });
