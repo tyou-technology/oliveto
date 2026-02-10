@@ -17,7 +17,7 @@ export function WhatsAppButton() {
       <div
         aria-hidden={!isOpen}
         className={cn(
-          "absolute bottom-20 right-0 w-72 bg-white rounded-2xl shadow-2xl overflow-hidden transition-all duration-300",
+          "absolute bottom-20 right-0 w-72 bg-white rounded-2xl shadow-2xl overflow-hidden transition-all duration-200 ease-in-out",
           isOpen
             ? "opacity-100 translate-y-0 visible"
             : "opacity-0 translate-y-4 invisible pointer-events-none"
@@ -40,7 +40,7 @@ export function WhatsAppButton() {
             </div>
             <button
               onClick={() => setIsOpen(false)}
-              className="text-white/80 hover:text-white transition-colors cursor-pointer"
+              className="text-white/80 hover:text-white transition-all duration-200 ease-in-out cursor-pointer"
               aria-label="Fechar chat"
             >
               <X className="w-5 h-5" aria-hidden="true" />
@@ -64,7 +64,7 @@ export function WhatsAppButton() {
             )}`}
             target="_blank"
             rel="noopener noreferrer"
-            className="block w-full bg-whatsapp text-white text-center py-3 rounded-lg font-medium hover:bg-whatsapp-hover transition-colors"
+            className="block w-full bg-whatsapp text-white text-center py-3 rounded-lg font-medium hover:bg-whatsapp-hover transition-all duration-200 ease-in-out"
           >
             Iniciar Conversa
           </a>
@@ -74,7 +74,7 @@ export function WhatsAppButton() {
       {/* Main Button */}
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className="w-14 h-14 bg-whatsapp rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-transform relative cursor-pointer"
+        className="w-14 h-14 bg-whatsapp rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-all duration-200 ease-in-out relative cursor-pointer"
         aria-label={
           isOpen ? "Fechar chat do WhatsApp" : "Abrir chat do WhatsApp"
         }

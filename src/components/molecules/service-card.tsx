@@ -10,7 +10,7 @@ export function ServiceCard({ service }: ServiceCardProps) {
   return (
     <Link
       href={service.href}
-      className="group relative border border-gray-700 p-8 py-16 hover:border-primary transition-colors"
+      className="group relative border border-gray-700 p-8 py-16 hover:border-primary transition-all duration-200 ease-in-out hover:-translate-y-1 hover:shadow-lg"
     >
       <h3 className="text-lg font-medium tracking-wider text-center">
         {service.title}

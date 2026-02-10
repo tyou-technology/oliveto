@@ -8,7 +8,7 @@ export function SocialLogin() {
       </div>
 
       <div className="grid grid-cols-2 gap-4">
-        <button className="flex items-center justify-center gap-3 py-3 bg-surface border border-neutral-800 rounded-lg hover:border-primary transition-colors group">
+        <button className="flex items-center justify-center gap-3 py-3 bg-surface border border-neutral-800 rounded-lg hover:border-primary transition-all duration-200 ease-in-out group cursor-pointer">
           <svg
             className="w-5 h-5 text-gray-400 group-hover:text-white transition-colors"
             viewBox="0 0 24 24"
@@ -35,7 +35,7 @@ export function SocialLogin() {
           </span>
         </button>
 
-        <button className="flex items-center justify-center gap-3 py-3 bg-surface border border-neutral-800 rounded-lg hover:border-primary transition-colors group">
+        <button className="flex items-center justify-center gap-3 py-3 bg-surface border border-neutral-800 rounded-lg hover:border-primary transition-all duration-200 ease-in-out group cursor-pointer">
           <svg
             className="w-5 h-5 text-gray-400 group-hover:text-white transition-colors"
             fill="currentColor"
