@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { PrivateRoute } from "@/features/auth/components/PrivateRoute";
+import { AuthGuard } from "@/features/auth/components/AuthGuard";
 import { DashboardSidebar } from "@/components/organisms/dashboard-sidebar";
 import { DashboardHeader } from "@/components/organisms/dashboard-header";
 import { useUserStore } from "@/stores/useUserStore";
@@ -22,7 +22,7 @@ export default function DashboardLayout({
   };
 
   return (
-    <PrivateRoute>
+    <AuthGuard>
       <div className="min-h-screen bg-neutral-950 text-white flex">
         <DashboardSidebar
           isOpen={sidebarOpen}
@@ -37,6 +37,6 @@ export default function DashboardLayout({
           {children}
         </main>
       </div>
-    </PrivateRoute>
+    </AuthGuard>
   );
 }
