@@ -1,13 +1,9 @@
 import { useQuery } from "@tanstack/react-query";
 import { authApi } from "../api/auth.api";
-import { useRouter } from "next/navigation";
-import { ROUTES } from "@/lib/config/routes";
-import { toast } from "sonner";
 import { useEffect } from "react";
 import { useUserStore } from "@/stores/useUserStore";
 
 export const useValidateToken = () => {
-  const router = useRouter();
   const { setUser, clearUser } = useUserStore();
 
   const { data, isError, isLoading, error, isSuccess } = useQuery({
@@ -25,27 +21,21 @@ export const useValidateToken = () => {
         setUser(data);
       } else {
         clearUser();
-        router.push(ROUTES.ADMIN.LOGIN);
-        toast.error(data.message || "Sessão inválida. Faça login novamente.");
       }
     }
-  }, [isSuccess, data, setUser, clearUser, router]);
+  }, [isSuccess, data, setUser, clearUser]);
 
   useEffect(() => {
     if (isError) {
       clearUser();
-      router.push(ROUTES.ADMIN.LOGIN);
-      const message =
-        (error as any)?.response?.data?.message ||
-        "Sessão expirada. Faça login novamente.";
-      toast.error(message);
     }
-  }, [isError, router, error, clearUser]);
+  }, [isError, clearUser]);
 
   return {
     isAuthenticated: data?.valid === true,
     user: data,
     isLoading,
     isError,
+    error,
   };
 };
