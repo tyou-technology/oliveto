@@ -91,6 +91,7 @@ export function ArticlesView({ initialArticles, initialTags }: ArticlesViewProps
           <LoadMoreButton
             text={articlesPageContent.loadMoreButtonText}
             onClick={handleLoadMore}
+            loading={isFetchingNextPage}
             disabled={isFetchingNextPage}
           />
         )}
