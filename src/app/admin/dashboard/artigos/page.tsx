@@ -4,7 +4,7 @@ import { useState, useCallback } from "react";
 import { Plus, Tag, Loader2 } from "lucide-react";
 import { useUserStore } from "@/stores/useUserStore";
 import { ArticleList } from "@/components/organisms/article-list";
-import { ArticleForm } from "@/components/organisms/article-form";
+import dynamic from "next/dynamic";
 import { useArticles } from "@/features/articles/hooks/useArticles";
 import { useArticle } from "@/features/articles/hooks/useArticle";
 import {
@@ -28,6 +28,18 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/atoms/alert-dialog";
+
+// Optimization: Lazy load ArticleForm to split the heavy TiptapEditor dependency from the main bundle
+const ArticleForm = dynamic(
+  () => import("@/components/organisms/article-form").then((mod) => mod.ArticleForm),
+  {
+    loading: () => (
+      <div className="flex items-center justify-center h-64">
+        <Loader2 className="w-8 h-8 text-primary animate-spin" />
+      </div>
+    ),
+  }
+);
 
 type TabType = "list" | "create" | "tags" | "create-tag" | "edit" | "view" | "edit-tag";
 
