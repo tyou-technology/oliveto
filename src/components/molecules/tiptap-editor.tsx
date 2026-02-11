@@ -24,7 +24,7 @@ import {
   Heading3,
 } from "lucide-react";
 import { cn } from "@/lib/utils";
-import { useEffect } from "react";
+import { useEffect, memo } from "react";
 import { useDebouncedCallback } from "@/hooks/use-debounced-callback";
 
 interface TiptapEditorProps {
@@ -34,7 +34,7 @@ interface TiptapEditorProps {
   readOnly?: boolean;
 }
 
-export function TiptapEditor({
+export const TiptapEditor = memo(function TiptapEditor({
   content,
   onChange,
   placeholder = "Escreva o conteúdo aqui...",
@@ -369,4 +369,4 @@ export function TiptapEditor({
       `}</style>
     </div>
   );
-}
+});
