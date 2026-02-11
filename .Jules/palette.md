@@ -13,3 +13,7 @@
 ## 2025-02-23 - Focus Trap in Hidden Elements
 **Learning:** Elements that fade out with `opacity-0` remain focusable, creating a confusing keyboard experience. Using `invisible` (CSS `visibility: hidden`) works perfectly with CSS transitions because it delays the hidden state until the transition completes, naturally solving the focus trap issue.
 **Action:** Always combine `opacity-0` transitions with `invisible` or `visibility: hidden` for elements that should be removed from the accessibility tree.
+
+## 2025-02-24 - Destructive Action Confirmation
+**Learning:** Found that the logout action was immediate and lacked confirmation, which could lead to accidental session termination. Direct action buttons for destructive operations without confirmation are a UX risk.
+**Action:** Implemented `AlertDialog` for the logout button to require user confirmation. Added a loading state within the dialog action to provide feedback during the async logout process, ensuring the dialog remains open until the action completes or redirects.
