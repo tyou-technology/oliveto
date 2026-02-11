@@ -10,7 +10,7 @@ export function getSecurityHeaders() {
     },
     {
       key: "Permissions-Policy",
-      value: "camera=(), microphone=(), geolocation=()",
+      value: "accelerometer=(), camera=(), geolocation=(), gyroscope=(), magnetometer=(), microphone=(), payment=(), usb=()",
     },
     {
       key: "Strict-Transport-Security",
@@ -19,6 +19,14 @@ export function getSecurityHeaders() {
     {
       key: "X-Frame-Options",
       value: "DENY",
+    },
+    {
+      key: "X-Permitted-Cross-Domain-Policies",
+      value: "none",
+    },
+    {
+      key: "X-DNS-Prefetch-Control",
+      value: "off",
     },
   ];
 }
