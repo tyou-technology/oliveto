@@ -336,11 +336,22 @@ export default function ArtigosPage() {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel className="bg-white/5 border-white/10 hover:bg-white/10 text-white hover:text-white">Cancelar</AlertDialogCancel>
-            <AlertDialogAction 
-              onClick={handleDeleteArticleConfirm}
+            <AlertDialogAction
+              onClick={(e) => {
+                e.preventDefault();
+                handleDeleteArticleConfirm();
+              }}
+              disabled={deleteArticle.isPending}
               className="bg-red-500 hover:bg-red-600 text-white"
             >
-              Excluir
+              {deleteArticle.isPending ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin mr-2" />
+                  Excluindo...
+                </>
+              ) : (
+                "Excluir"
+              )}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
@@ -357,11 +368,22 @@ export default function ArtigosPage() {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel className="bg-white/5 border-white/10 hover:bg-white/10 text-white hover:text-white">Cancelar</AlertDialogCancel>
-            <AlertDialogAction 
-              onClick={handleDeleteTagConfirm}
+            <AlertDialogAction
+              onClick={(e) => {
+                e.preventDefault();
+                handleDeleteTagConfirm();
+              }}
+              disabled={deleteTag.isPending}
               className="bg-red-500 hover:bg-red-600 text-white"
             >
-              Excluir
+              {deleteTag.isPending ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin mr-2" />
+                  Excluindo...
+                </>
+              ) : (
+                "Excluir"
+              )}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>
