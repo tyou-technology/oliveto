@@ -17,3 +17,7 @@
 ## 2025-02-24 - Destructive Action Confirmation
 **Learning:** Found that the logout action was immediate and lacked confirmation, which could lead to accidental session termination. Direct action buttons for destructive operations without confirmation are a UX risk.
 **Action:** Implemented `AlertDialog` for the logout button to require user confirmation. Added a loading state within the dialog action to provide feedback during the async logout process, ensuring the dialog remains open until the action completes or redirects.
+
+## 2025-02-25 - Slot Component Content Injection
+**Learning:** Radix UI's `Slot` component (used when `asChild` is true) strictly expects a single child and merges props, making it impossible to inject additional content like a loading spinner directly.
+**Action:** When implementing `loading` states in components supporting `asChild`, condition the spinner rendering on `!asChild` and document this limitation, or refactor to wrap the child manually if needed.
