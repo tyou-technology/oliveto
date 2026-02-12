@@ -39,4 +39,25 @@ describe('sanitizeHtml', () => {
      const output = sanitizeHtml(input);
      expect(output).toContain('rel="nofollow noopener noreferrer"');
   });
+
+  it('should remove javascript: hrefs', () => {
+    const input = '<a href="javascript:alert(1)">Click me</a>';
+    const output = sanitizeHtml(input);
+    expect(output).not.toContain('javascript:');
+    expect(output).toContain('Click me');
+  });
+
+  it('should remove dangerous attributes like onerror', () => {
+    const input = '<img src="x" onerror="alert(1)">';
+    const output = sanitizeHtml(input);
+    expect(output).not.toContain('onerror');
+  });
+
+  it('should strip class attributes to prevent CSS injection/defacement', () => {
+    const input = '<div class="fixed inset-0 z-50 bg-red-500">Hacked</div>';
+    const output = sanitizeHtml(input);
+    expect(output).not.toContain('class="fixed inset-0 z-50 bg-red-500"');
+    expect(output).not.toContain('class=');
+    expect(output).toContain('<div>Hacked</div>');
+  });
 });

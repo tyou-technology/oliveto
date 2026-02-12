@@ -50,7 +50,6 @@ export function sanitizeHtml(content: string | undefined | null): string {
     ALLOWED_ATTR: [
       "href", "target", "rel",
       "src", "alt", "title", "width", "height",
-      "class",
       "align", "valign", "colspan", "rowspan"
     ],
     // Force rel="noopener noreferrer" for external links if target="_blank" is used
