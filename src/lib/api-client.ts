@@ -17,8 +17,17 @@ api.interceptors.response.use(
     if (error.response?.status === 401) {
       useUserStore.getState().clearUser();
 
-      if (typeof window !== "undefined" && !window.location.pathname.includes(ROUTES.ADMIN.LOGIN)) {
-        window.location.href = ROUTES.ADMIN.LOGIN;
+      if (typeof window !== "undefined") {
+        const currentPath = window.location.pathname;
+        const loginPath = ROUTES.ADMIN.LOGIN;
+
+        // Prevent redirect loop if already on login page
+        // Check for exact match or trailing slash
+        const isLoginPage = currentPath === loginPath || currentPath === `${loginPath}/`;
+
+        if (!isLoginPage) {
+          window.location.href = loginPath;
+        }
       }
     }
     return Promise.reject(error);
