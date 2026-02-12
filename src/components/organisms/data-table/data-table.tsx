@@ -38,7 +38,7 @@ interface DataTableProps<TData, TValue> {
   onPaginationChange?: OnChangeFn<PaginationState>;
 }
 
-export function DataTable<TData, TValue>({
+function DataTableComponent<TData, TValue>({
   columns,
   data,
   searchKey,
@@ -150,3 +150,5 @@ export function DataTable<TData, TValue>({
     </div>
   );
 }
+
+export const DataTable = React.memo(DataTableComponent) as typeof DataTableComponent;
