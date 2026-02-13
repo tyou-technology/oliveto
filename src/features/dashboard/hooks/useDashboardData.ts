@@ -20,8 +20,20 @@ const getMockNumber = (seed: string, min: number, max: number) => {
 
 // Helper to calculate reading time (mocked based on content length or random)
 const getReadingTime = (content: string = "") => {
-  const words = content.split(/\s+/).length;
-  const time = Math.ceil(words / 200); // Average 200 words per minute
+  let wordCount = 0;
+  let inWord = false;
+
+  for (let i = 0; i < content.length; i++) {
+    // charCode <= 32 covers space, tab, LF, CR and other control characters
+    if (content.charCodeAt(i) <= 32) {
+      inWord = false;
+    } else if (!inWord) {
+      wordCount++;
+      inWord = true;
+    }
+  }
+
+  const time = Math.ceil(wordCount / 200); // Average 200 words per minute
   return time < 1 ? "1 min" : `${time} min`;
 };
 
