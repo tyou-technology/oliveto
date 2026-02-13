@@ -26,6 +26,7 @@ import {
 import { cn } from "@/lib/utils";
 import { useEffect, memo } from "react";
 import { useDebouncedCallback } from "@/hooks/use-debounced-callback";
+import { Button } from "@/components/atoms/button";
 
 interface TiptapEditorProps {
   content: string;
@@ -109,206 +110,254 @@ export const TiptapEditor = memo(function TiptapEditor({
       {!readOnly && (
         <div className="border-b border-white/10 p-2 flex flex-wrap gap-1 bg-surface-highlight">
           <div className="flex items-center gap-1 mr-2 border-r border-white/10 pr-2">
-            <button
+            <Button
               type="button"
+              variant="ghost"
+              size="icon-sm"
               onClick={() => editor.chain().focus().undo().run()}
               disabled={!editor.can().undo()}
-              className="p-2 hover:bg-white/10 rounded-lg transition-colors disabled:opacity-30"
+              className="hover:bg-white/10 text-white"
+              aria-label="Desfazer"
               title="Desfazer"
             >
               <Undo className="w-4 h-4" />
-            </button>
-            <button
+            </Button>
+            <Button
               type="button"
+              variant="ghost"
+              size="icon-sm"
               onClick={() => editor.chain().focus().redo().run()}
               disabled={!editor.can().redo()}
-              className="p-2 hover:bg-white/10 rounded-lg transition-colors disabled:opacity-30"
+              className="hover:bg-white/10 text-white"
+              aria-label="Refazer"
               title="Refazer"
             >
               <Redo className="w-4 h-4" />
-            </button>
+            </Button>
           </div>
 
           <div className="flex items-center gap-1 mr-2 border-r border-white/10 pr-2">
-            <button
+            <Button
               type="button"
+              variant="ghost"
+              size="icon-sm"
               onClick={() =>
                 editor.chain().focus().toggleHeading({ level: 1 }).run()
               }
               className={cn(
-                "p-2 hover:bg-white/10 rounded-lg transition-colors",
+                "hover:bg-white/10 text-white",
                 editor.isActive("heading", { level: 1 }) &&
                   "bg-white/20 text-primary"
               )}
+              aria-label="Título 1"
               title="Título 1"
             >
               <Heading1 className="w-5 h-5" />
-            </button>
-            <button
+            </Button>
+            <Button
               type="button"
+              variant="ghost"
+              size="icon-sm"
               onClick={() =>
                 editor.chain().focus().toggleHeading({ level: 2 }).run()
               }
               className={cn(
-                "p-2 hover:bg-white/10 rounded-lg transition-colors",
+                "hover:bg-white/10 text-white",
                 editor.isActive("heading", { level: 2 }) &&
                   "bg-white/20 text-primary"
               )}
+              aria-label="Título 2"
               title="Título 2"
             >
               <Heading2 className="w-4 h-4" />
-            </button>
-            <button
+            </Button>
+            <Button
               type="button"
+              variant="ghost"
+              size="icon-sm"
               onClick={() =>
                 editor.chain().focus().toggleHeading({ level: 3 }).run()
               }
               className={cn(
-                "p-2 hover:bg-white/10 rounded-lg transition-colors",
+                "hover:bg-white/10 text-white",
                 editor.isActive("heading", { level: 3 }) &&
                   "bg-white/20 text-primary"
               )}
+              aria-label="Título 3"
               title="Título 3"
             >
               <Heading3 className="w-3 h-3" />
-            </button>
+            </Button>
           </div>
 
           <div className="flex items-center gap-1 mr-2 border-r border-white/10 pr-2">
-            <button
+            <Button
               type="button"
+              variant="ghost"
+              size="icon-sm"
               onClick={() => editor.chain().focus().toggleBold().run()}
               className={cn(
-                "p-2 hover:bg-white/10 rounded-lg transition-colors",
+                "hover:bg-white/10 text-white",
                 editor.isActive("bold") && "bg-white/20 text-primary"
               )}
+              aria-label="Negrito"
               title="Negrito"
             >
               <Bold className="w-4 h-4" />
-            </button>
-            <button
+            </Button>
+            <Button
               type="button"
+              variant="ghost"
+              size="icon-sm"
               onClick={() => editor.chain().focus().toggleItalic().run()}
               className={cn(
-                "p-2 hover:bg-white/10 rounded-lg transition-colors",
+                "hover:bg-white/10 text-white",
                 editor.isActive("italic") && "bg-white/20 text-primary"
               )}
+              aria-label="Itálico"
               title="Itálico"
             >
               <Italic className="w-4 h-4" />
-            </button>
-            <button
+            </Button>
+            <Button
               type="button"
+              variant="ghost"
+              size="icon-sm"
               onClick={() => editor.chain().focus().toggleUnderline().run()}
               className={cn(
-                "p-2 hover:bg-white/10 rounded-lg transition-colors",
+                "hover:bg-white/10 text-white",
                 editor.isActive("underline") && "bg-white/20 text-primary"
               )}
+              aria-label="Sublinhado"
               title="Sublinhado"
             >
               <UnderlineIcon className="w-4 h-4" />
-            </button>
-            <button
+            </Button>
+            <Button
               type="button"
+              variant="ghost"
+              size="icon-sm"
               onClick={() => editor.chain().focus().toggleStrike().run()}
               className={cn(
-                "p-2 hover:bg-white/10 rounded-lg transition-colors",
+                "hover:bg-white/10 text-white",
                 editor.isActive("strike") && "bg-white/20 text-primary"
               )}
+              aria-label="Tachado"
               title="Tachado"
             >
               <Strikethrough className="w-4 h-4" />
-            </button>
+            </Button>
           </div>
 
           <div className="flex items-center gap-1 mr-2 border-r border-white/10 pr-2">
-            <button
+            <Button
               type="button"
+              variant="ghost"
+              size="icon-sm"
               onClick={() => editor.chain().focus().setTextAlign("left").run()}
               className={cn(
-                "p-2 hover:bg-white/10 rounded-lg transition-colors",
+                "hover:bg-white/10 text-white",
                 editor.isActive({ textAlign: "left" }) &&
                   "bg-white/20 text-primary"
               )}
+              aria-label="Alinhar à Esquerda"
               title="Alinhar à Esquerda"
             >
               <AlignLeft className="w-4 h-4" />
-            </button>
-            <button
+            </Button>
+            <Button
               type="button"
+              variant="ghost"
+              size="icon-sm"
               onClick={() => editor.chain().focus().setTextAlign("center").run()}
               className={cn(
-                "p-2 hover:bg-white/10 rounded-lg transition-colors",
+                "hover:bg-white/10 text-white",
                 editor.isActive({ textAlign: "center" }) &&
                   "bg-white/20 text-primary"
               )}
+              aria-label="Centralizar"
               title="Centralizar"
             >
               <AlignCenter className="w-4 h-4" />
-            </button>
-            <button
+            </Button>
+            <Button
               type="button"
+              variant="ghost"
+              size="icon-sm"
               onClick={() => editor.chain().focus().setTextAlign("right").run()}
               className={cn(
-                "p-2 hover:bg-white/10 rounded-lg transition-colors",
+                "hover:bg-white/10 text-white",
                 editor.isActive({ textAlign: "right" }) &&
                   "bg-white/20 text-primary"
               )}
+              aria-label="Alinhar à Direita"
               title="Alinhar à Direita"
             >
               <AlignRight className="w-4 h-4" />
-            </button>
-            <button
+            </Button>
+            <Button
               type="button"
+              variant="ghost"
+              size="icon-sm"
               onClick={() => editor.chain().focus().setTextAlign("justify").run()}
               className={cn(
-                "p-2 hover:bg-white/10 rounded-lg transition-colors",
+                "hover:bg-white/10 text-white",
                 editor.isActive({ textAlign: "justify" }) &&
                   "bg-white/20 text-primary"
               )}
+              aria-label="Justificar"
               title="Justificar"
             >
               <AlignJustify className="w-4 h-4" />
-            </button>
+            </Button>
           </div>
 
           <div className="flex items-center gap-1 mr-2 border-r border-white/10 pr-2">
-            <button
+            <Button
               type="button"
+              variant="ghost"
+              size="icon-sm"
               onClick={() => editor.chain().focus().toggleBulletList().run()}
               className={cn(
-                "p-2 hover:bg-white/10 rounded-lg transition-colors",
+                "hover:bg-white/10 text-white",
                 editor.isActive("bulletList") && "bg-white/20 text-primary"
               )}
+              aria-label="Lista com Marcadores"
               title="Lista com Marcadores"
             >
               <List className="w-4 h-4" />
-            </button>
-            <button
+            </Button>
+            <Button
               type="button"
+              variant="ghost"
+              size="icon-sm"
               onClick={() => editor.chain().focus().toggleOrderedList().run()}
               className={cn(
-                "p-2 hover:bg-white/10 rounded-lg transition-colors",
+                "hover:bg-white/10 text-white",
                 editor.isActive("orderedList") && "bg-white/20 text-primary"
               )}
+              aria-label="Lista Numerada"
               title="Lista Numerada"
             >
               <ListOrdered className="w-4 h-4" />
-            </button>
+            </Button>
           </div>
 
           <div className="flex items-center gap-1">
-            <button
+            <Button
               type="button"
+              variant="ghost"
+              size="icon-sm"
               onClick={() => editor.chain().focus().toggleBlockquote().run()}
               className={cn(
-                "p-2 hover:bg-white/10 rounded-lg transition-colors",
+                "hover:bg-white/10 text-white",
                 editor.isActive("blockquote") && "bg-white/20 text-primary"
               )}
+              aria-label="Citação"
               title="Citação"
             >
               <Quote className="w-4 h-4" />
-            </button>
+            </Button>
           </div>
         </div>
       )}
