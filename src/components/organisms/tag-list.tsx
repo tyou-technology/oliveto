@@ -1,6 +1,14 @@
 import { TagResponseDTO } from "@/lib/types/article";
 import { memo } from "react";
 import { TagListItem } from "@/components/molecules/tag-list-item";
+import {
+  Empty,
+  EmptyHeader,
+  EmptyTitle,
+  EmptyDescription,
+  EmptyMedia,
+} from "@/components/atoms/empty";
+import { Tag as TagIcon } from "lucide-react";
 
 interface TagListProps {
   tags: TagResponseDTO[];
@@ -23,14 +31,34 @@ export const TagList = memo(function TagList({ tags, onEdit, onDelete }: TagList
             </tr>
           </thead>
           <tbody className="divide-y divide-white/5">
-            {tags.map((tag) => (
-              <TagListItem
-                key={tag.id}
-                tag={tag}
-                onEdit={onEdit}
-                onDelete={onDelete}
-              />
-            ))}
+            {tags.length === 0 ? (
+              <tr>
+                <td colSpan={5} className="py-12">
+                  <Empty>
+                    <EmptyHeader>
+                      <EmptyMedia>
+                        <TagIcon className="size-10 text-neutral-500" />
+                      </EmptyMedia>
+                      <EmptyTitle className="text-white">
+                        Nenhuma tag encontrada
+                      </EmptyTitle>
+                      <EmptyDescription className="text-neutral-400">
+                        Você ainda não criou nenhuma tag.
+                      </EmptyDescription>
+                    </EmptyHeader>
+                  </Empty>
+                </td>
+              </tr>
+            ) : (
+              tags.map((tag) => (
+                <TagListItem
+                  key={tag.id}
+                  tag={tag}
+                  onEdit={onEdit}
+                  onDelete={onDelete}
+                />
+              ))
+            )}
           </tbody>
         </table>
       </div>
