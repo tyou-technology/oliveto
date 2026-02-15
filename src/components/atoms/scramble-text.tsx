@@ -76,6 +76,15 @@ export function ScrambleText({
       frameRef.current = requestAnimationFrame(animate);
     };
 
+    // Accessibility & Performance: Skip animation if user prefers reduced motion
+    if (
+      typeof window !== "undefined" &&
+      window.matchMedia("(prefers-reduced-motion: reduce)").matches
+    ) {
+      setDisplayText(text);
+      return;
+    }
+
     if (delay > 0) {
       timeoutId = setTimeout(startAnimation, delay);
     } else {
