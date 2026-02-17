@@ -88,7 +88,7 @@ describe('FormField', () => {
           />
       )
 
-      const toggleButton = screen.getByLabelText('Show password')
+      const toggleButton = screen.getByLabelText('Mostrar senha')
       expect(toggleButton.className).toContain('focus-visible:ring-2')
   })
 })

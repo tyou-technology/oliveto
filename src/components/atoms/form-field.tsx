@@ -52,7 +52,7 @@ export const FormField = forwardRef<HTMLInputElement, FormFieldProps>(
               type="button"
               onClick={togglePasswordVisibility}
               className="absolute right-4 top-1/2 -translate-y-1/2 text-gray-400 hover:text-white transition-colors focus:outline-none focus-visible:ring-2 focus-visible:ring-primary rounded-full p-1"
-              aria-label={showPassword ? "Hide password" : "Show password"}
+              aria-label={showPassword ? "Ocultar senha" : "Mostrar senha"}
             >
               {showPassword ? (
                 <EyeOff className="w-5 h-5" />
