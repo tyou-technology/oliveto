@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
+import { cn } from "@/lib/utils";
 
 const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!+";
 
@@ -20,8 +21,42 @@ export function ScrambleText({
   const [displayText, setDisplayText] = useState(text);
   const frameRef = useRef<number>(0);
   const startTimeRef = useRef<number>(0);
+  const [isReducedMotion, setIsReducedMotion] = useState(false);
 
   useEffect(() => {
+    // Check for reduced motion preference
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    setIsReducedMotion(mediaQuery.matches);
+
+    const handleMotionChange = (e: MediaQueryListEvent) => {
+      setIsReducedMotion(e.matches);
+    };
+
+    // Use addEventListener if available, otherwise fallback
+    if (mediaQuery.addEventListener) {
+      mediaQuery.addEventListener("change", handleMotionChange);
+    } else {
+      // @ts-ignore - Fallback for older browsers
+      mediaQuery.addListener(handleMotionChange);
+    }
+
+    return () => {
+      if (mediaQuery.removeEventListener) {
+        mediaQuery.removeEventListener("change", handleMotionChange);
+      } else {
+        // @ts-ignore
+        mediaQuery.removeListener(handleMotionChange);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    // If reduced motion is preferred, ensure text is static and skip animation
+    if (isReducedMotion) {
+      setDisplayText(text);
+      return;
+    }
+
     let timeoutId: NodeJS.Timeout;
     const currentTextRef = { value: displayText };
 
@@ -86,7 +121,12 @@ export function ScrambleText({
       if (frameRef.current) cancelAnimationFrame(frameRef.current);
       if (timeoutId) clearTimeout(timeoutId);
     };
-  }, [text, duration, delay]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [text, duration, delay, isReducedMotion]);
 
-  return <span className={className}>{displayText}</span>;
+  return (
+    <span className={cn(className)}>
+      <span className="sr-only">{text}</span>
+      <span aria-hidden="true">{displayText}</span>
+    </span>
+  );
 }
