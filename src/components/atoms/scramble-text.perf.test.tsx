@@ -60,10 +60,10 @@ describe('ScrambleText Performance & Accessibility', () => {
     }));
 
     const rafSpy = vi.spyOn(window, 'requestAnimationFrame');
-    const { getByText } = render(<ScrambleText text="Hello" />);
+    const { getAllByText } = render(<ScrambleText text="Hello" />);
 
     // Should render final text immediately
-    expect(getByText('Hello')).toBeDefined();
+    expect(getAllByText('Hello')).toBeDefined();
 
     // Should NOT start animation loop
     act(() => {

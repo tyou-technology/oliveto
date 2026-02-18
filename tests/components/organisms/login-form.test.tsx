@@ -56,7 +56,7 @@ describe('LoginForm Security', () => {
 
     // Fill out the form
     const emailInput = screen.getByLabelText(/Email/i);
-    const passwordInput = screen.getByLabelText(/Senha/i);
+    const passwordInput = screen.getByLabelText(/^Senha$/i);
     const submitButton = screen.getByRole('button', { name: /Entrar/i });
 
     fireEvent.change(emailInput, { target: { value: 'test@example.com' } });
