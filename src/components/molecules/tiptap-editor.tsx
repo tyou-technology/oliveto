@@ -1,6 +1,6 @@
 "use client";
 
-import { useEditor, EditorContent } from "@tiptap/react";
+import { useEditor, EditorContent, type Editor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import Underline from "@tiptap/extension-underline";
 import TextAlign from "@tiptap/extension-text-align";
@@ -40,8 +40,8 @@ export const TiptapEditor = memo(function TiptapEditor({
   placeholder = "Escreva o conteúdo aqui...",
   readOnly = false,
 }: TiptapEditorProps) {
-  const debouncedOnChange = useDebouncedCallback((html: string) => {
-    onChange?.(html);
+  const debouncedOnChange = useDebouncedCallback((editor: Editor) => {
+    onChange?.(editor.getHTML());
   }, 300);
 
   const editor = useEditor({
@@ -70,7 +70,7 @@ export const TiptapEditor = memo(function TiptapEditor({
     ],
     content,
     onUpdate: ({ editor }) => {
-      debouncedOnChange(editor.getHTML());
+      debouncedOnChange(editor);
     },
     editorProps: {
       attributes: {
