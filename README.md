@@ -18,7 +18,15 @@ Site institucional da Oliveto Contabilidade, especializado em Perícia Contábil
 
 ## Environment Setup
 
-Refer to `.env.example` if available. Currently, the project uses local constants.
+The project requires environment variables to be set. Copy `.env.example` to `.env.local` and fill in the required values.
+
+```bash
+cp .env.example .env.local
+```
+
+### Security Note
+
+The `NEXT_PUBLIC_CLIENT_TOKEN` is a client-side identifier required by the backend. It is bundled with the client code as it identifies the application, not the user. Ensure `.env.local` is not committed to the repository (already in `.gitignore`).
 
 ## Installation & Running
 
