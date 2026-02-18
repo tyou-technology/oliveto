@@ -14,6 +14,8 @@ export const envSchema = z.object({
     .default("development"),
   
   NEXT_PUBLIC_FIRM_ID: z.string().uuid(),
+
+  NEXT_PUBLIC_CLIENT_TOKEN: z.string().min(1),
 });
 
 const _env = envSchema.safeParse({
@@ -21,6 +23,7 @@ const _env = envSchema.safeParse({
   NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
   NEXT_PUBLIC_APP_ENV: process.env.NEXT_PUBLIC_APP_ENV,
   NEXT_PUBLIC_FIRM_ID: process.env.NEXT_PUBLIC_FIRM_ID,
+  NEXT_PUBLIC_CLIENT_TOKEN: process.env.NEXT_PUBLIC_CLIENT_TOKEN,
 });
 
 if (!_env.success) {
