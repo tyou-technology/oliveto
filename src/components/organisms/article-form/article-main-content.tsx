@@ -1,6 +1,7 @@
 import { UseFormRegister, FieldErrors, UseFormWatch, UseFormSetValue, Control, Controller } from "react-hook-form";
 import { CreateArticleDTO } from "@/lib/types/article";
 import { TiptapEditor } from "@/components/molecules/tiptap-editor";
+import { memo } from "react";
 
 interface ArticleMainContentProps {
   register: UseFormRegister<CreateArticleDTO>;
@@ -11,7 +12,14 @@ interface ArticleMainContentProps {
   control: Control<CreateArticleDTO>;
 }
 
-export function ArticleMainContent({
+/**
+ * ArticleMainContent component.
+ *
+ * Memoized to prevent unnecessary re-renders when parent state (like isPending or tags) changes.
+ * This ensures that the heavy TiptapEditor is not reconciled unnecessarily during form submission
+ * or auxiliary data updates, as long as form control props remain stable.
+ */
+export const ArticleMainContent = memo(function ArticleMainContent({
   register,
   errors,
   watch, // keeping watch for now as it might be used elsewhere or passed for consistency, but we won't use it for content
@@ -78,4 +86,4 @@ export function ArticleMainContent({
       </div>
     </div>
   );
-}
+});
