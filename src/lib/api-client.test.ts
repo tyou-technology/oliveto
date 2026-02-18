@@ -106,4 +106,8 @@ describe('API Client Interceptor', () => {
     // This expects a redirect because it's a protected page
     expect(window.location.href).toBe(ROUTES.ADMIN.LOGIN);
   });
+
+  it('should have a default timeout of 30 seconds', () => {
+    expect(api.defaults.timeout).toBe(30000);
+  });
 });
