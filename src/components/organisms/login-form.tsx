@@ -85,10 +85,14 @@ export function LoginForm({ setIsLoggingIn }: LoginFormProps) {
         <button
           type="submit"
           disabled={isPending}
+          aria-busy={isPending}
           className="w-full mt-4 py-4 bg-primary cursor-pointer text-black font-semibold rounded-lg hover:bg-primary-dark transition-colors flex items-center justify-center gap-2 group disabled:opacity-70 disabled:cursor-not-allowed"
         >
           {isPending ? (
-            <Loader2 className="w-5 h-5 animate-spin" />
+            <>
+              <Loader2 className="w-5 h-5 animate-spin" aria-hidden="true" />
+              <span className="sr-only">Carregando...</span>
+            </>
           ) : (
             <>
               <span>Entrar</span>
@@ -97,6 +101,7 @@ export function LoginForm({ setIsLoggingIn }: LoginFormProps) {
                 fill="none"
                 stroke="currentColor"
                 viewBox="0 0 24 24"
+                aria-hidden="true"
               >
                 <path
                   strokeLinecap="round"
@@ -122,6 +127,7 @@ export function LoginForm({ setIsLoggingIn }: LoginFormProps) {
             fill="none"
             stroke="currentColor"
             viewBox="0 0 24 24"
+            aria-hidden="true"
           >
             <path
               strokeLinecap="round"
