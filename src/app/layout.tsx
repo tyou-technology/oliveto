@@ -6,6 +6,7 @@ import "./globals.css";
 import { QueryProvider } from "@/components/providers/query-provider";
 import { Toaster } from "@/components/atoms/sonner";
 import { getCsp } from "@/lib/config/csp";
+import { env } from "@/lib/env";
 
 const golos = Golos_Text({
   subsets: ["latin"],
@@ -21,7 +22,7 @@ const outfit = Outfit({
 
 const isDev = process.env.NODE_ENV === "development";
 
-const CSP = getCsp(isDev);
+const CSP = getCsp(isDev, env.NEXT_PUBLIC_API_URL);
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://olivetocontabilidade.com"),

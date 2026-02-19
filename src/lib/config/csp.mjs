@@ -5,7 +5,7 @@
  * @returns {string} The CSP string.
  */
 export function getCsp(isDev, apiUrl) {
-  const connectSrc = `connect-src 'self' ${apiUrl ? apiUrl : ""} https: https://*.vercel-analytics.com https://*.vercel-insights.com${
+  const connectSrc = `connect-src 'self' ${apiUrl ? apiUrl : ""} https://*.vercel-analytics.com https://*.vercel-insights.com${
     isDev ? " http://localhost:8080 ws://localhost:*" : ""
   }`;
   return `default-src 'self'; script-src 'self' 'unsafe-inline'${

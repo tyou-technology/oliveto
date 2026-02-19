@@ -42,7 +42,16 @@ describe('vercel.json security configuration', () => {
     expect(cspHeader).toBeDefined();
 
     // Production CSP (isDev = false)
-    const expectedCsp = getCsp(false);
-    expect(cspHeader.value).toBe(expectedCsp);
+    const strictCsp = getCsp(false);
+
+    // vercel.json must allow https: in connect-src because the API URL is dynamic and not known at build time for the static file.
+    // The strict restriction is applied via <meta> tag in layout.tsx which knows the env var.
+    // So we verify that vercel.json is looser (contains https:) but otherwise matches.
+    const expectedVercelCsp = strictCsp.replace(
+      "connect-src 'self'  ",
+      "connect-src 'self'  https: "
+    );
+
+    expect(cspHeader.value).toBe(expectedVercelCsp);
   });
 });
