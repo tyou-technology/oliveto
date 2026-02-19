@@ -19,7 +19,7 @@ describe('Button', () => {
     expect(button.getAttribute('aria-busy')).toBe('true')
 
     // Check spinner presence (spinner has aria-label="Loading")
-    expect(screen.getByLabelText('Loading')).toBeDefined()
+    expect(screen.getByLabelText('Carregando...')).toBeDefined()
   })
 
   it('loading overrides disabled', () => {

@@ -64,6 +64,6 @@ describe('LoginForm', () => {
     expect(submitButton?.getAttribute('aria-busy')).toBe('true')
 
     // Check for screen reader only text "Carregando..."
-    expect(screen.getByText(/Carregando/i)).toBeTruthy()
+    expect(screen.getByLabelText(/Carregando/i)).toBeTruthy()
   })
 })
