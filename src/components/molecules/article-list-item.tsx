@@ -57,7 +57,7 @@ export const ArticleListItem = memo(function ArticleListItem({ article, onView, 
             variant="ghost"
             size="icon-sm"
             className="hover:bg-white/10 text-neutral-400 hover:text-white rounded-lg"
-            aria-label="Visualizar artigo"
+            aria-label={`Visualizar artigo: ${article.title}`}
             title="Visualizar"
             onClick={() => onView(article)}
           >
@@ -67,7 +67,7 @@ export const ArticleListItem = memo(function ArticleListItem({ article, onView, 
             variant="ghost"
             size="icon-sm"
             className="hover:bg-white/10 text-neutral-400 hover:text-white rounded-lg"
-            aria-label="Editar artigo"
+            aria-label={`Editar artigo: ${article.title}`}
             title="Editar"
             onClick={() => onEdit(article)}
           >
@@ -77,7 +77,7 @@ export const ArticleListItem = memo(function ArticleListItem({ article, onView, 
             variant="ghost"
             size="icon-sm"
             className="hover:bg-red-500/10 text-red-400 hover:text-red-300 rounded-lg"
-            aria-label="Excluir artigo"
+            aria-label={`Excluir artigo: ${article.title}`}
             title="Excluir"
             onClick={() => onDelete(article.id)}
           >
