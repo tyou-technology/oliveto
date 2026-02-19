@@ -25,3 +25,7 @@
 ## 2025-02-26 - Accessible Text Animations
 **Learning:** Purely visual text animations (like `ScrambleText`) cause significant accessibility issues for screen readers by constantly announcing changing content, and can trigger motion sickness.
 **Action:** Implement text animations with a dual structure: a visually hidden static element (`sr-only`) for screen readers, and the animated element marked with `aria-hidden="true"`. Also, respect `prefers-reduced-motion` to disable the animation entirely.
+
+## 2025-02-27 - Contextual Action Buttons
+**Learning:** Found multiple instances of generic `aria-label`s on icon-only buttons in lists (e.g., "Edit" instead of "Edit Article [Title]"). This creates a confusing experience for screen reader users navigating lists of items.
+**Action:** Always include the unique identifier (like title or name) in the `aria-label` of action buttons within lists to provide context.
