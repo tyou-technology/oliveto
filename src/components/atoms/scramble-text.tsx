@@ -59,6 +59,7 @@ export function ScrambleText({
 
     let timeoutId: NodeJS.Timeout;
     const currentTextRef = { value: displayText };
+    let lastFixedCharsCount = -1;
 
     // Performance optimization: Pre-split text to avoid splitting in every animation frame
     const targetChars = text.split("");
@@ -78,6 +79,15 @@ export function ScrambleText({
           progress >= 1 ? targetLength : Math.floor(easedProgress * targetLength);
 
         const shouldUpdateScramble = Math.floor(now / 40) % 2 === 0;
+
+        if (fixedCharsCount === lastFixedCharsCount && !shouldUpdateScramble) {
+          if (progress < 1) {
+            frameRef.current = requestAnimationFrame(animate);
+          }
+          return;
+        }
+
+        lastFixedCharsCount = fixedCharsCount;
 
         let result = "";
 

@@ -63,7 +63,7 @@ describe('ScrambleText Performance & Accessibility', () => {
     const { getAllByText } = render(<ScrambleText text="Hello" />);
 
     // Should render final text immediately
-    expect(getAllByText('Hello')).toBeDefined();
+    expect(getAllByText('Hello').length).toBeGreaterThan(0);
 
     // Should NOT start animation loop
     act(() => {
