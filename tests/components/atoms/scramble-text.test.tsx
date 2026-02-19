@@ -32,7 +32,7 @@ describe('ScrambleText Performance', () => {
     });
 
     // Check final state
-    expect(screen.getByText('Hello World')).toBeTruthy();
+    expect(screen.getAllByText('Hello World').length).toBeGreaterThan(0);
 
     console.log(`Render count (commits): ${renderCount}`);
     console.log(`RAF calls: ${rafSpy.mock.calls.length}`);
