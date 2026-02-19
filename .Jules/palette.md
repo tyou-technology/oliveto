@@ -25,3 +25,7 @@
 ## 2025-02-26 - Accessible Text Animations
 **Learning:** Purely visual text animations (like `ScrambleText`) cause significant accessibility issues for screen readers by constantly announcing changing content, and can trigger motion sickness.
 **Action:** Implement text animations with a dual structure: a visually hidden static element (`sr-only`) for screen readers, and the animated element marked with `aria-hidden="true"`. Also, respect `prefers-reduced-motion` to disable the animation entirely.
+
+## 2025-02-27 - Decorative Icon Accessibility
+**Learning:** Found multiple instances of decorative icons (e.g., in close buttons, search inputs, or separators) lacking `aria-hidden="true"`, potentially causing screen readers to announce them as "graphic" or "unlabeled image" alongside the actual text label.
+**Action:** Consistently add `aria-hidden="true"` to icons that are purely decorative or have a visible text alternative (like `sr-only` text), reducing noise for screen reader users.
