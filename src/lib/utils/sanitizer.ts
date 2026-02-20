@@ -21,6 +21,28 @@ DOMPurify.addHook("afterSanitizeAttributes", (node) => {
       node.setAttribute("rel", parts.join(" "));
     }
   }
+
+  // Enforce strict URI schemes
+  // This prevents XSS via exotic protocols and restricts data: URIs
+  if (node.tagName === "A" || node.tagName === "IMG") {
+    ["href", "src"].forEach((attr) => {
+      if (node.hasAttribute(attr)) {
+        const value = node.getAttribute(attr);
+        if (!value) return;
+
+        // Check for scheme (starts with scheme:)
+        const schemeMatch = value.match(/^\s*([a-zA-Z0-9+.-]+):/);
+        if (schemeMatch) {
+          const scheme = schemeMatch[1].toLowerCase();
+          // Allow only specific safe schemes
+          // Block ftp, data, javascript, vbscript, etc.
+          if (!["http", "https", "mailto", "tel"].includes(scheme)) {
+            node.removeAttribute(attr);
+          }
+        }
+      }
+    });
+  }
 });
 
 /**
