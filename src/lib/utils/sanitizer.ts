@@ -35,8 +35,15 @@ DOMPurify.addHook("afterSanitizeAttributes", (node) => {
         if (schemeMatch) {
           const scheme = schemeMatch[1].toLowerCase();
           // Allow only specific safe schemes
-          // Block ftp, data, javascript, vbscript, etc.
-          if (!["http", "https", "mailto", "tel"].includes(scheme)) {
+          // Block ftp, javascript, vbscript, etc.
+          const allowedSchemes = ["http", "https", "mailto", "tel"];
+
+          // Allow data: URI only for images (src attribute)
+          if (node.tagName === "IMG" && attr === "src") {
+            allowedSchemes.push("data");
+          }
+
+          if (!allowedSchemes.includes(scheme)) {
             node.removeAttribute(attr);
           }
         }
