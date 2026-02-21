@@ -29,6 +29,11 @@
 ## 2025-02-27 - Decorative Icon Accessibility
 **Learning:** Found multiple instances of decorative icons (e.g., in close buttons, search inputs, or separators) lacking `aria-hidden="true"`, potentially causing screen readers to announce them as "graphic" or "unlabeled image" alongside the actual text label.
 **Action:** Consistently add `aria-hidden="true"` to icons that are purely decorative or have a visible text alternative (like `sr-only` text), reducing noise for screen reader users.
+
 ## 2025-02-27 - Contextual Action Buttons
 **Learning:** Found multiple instances of generic `aria-label`s on icon-only buttons in lists (e.g., "Edit" instead of "Edit Article [Title]"). This creates a confusing experience for screen reader users navigating lists of items.
 **Action:** Always include the unique identifier (like title or name) in the `aria-label` of action buttons within lists to provide context.
+
+## 2025-02-28 - Component Localization
+**Learning:** Default UI components (like Pagination, Dialog) often contain hardcoded English strings and ARIA labels. In a non-English application (Portuguese), this creates a disjointed and inaccessible experience for users, particularly those relying on screen readers.
+**Action:** Audit and localize all default strings and ARIA labels in reusable UI components to ensure they match the application's primary language.
