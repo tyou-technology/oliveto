@@ -9,11 +9,7 @@ import {
 
 export const authApi = {
   login: async (data: LoginRequest): Promise<LoginResponse> => {
-    const response = await api.post<LoginResponse & { token: string }>(
-      "/auth/login",
-      data
-    );
-    // Explicitly pick only the allowed fields to prevent data leakage
+    const response = await api.post<LoginResponse>("/auth/login", data);
     const { type, email, userId, firmId, role } = response.data;
     return { type, email, userId, firmId, role };
   },
@@ -29,11 +25,10 @@ export const authApi = {
   confirmRegistration: async (
     data: ConfirmRegistrationRequest
   ): Promise<ConfirmRegistrationResponse> => {
-    const response = await api.post<ConfirmRegistrationResponse & { token: string }>(
+    const response = await api.post<ConfirmRegistrationResponse>(
       "/auth/confirm-register",
       data
     );
-    // Explicitly pick only the allowed fields
     const { type, email, userId } = response.data;
     return { type, email, userId };
   },
