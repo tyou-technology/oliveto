@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState, useRef } from "react";
+import { cn } from "@/lib/utils";
 
 const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!+";
 
@@ -17,13 +18,68 @@ export function ScrambleText({
   className,
   delay = 0,
 }: ScrambleTextProps) {
-  const [displayText, setDisplayText] = useState(text);
+  // Use a ref to access the span element directly
+  const spanRef = useRef<HTMLSpanElement>(null);
+
+  // Initialize state with the initial text only once.
+  // This ensures the initial server render matches the client hydration.
+  // Subsequent updates to `text` prop will be handled by the effect via direct DOM manipulation,
+  // preventing React re-renders on every animation frame.
+  const [initialText] = useState(text);
+
   const frameRef = useRef<number>(0);
   const startTimeRef = useRef<number>(0);
+  const [isReducedMotion, setIsReducedMotion] = useState(() => {
+    if (typeof window !== "undefined") {
+      return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    }
+    return false;
+  });
 
   useEffect(() => {
+    // Check for reduced motion preference
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    // Update state if it differs (e.g. hydration mismatch or preference change)
+    if (mediaQuery.matches !== isReducedMotion) {
+      setIsReducedMotion(mediaQuery.matches);
+    }
+
+    const handleMotionChange = (e: MediaQueryListEvent) => {
+      setIsReducedMotion(e.matches);
+    };
+
+    // Use addEventListener if available, otherwise fallback
+    if (mediaQuery.addEventListener) {
+      mediaQuery.addEventListener("change", handleMotionChange);
+    } else {
+      // @ts-ignore - Fallback for older browsers
+      mediaQuery.addListener(handleMotionChange);
+    }
+
+    return () => {
+      if (mediaQuery.removeEventListener) {
+        mediaQuery.removeEventListener("change", handleMotionChange);
+      } else {
+        // @ts-ignore
+        mediaQuery.removeListener(handleMotionChange);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    // If reduced motion is preferred, ensure text is static and skip animation
+    if (isReducedMotion) {
+      if (spanRef.current) {
+        spanRef.current.textContent = text;
+      }
+      return;
+    }
+
     let timeoutId: NodeJS.Timeout;
-    const currentTextRef = { value: displayText };
+    // Capture the current text content of the span (from previous animation or initial render)
+    // to use as the starting point for the scramble transition.
+    const currentTextRef = { value: spanRef.current?.textContent || text };
+    let lastFixedCharsCount = -1;
 
     // Performance optimization: Pre-split text to avoid splitting in every animation frame
     const targetChars = text.split("");
@@ -43,6 +99,15 @@ export function ScrambleText({
           progress >= 1 ? targetLength : Math.floor(easedProgress * targetLength);
 
         const shouldUpdateScramble = Math.floor(now / 40) % 2 === 0;
+
+        if (fixedCharsCount === lastFixedCharsCount && !shouldUpdateScramble) {
+          if (progress < 1) {
+            frameRef.current = requestAnimationFrame(animate);
+          }
+          return;
+        }
+
+        lastFixedCharsCount = fixedCharsCount;
 
         let result = "";
 
@@ -65,7 +130,10 @@ export function ScrambleText({
 
         if (result !== currentTextRef.value) {
           currentTextRef.value = result;
-          setDisplayText(result);
+          // Direct DOM manipulation to avoid React re-renders
+          if (spanRef.current) {
+            spanRef.current.textContent = result;
+          }
         }
 
         if (progress < 1) {
@@ -86,7 +154,17 @@ export function ScrambleText({
       if (frameRef.current) cancelAnimationFrame(frameRef.current);
       if (timeoutId) clearTimeout(timeoutId);
     };
-  }, [text, duration, delay]); // eslint-disable-line react-hooks/exhaustive-deps
+  }, [text, duration, delay, isReducedMotion]);
 
-  return <span className={className}>{displayText}</span>;
+  return (
+    <span className={cn(className)}>
+      <span className="sr-only">{text}</span>
+      {/*
+        This span displays the animated text.
+        It is initialized with initialText for SSR/Hydration.
+        Subsequent updates are handled directly via spanRef to improve performance.
+      */}
+      <span aria-hidden="true" ref={spanRef}>{initialText}</span>
+    </span>
+  );
 }

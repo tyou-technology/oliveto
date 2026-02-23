@@ -13,15 +13,18 @@ export const authApi = {
       "/auth/login",
       data
     );
-    const { token, ...rest } = response.data;
-    return rest;
+    // Explicitly pick only the allowed fields to prevent data leakage
+    const { type, email, userId, firmId, role } = response.data;
+    return { type, email, userId, firmId, role };
   },
   logout: async (): Promise<void> => {
     await api.post("/auth/logout");
   },
   validateToken: async (): Promise<TokenValidationResponse> => {
     const response = await api.get<TokenValidationResponse>("/auth/validate");
-    return response.data;
+    // Explicitly pick only the allowed fields
+    const { valid, name, email, userId, firmId, role, message } = response.data;
+    return { valid, name, email, userId, firmId, role, message };
   },
   confirmRegistration: async (
     data: ConfirmRegistrationRequest
@@ -30,7 +33,8 @@ export const authApi = {
       "/auth/confirm-register",
       data
     );
-    const { token, ...rest } = response.data;
-    return rest;
+    // Explicitly pick only the allowed fields
+    const { type, email, userId } = response.data;
+    return { type, email, userId };
   },
 };

@@ -32,14 +32,14 @@ export function DataTablePagination<TData>({
       </div>
       <div className="flex items-center space-x-6 lg:space-x-8">
         <div className="flex items-center space-x-2">
-          <p className="text-sm font-medium text-neutral-400">Linhas por página</p>
+          <p id="rows-per-page-label" className="text-sm font-medium text-neutral-400">Linhas por página</p>
           <Select
             value={`${table.getState().pagination.pageSize}`}
             onValueChange={(value) => {
               table.setPageSize(Number(value));
             }}
           >
-            <SelectTrigger className="h-8 w-[70px] bg-white/5 border-white/10 text-white">
+            <SelectTrigger aria-labelledby="rows-per-page-label" className="h-8 w-[70px] bg-white/5 border-white/10 text-white">
               <SelectValue placeholder={table.getState().pagination.pageSize} />
             </SelectTrigger>
             <SelectContent side="top" className="bg-surface border-white/10 text-white">
@@ -63,7 +63,7 @@ export function DataTablePagination<TData>({
             disabled={!table.getCanPreviousPage()}
           >
             <span className="sr-only">Primeira página</span>
-            <ChevronsLeft className="h-4 w-4" />
+            <ChevronsLeft className="h-4 w-4" aria-hidden="true" />
           </Button>
           <Button
             variant="outline"
@@ -72,7 +72,7 @@ export function DataTablePagination<TData>({
             disabled={!table.getCanPreviousPage()}
           >
             <span className="sr-only">Página anterior</span>
-            <ChevronLeft className="h-4 w-4" />
+            <ChevronLeft className="h-4 w-4" aria-hidden="true" />
           </Button>
           <Button
             variant="outline"
@@ -81,7 +81,7 @@ export function DataTablePagination<TData>({
             disabled={!table.getCanNextPage()}
           >
             <span className="sr-only">Próxima página</span>
-            <ChevronRight className="h-4 w-4" />
+            <ChevronRight className="h-4 w-4" aria-hidden="true" />
           </Button>
           <Button
             variant="outline"
@@ -90,7 +90,7 @@ export function DataTablePagination<TData>({
             disabled={!table.getCanNextPage()}
           >
             <span className="sr-only">Última página</span>
-            <ChevronsRight className="h-4 w-4" />
+            <ChevronsRight className="h-4 w-4" aria-hidden="true" />
           </Button>
         </div>
       </div>

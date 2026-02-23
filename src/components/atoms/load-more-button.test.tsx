@@ -24,7 +24,7 @@ describe('LoadMoreButton', () => {
   it('shows loading spinner when loading is true', () => {
     render(<LoadMoreButton text="Load More" loading />)
     // Expect spinner to be present
-    expect(screen.getByLabelText('Loading')).toBeDefined()
+    expect(screen.getByLabelText('Carregando...')).toBeDefined()
     // Expect button to be disabled
     expect(screen.getByRole('button')).toHaveProperty('disabled', true)
     // Expect aria-busy to be true

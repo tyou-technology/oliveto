@@ -17,7 +17,7 @@ export const ArticleCard = memo(function ArticleCard({article, className}: Reado
   return (
       <Link
           href={`/artigos/${article.id}`}
-          className={`min-w-[calc(33.333%-16px)] group transition-all duration-200 ease-in-out hover:-translate-y-1 hover:shadow-lg rounded-xl p-2 ${className || ""}`}
+          className={`min-w-[calc(33.333%-16px)] group transition-all duration-200 ease-in-out hover:-translate-y-1 hover:shadow-lg focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none rounded-xl p-2 ${className || ""}`}
       >
         <article className="relative h-full">
           {/* Image */}
@@ -27,10 +27,10 @@ export const ArticleCard = memo(function ArticleCard({article, className}: Reado
                 alt={article.title}
                 fill
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                className="object-cover transition-transform duration-500 group-hover:scale-110"
+                className="object-cover transition-transform duration-500 group-hover:scale-110 group-focus-visible:scale-110"
             />
             <div
-                className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 transition-opacity"/>
+                className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity"/>
           </div>
 
           {/* Content */}
@@ -41,12 +41,12 @@ export const ArticleCard = memo(function ArticleCard({article, className}: Reado
             ))}
           </div>
         )}
-        <h3 className="text-white text-base mt-2 leading-relaxed line-clamp-3 group-hover:text-neutral-300 transition-colors">
+        <h3 className="text-white text-base mt-2 leading-relaxed line-clamp-3 group-hover:text-neutral-300 group-focus-visible:text-neutral-300 transition-colors">
           {article.title}
         </h3>
 
         {/* Read more indicator */}
-        <div className="flex items-center gap-2 mt-4 text-neutral-500 text-sm opacity-0 group-hover:opacity-100 transition-opacity">
+        <div className="flex items-center gap-2 mt-4 text-neutral-500 text-sm opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity">
           <span>Ler artigo</span>
           <ArrowRight className="w-4 h-4" />
         </div>

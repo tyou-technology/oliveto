@@ -6,6 +6,7 @@ describe("Environment Variables Schema", () => {
     NODE_ENV: "test",
     NEXT_PUBLIC_APP_ENV: "test",
     NEXT_PUBLIC_FIRM_ID: "00000000-0000-0000-0000-000000000000",
+    NEXT_PUBLIC_CLIENT_TOKEN: "valid-token",
   };
 
   it("should accept valid http URL", () => {
@@ -55,6 +56,15 @@ describe("Environment Variables Schema", () => {
     const result = envSchema.safeParse({
       ...validBase,
       NEXT_PUBLIC_API_URL: "not-a-url",
+    });
+    expect(result.success).toBe(false);
+  });
+
+  it("should reject empty client token", () => {
+    const result = envSchema.safeParse({
+      ...validBase,
+      NEXT_PUBLIC_API_URL: "http://api.example.com",
+      NEXT_PUBLIC_CLIENT_TOKEN: "",
     });
     expect(result.success).toBe(false);
   });
