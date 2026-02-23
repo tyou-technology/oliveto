@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { ArticleResponseDTO, ArticleStatus } from "@/lib/types/article";
 import { sanitizeHtml } from "@/lib/utils/sanitizer";
 import { format } from "date-fns";
@@ -10,6 +11,11 @@ interface ArticleViewProps {
 }
 
 export function ArticleView({ article, onBack }: ArticleViewProps) {
+  const sanitizedContent = useMemo(
+    () => sanitizeHtml(article.content) || "",
+    [article.content]
+  );
+
   return (
     <div className="space-y-6">
       {/* Header / Back Button */}
@@ -78,7 +84,7 @@ export function ArticleView({ article, onBack }: ArticleViewProps) {
 
           {/* Content */}
           <div className="prose prose-invert max-w-none">
-            <div dangerouslySetInnerHTML={{ __html: sanitizeHtml(article.content)  || '' }} />
+            <div dangerouslySetInnerHTML={{ __html: sanitizedContent }} />
           </div>
         </div>
       </div>
