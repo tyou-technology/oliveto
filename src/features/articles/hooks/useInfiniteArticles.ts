@@ -34,22 +34,18 @@ export const useInfiniteArticles = (
     initialData,
   });
 
-  // Performance optimization: Memoize the flattened articles array.
-  // data.pages.flatMap() creates a new array reference on every render, causing
-  // unnecessary re-renders in consumers (e.g. lists).
-  // By memoizing, we ensure referential stability when data hasn't changed.
-  const articles = useMemo(
-    () => data?.pages.flatMap((page) => page.content) || [],
-    [data?.pages]
-  );
+  const articles = useMemo(() => data?.pages.flatMap((page) => page.content) || [], [data]);
   const totalElements = data?.pages[0]?.page.totalElements || 0;
 
-  return {
-    articles,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    isLoading,
-    totalElements,
-  };
+  return useMemo(
+    () => ({
+      articles,
+      fetchNextPage,
+      hasNextPage,
+      isFetchingNextPage,
+      isLoading,
+      totalElements,
+    }),
+    [articles, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, totalElements]
+  );
 };

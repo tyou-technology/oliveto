@@ -61,12 +61,18 @@ describe('sanitizeHtml', () => {
     expect(output).toContain('<div>Hacked</div>');
   });
 
-  it('should remove data: URIs from src', () => {
+  it('should allow data: URIs for img src', () => {
     const input = '<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==">';
     const output = sanitizeHtml(input);
-    expect(output).not.toContain('src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg=="');
-    // It should strip the src attribute entirely or sanitize it
-    expect(output).not.toContain('data:image/png;base64');
+    expect(output).toContain('src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg=="');
+  });
+
+  it('should remove data: URIs from href', () => {
+    const input = '<a href="data:text/html,<script>alert(1)</script>">Malicious</a>';
+    const output = sanitizeHtml(input);
+    expect(output).not.toContain('data:text/html');
+    // Should strip href
+    expect(output).not.toContain('href=');
   });
 
   it('should remove ftp: links', () => {

@@ -32,7 +32,7 @@ describe('Auth Security', () => {
 
   it('should call login endpoint without saving to local storage', async () => {
      // Mock successful response
-     (api.post as any).mockResolvedValueOnce({ data: { token: 'fake' } });
+     (api.post as any).mockResolvedValueOnce({ data: { token: 'fake', type: 'Bearer' } });
 
      await authApi.login({ email: 'test@test.com', password: 'Password123!' });
 
@@ -41,10 +41,11 @@ describe('Auth Security', () => {
      expect(api.post).toHaveBeenCalledWith('/auth/login', expect.any(Object));
   });
 
-  it('should not return token in login response', async () => {
+  it('should return login response without token even if API sends it (whitelist check)', async () => {
     (api.post as any).mockResolvedValueOnce({
       data: {
         token: 'secret-token',
+        otherSensitiveField: 'should-be-stripped',
         type: 'Bearer',
         email: 'test@example.com',
         userId: '123',
@@ -60,11 +61,14 @@ describe('Auth Security', () => {
       type: 'Bearer',
       email: 'test@example.com',
       userId: '123',
+      firmId: undefined,
+      role: undefined,
     });
     expect((response as any).token).toBeUndefined();
+    expect((response as any).otherSensitiveField).toBeUndefined();
   });
 
-  it('should not return token in confirmRegistration response', async () => {
+  it('should return confirmRegistration response without token even if API sends it (whitelist check)', async () => {
     (api.post as any).mockResolvedValueOnce({
       data: {
         token: 'secret-token',

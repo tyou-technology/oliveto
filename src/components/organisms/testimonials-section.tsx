@@ -30,6 +30,7 @@ const testimonials = [
 export function TestimonialsSection() {
   const [currentPage, setCurrentPage] = useState(0);
   const [isHovered, setIsHovered] = useState(false);
+  const [resetKey, setResetKey] = useState(0);
 
   const AUTO_PLAY_INTERVAL = 8000; // 8 segundos —
   const itemsPerPage = 2;
@@ -44,6 +45,7 @@ export function TestimonialsSection() {
 
   const handleIndexChange = (index: number) => {
     setCurrentPage(index);
+    setResetKey((prev) => prev + 1);
   };
 
   useEffect(() => {
@@ -54,7 +56,7 @@ export function TestimonialsSection() {
     }, AUTO_PLAY_INTERVAL);
 
     return () => clearInterval(interval);
-  }, [isHovered, totalPages, currentPage]);
+  }, [isHovered, totalPages, resetKey]);
 
   return (
     <section className="px-8 py-16 md:px-16 md:py-24 border-t border-gray-800 bg-black">
