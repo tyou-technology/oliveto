@@ -125,6 +125,9 @@ describe("NewsletterSection", () => {
     // Should still show form (or at least button)
     expect(screen.getByRole("button", { name: /Quero o E-book Gratuito/i })).toBeTruthy();
 
+    // Verify safe logging
+    expect(consoleSpy).toHaveBeenCalledWith("Newsletter subscription failed");
+
     consoleSpy.mockRestore();
   });
 
