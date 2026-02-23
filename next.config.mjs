@@ -16,7 +16,7 @@ const nextConfig = {
       headers: [
         {
           key: "Content-Security-Policy",
-          value: getCsp(isDev),
+          value: getCsp(isDev, process.env.NEXT_PUBLIC_API_URL),
         },
         ...getSecurityHeaders(),
       ],

@@ -21,3 +21,14 @@
 ## 2025-02-25 - Slot Component Content Injection
 **Learning:** Radix UI's `Slot` component (used when `asChild` is true) strictly expects a single child and merges props, making it impossible to inject additional content like a loading spinner directly.
 **Action:** When implementing `loading` states in components supporting `asChild`, condition the spinner rendering on `!asChild` and document this limitation, or refactor to wrap the child manually if needed.
+
+## 2025-02-26 - Accessible Text Animations
+**Learning:** Purely visual text animations (like `ScrambleText`) cause significant accessibility issues for screen readers by constantly announcing changing content, and can trigger motion sickness.
+**Action:** Implement text animations with a dual structure: a visually hidden static element (`sr-only`) for screen readers, and the animated element marked with `aria-hidden="true"`. Also, respect `prefers-reduced-motion` to disable the animation entirely.
+
+## 2025-02-27 - Decorative Icon Accessibility
+**Learning:** Found multiple instances of decorative icons (e.g., in close buttons, search inputs, or separators) lacking `aria-hidden="true"`, potentially causing screen readers to announce them as "graphic" or "unlabeled image" alongside the actual text label.
+**Action:** Consistently add `aria-hidden="true"` to icons that are purely decorative or have a visible text alternative (like `sr-only` text), reducing noise for screen reader users.
+## 2025-02-27 - Contextual Action Buttons
+**Learning:** Found multiple instances of generic `aria-label`s on icon-only buttons in lists (e.g., "Edit" instead of "Edit Article [Title]"). This creates a confusing experience for screen reader users navigating lists of items.
+**Action:** Always include the unique identifier (like title or name) in the `aria-label` of action buttons within lists to provide context.

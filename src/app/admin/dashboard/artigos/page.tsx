@@ -18,6 +18,7 @@ import {
 import { useTags } from "@/features/articles/hooks/useTags";
 import { TagList } from "@/components/organisms/tag-list";
 import { TagForm } from "@/components/organisms/tag-form";
+import { ArticleView } from "@/components/organisms/article-view";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -247,16 +248,9 @@ export default function ArtigosPage() {
             <Loader2 className="w-8 h-8 text-primary animate-spin" />
           </div>
         ) : fullArticle ? (
-          <ArticleForm
-            onSubmit={() => {}} // No-op for view mode
-            isPending={false}
-            tags={tags || []}
-            authorId={fullArticle.authorId || ""}
-            firmId={fullArticle.firmId || ""}
-            authorName={fullArticle.authorName || "Usuário"}
-            initialData={fullArticle}
-            readOnly={true}
-            onCancel={() => {
+          <ArticleView
+            article={fullArticle}
+            onBack={() => {
               setActiveTab("list");
               setSelectedArticleId(null);
             }}

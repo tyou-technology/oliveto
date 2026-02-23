@@ -1,3 +1,4 @@
+import { useMemo } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { articlesApi, PaginatedResponse } from "../api/articles.api";
 import { ArticleResponseDTO } from "@/lib/types/article";
@@ -33,15 +34,18 @@ export const useInfiniteArticles = (
     initialData,
   });
 
-  const articles = data?.pages.flatMap((page) => page.content) || [];
+  const articles = useMemo(() => data?.pages.flatMap((page) => page.content) || [], [data]);
   const totalElements = data?.pages[0]?.page.totalElements || 0;
 
-  return {
-    articles,
-    fetchNextPage,
-    hasNextPage,
-    isFetchingNextPage,
-    isLoading,
-    totalElements,
-  };
+  return useMemo(
+    () => ({
+      articles,
+      fetchNextPage,
+      hasNextPage,
+      isFetchingNextPage,
+      isLoading,
+      totalElements,
+    }),
+    [articles, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading, totalElements]
+  );
 };

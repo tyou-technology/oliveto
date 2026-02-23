@@ -59,6 +59,7 @@ export const ArticleGridItem = memo(function ArticleGridItem({ article, tagsMap 
               <button 
                 onClick={handleExpand}
                 className="text-xs text-neutral-400 hover:text-white transition-colors px-1 cursor-pointer"
+                aria-label="Mostrar mais tags"
               >
                 ...
               </button>

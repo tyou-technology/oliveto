@@ -58,7 +58,7 @@ export const TagListItem = memo(function TagListItem({ tag, onEdit, onDelete }: 
             variant="ghost"
             size="icon-sm"
             className="hover:bg-white/10 text-neutral-400 hover:text-white rounded-lg"
-            aria-label="Editar tag"
+            aria-label={`Editar tag: ${tag.name}`}
             title="Editar"
             onClick={() => onEdit(tag)}
           >
@@ -68,7 +68,7 @@ export const TagListItem = memo(function TagListItem({ tag, onEdit, onDelete }: 
             variant="ghost"
             size="icon-sm"
             className="hover:bg-red-500/10 text-red-400 hover:text-red-300 rounded-lg"
-            aria-label="Excluir tag"
+            aria-label={`Excluir tag: ${tag.name}`}
             title="Excluir"
             onClick={() => onDelete(tag)}
           >

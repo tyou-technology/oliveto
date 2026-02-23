@@ -1,1 +1,1 @@
-export function getCsp(isDev: boolean): string;
+export function getCsp(isDev: boolean, apiUrl?: string): string;
