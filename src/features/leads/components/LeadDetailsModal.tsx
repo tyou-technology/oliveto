@@ -48,7 +48,7 @@ export function LeadDetailsModal({ lead, onClose }: LeadDetailsModalProps) {
 
           <div className="space-y-2">
             <div className="flex items-center gap-2 text-neutral-400 mb-2">
-              <MessageSquare className="w-4 h-4" />
+              <MessageSquare className="w-4 h-4" aria-hidden="true" />
               <span className="text-sm font-medium">Mensagem</span>
             </div>
             <div className="bg-white/5 p-4 rounded-xl text-neutral-200 text-sm leading-relaxed whitespace-pre-wrap border border-white/5">
@@ -71,7 +71,7 @@ function InfoItem({ icon: Icon, label, value }: InfoItemProps) {
   return (
     <div className="space-y-1">
       <div className="flex items-center gap-2 text-neutral-400">
-        <Icon className="w-4 h-4" />
+        <Icon className="w-4 h-4" aria-hidden="true" />
         <span className="text-sm font-medium">{label}</span>
       </div>
       <p className="text-white font-medium pl-6 break-words">{value || "-"}</p>
