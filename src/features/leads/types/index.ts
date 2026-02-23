@@ -50,3 +50,11 @@ export const NewsletterSchema = z.object({
 });
 
 export type NewsletterFormValues = z.infer<typeof NewsletterSchema>;
+
+export const UpdateLeadSchema = z.object({
+  name: z.string().min(2, "Nome é obrigatório").max(100),
+  email: z.string().email("Email inválido").max(100),
+  phone: z.string().max(20).optional(),
+});
+
+export type UpdateLeadDTO = z.infer<typeof UpdateLeadSchema>;
