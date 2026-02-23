@@ -9,6 +9,7 @@ import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { ROUTES } from "@/lib/config/routes";
 import { LeadDetailsModal } from "@/features/leads/components/LeadDetailsModal";
+import { LeadEditModal } from "@/features/leads/components/LeadEditModal";
 
 interface RecentLeadsProps {
   data: DashboardLead[];
@@ -17,11 +18,19 @@ interface RecentLeadsProps {
 
 export function RecentLeads({ data, isLoading }: RecentLeadsProps) {
   const [selectedLead, setSelectedLead] = useState<DashboardLead | null>(null);
+  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
 
-  const columns = useMemo(
-    () => getRecentLeadsColumns({ onViewLead: setSelectedLead }),
-    []
-  );
+  const columns = useMemo(() => getRecentLeadsColumns({
+    onView: (lead) => {
+      setSelectedLead(lead);
+      setIsViewModalOpen(true);
+    },
+    onEdit: (lead) => {
+      setSelectedLead(lead);
+      setIsEditModalOpen(true);
+    },
+  }), []);
 
   if (isLoading) {
     return (
@@ -57,10 +66,23 @@ export function RecentLeads({ data, isLoading }: RecentLeadsProps) {
         />
       </div>
 
-      {selectedLead && (
+      {selectedLead && isViewModalOpen && (
         <LeadDetailsModal
           lead={selectedLead}
-          onClose={() => setSelectedLead(null)}
+          onClose={() => {
+            setSelectedLead(null);
+            setIsViewModalOpen(false);
+          }}
+        />
+      )}
+
+      {selectedLead && isEditModalOpen && (
+        <LeadEditModal
+          lead={selectedLead}
+          onClose={() => {
+            setSelectedLead(null);
+            setIsEditModalOpen(false);
+          }}
         />
       )}
     </div>

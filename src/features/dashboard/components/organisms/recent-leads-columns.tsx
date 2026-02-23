@@ -15,13 +15,15 @@ import {
 import { DashboardLead } from "../../types";
 import { StatusBadge } from "../molecules/status-badge";
 
-interface GetRecentLeadsColumnsProps {
-  onViewLead: (lead: DashboardLead) => void;
+interface RecentLeadsColumnsProps {
+  onView: (lead: DashboardLead) => void;
+  onEdit: (lead: DashboardLead) => void;
 }
 
 export const getRecentLeadsColumns = ({
-  onViewLead,
-}: GetRecentLeadsColumnsProps): ColumnDef<DashboardLead>[] => [
+  onView,
+  onEdit,
+}: RecentLeadsColumnsProps): ColumnDef<DashboardLead>[] => [
   {
     accessorKey: "name",
     header: "Nome",
@@ -61,16 +63,14 @@ export const getRecentLeadsColumns = ({
           <DropdownMenuContent align="end">
             <DropdownMenuLabel>Ações</DropdownMenuLabel>
             <DropdownMenuItem
-              onClick={() => onViewLead(lead)}
+              onClick={() => onView(lead)}
               className="cursor-pointer"
             >
               <Eye className="mr-2 h-4 w-4" aria-hidden="true" />
               <span>Visualizar</span>
             </DropdownMenuItem>
             <DropdownMenuItem
-              onClick={() => {
-                // TODO: Implement edit lead
-              }}
+              onClick={() => onEdit(lead)}
               className="cursor-pointer"
             >
               <Edit2 className="mr-2 h-4 w-4" aria-hidden="true" />
