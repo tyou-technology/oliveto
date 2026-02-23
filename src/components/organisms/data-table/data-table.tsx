@@ -105,6 +105,7 @@ function DataTableComponent<TData, TValue>({
             onChange={(event) => setSearchTerm(event.target.value)}
             className="max-w-sm"
             maxLength={100}
+            aria-label="Filtrar tabela"
           />
         </div>
       )}

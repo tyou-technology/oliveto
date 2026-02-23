@@ -60,4 +60,40 @@ describe('sanitizeHtml', () => {
     expect(output).not.toContain('class=');
     expect(output).toContain('<div>Hacked</div>');
   });
+
+  it('should remove data: URIs from src', () => {
+    const input = '<img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg==">';
+    const output = sanitizeHtml(input);
+    expect(output).not.toContain('src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8z8BQDwAEhQGAhKmMIQAAAABJRU5ErkJggg=="');
+    // It should strip the src attribute entirely or sanitize it
+    expect(output).not.toContain('data:image/png;base64');
+  });
+
+  it('should remove ftp: links', () => {
+    const input = '<a href="ftp://example.com">FTP</a>';
+    const output = sanitizeHtml(input);
+    expect(output).not.toContain('href="ftp://example.com"');
+    // Depending on sanitizer behavior, it might remove href or the tag.
+    // DOMPurify typically removes the attribute value or attribute if invalid.
+  });
+
+  it('should remove vbscript: links', () => {
+    const input = '<a href="vbscript:msgbox(1)">VBS</a>';
+    const output = sanitizeHtml(input);
+    expect(output).not.toContain('vbscript:');
+  });
+
+  it('should allow http, https, mailto, and tel schemes', () => {
+    const input = `
+      <a href="http://example.com">HTTP</a>
+      <a href="https://example.com">HTTPS</a>
+      <a href="mailto:user@example.com">Mail</a>
+      <a href="tel:+1234567890">Phone</a>
+    `;
+    const output = sanitizeHtml(input);
+    expect(output).toContain('href="http://example.com"');
+    expect(output).toContain('href="https://example.com"');
+    expect(output).toContain('href="mailto:user@example.com"');
+    expect(output).toContain('href="tel:+1234567890"');
+  });
 });

@@ -1,12 +1,15 @@
 "use client";
 
+import { useState, useMemo } from "react";
 import { DataTable } from "@/components/organisms/data-table/data-table";
-import { recentLeadsColumns } from "./recent-leads-columns";
+import { getRecentLeadsColumns } from "./recent-leads-columns";
 import { DashboardLead } from "../../types";
 import { Skeleton } from "@/components/atoms/skeleton";
 import { ChevronRight } from "lucide-react";
 import Link from "next/link";
 import { ROUTES } from "@/lib/config/routes";
+import { LeadDetailsModal } from "@/features/leads/components/LeadDetailsModal";
+import { LeadEditModal } from "@/features/leads/components/LeadEditModal";
 
 interface RecentLeadsProps {
   data: DashboardLead[];
@@ -14,6 +17,21 @@ interface RecentLeadsProps {
 }
 
 export function RecentLeads({ data, isLoading }: RecentLeadsProps) {
+  const [selectedLead, setSelectedLead] = useState<DashboardLead | null>(null);
+  const [isViewModalOpen, setIsViewModalOpen] = useState(false);
+  const [isEditModalOpen, setIsEditModalOpen] = useState(false);
+
+  const columns = useMemo(() => getRecentLeadsColumns({
+    onView: (lead) => {
+      setSelectedLead(lead);
+      setIsViewModalOpen(true);
+    },
+    onEdit: (lead) => {
+      setSelectedLead(lead);
+      setIsEditModalOpen(true);
+    },
+  }), []);
+
   if (isLoading) {
     return (
       <div className="bg-surface border border-white/10 rounded-2xl overflow-hidden p-6">
@@ -43,10 +61,30 @@ export function RecentLeads({ data, isLoading }: RecentLeadsProps) {
       </div>
       <div className="p-0">
         <DataTable
-          columns={recentLeadsColumns}
+          columns={columns}
           data={data}
         />
       </div>
+
+      {selectedLead && isViewModalOpen && (
+        <LeadDetailsModal
+          lead={selectedLead}
+          onClose={() => {
+            setSelectedLead(null);
+            setIsViewModalOpen(false);
+          }}
+        />
+      )}
+
+      {selectedLead && isEditModalOpen && (
+        <LeadEditModal
+          lead={selectedLead}
+          onClose={() => {
+            setSelectedLead(null);
+            setIsEditModalOpen(false);
+          }}
+        />
+      )}
     </div>
   );
 }

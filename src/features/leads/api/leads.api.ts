@@ -1,5 +1,5 @@
 import { api } from "@/lib/api-client";
-import { LeadResponseDTO, UnreadLeadsCountDTO, CreateLeadDTO, LeadQueryParams } from "../types";
+import { LeadResponseDTO, UnreadLeadsCountDTO, CreateLeadDTO, LeadQueryParams, UpdateLeadDTO } from "../types";
 
 export interface PaginatedResponse<T> {
   content: T[];
@@ -37,6 +37,11 @@ export const leadsApi = {
 
   markAsRead: async (id: string): Promise<void> => {
     await api.patch(`/leads/${id}/read`);
+  },
+
+  update: async (id: string, data: UpdateLeadDTO): Promise<LeadResponseDTO> => {
+    const response = await api.put<LeadResponseDTO>(`/leads/${id}`, data);
+    return response.data;
   },
 
   countUnread: async (): Promise<UnreadLeadsCountDTO> => {

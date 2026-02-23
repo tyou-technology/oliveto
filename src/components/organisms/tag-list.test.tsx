@@ -48,4 +48,21 @@ describe('TagList', () => {
     const deleteButtons = screen.getAllByTitle('Excluir');
     expect(deleteButtons).toHaveLength(2);
   });
+
+  it('renders empty state when no tags are provided', () => {
+    const tags: TagResponseDTO[] = [];
+    const onEdit = vi.fn();
+    const onDelete = vi.fn();
+
+    render(
+      <TagList
+        tags={tags}
+        onEdit={onEdit}
+        onDelete={onDelete}
+      />
+    );
+
+    expect(screen.getByText('Nenhuma tag encontrada')).toBeTruthy();
+    expect(screen.getByText('Você ainda não criou nenhuma tag.')).toBeTruthy();
+  });
 });

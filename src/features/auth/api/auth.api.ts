@@ -18,7 +18,9 @@ export const authApi = {
   },
   validateToken: async (): Promise<TokenValidationResponse> => {
     const response = await api.get<TokenValidationResponse>("/auth/validate");
-    return response.data;
+    // Explicitly pick only the allowed fields
+    const { valid, name, email, userId, firmId, role, message } = response.data;
+    return { valid, name, email, userId, firmId, role, message };
   },
   confirmRegistration: async (
     data: ConfirmRegistrationRequest
