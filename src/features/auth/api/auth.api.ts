@@ -9,12 +9,9 @@ import {
 
 export const authApi = {
   login: async (data: LoginRequest): Promise<LoginResponse> => {
-    const response = await api.post<LoginResponse & { token: string }>(
-      "/auth/login",
-      data
-    );
-    const { token, ...rest } = response.data;
-    return rest;
+    const response = await api.post<LoginResponse>("/auth/login", data);
+    const { type, email, userId, firmId, role } = response.data;
+    return { type, email, userId, firmId, role };
   },
   logout: async (): Promise<void> => {
     await api.post("/auth/logout");
@@ -26,11 +23,11 @@ export const authApi = {
   confirmRegistration: async (
     data: ConfirmRegistrationRequest
   ): Promise<ConfirmRegistrationResponse> => {
-    const response = await api.post<ConfirmRegistrationResponse & { token: string }>(
+    const response = await api.post<ConfirmRegistrationResponse>(
       "/auth/confirm-register",
       data
     );
-    const { token, ...rest } = response.data;
-    return rest;
+    const { type, email, userId } = response.data;
+    return { type, email, userId };
   },
 };
