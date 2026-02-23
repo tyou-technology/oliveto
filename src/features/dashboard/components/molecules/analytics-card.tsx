@@ -42,7 +42,7 @@ export function AnalyticsCard({
     <div className={cn("bg-surface border border-white/10 rounded-2xl p-6 hover:border-primary/30 transition-colors", className)}>
       <div className="flex items-center justify-between mb-4">
         <div className={cn("p-3 rounded-xl", iconClassName)}>
-          <Icon className="w-6 h-6" />
+          <Icon className="w-6 h-6" aria-hidden="true" />
         </div>
         {trend && (
           <span className={cn("text-xs px-2 py-1 rounded-full", trendClassName)}>

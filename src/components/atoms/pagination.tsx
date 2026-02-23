@@ -12,7 +12,7 @@ function Pagination({ className, ...props }: React.ComponentProps<'nav'>) {
   return (
     <nav
       role="navigation"
-      aria-label="pagination"
+      aria-label="paginação"
       data-slot="pagination"
       className={cn('mx-auto flex w-full justify-center', className)}
       {...props}
@@ -72,13 +72,13 @@ function PaginationPrevious({
   const { size: _size, ...rest } = props
   return (
     <PaginationLink
-      aria-label="Go to previous page"
+      aria-label="Ir para a página anterior"
       size="default"
       className={cn('gap-1 px-2.5 sm:pl-2.5', className)}
       {...rest}
     >
-      <ChevronLeftIcon />
-      <span className="hidden sm:block">Previous</span>
+      <ChevronLeftIcon aria-hidden="true" />
+      <span className="hidden sm:block">Anterior</span>
     </PaginationLink>
   )
 }
@@ -90,13 +90,13 @@ function PaginationNext({
   const { size: _size, ...rest } = props
   return (
     <PaginationLink
-      aria-label="Go to next page"
+      aria-label="Ir para a próxima página"
       size="default"
       className={cn('gap-1 px-2.5 sm:pr-2.5', className)}
       {...rest}
     >
-      <span className="hidden sm:block">Next</span>
-      <ChevronRightIcon />
+      <span className="hidden sm:block">Próximo</span>
+      <ChevronRightIcon aria-hidden="true" />
     </PaginationLink>
   )
 }
@@ -112,7 +112,7 @@ function PaginationEllipsis({
       {...props}
     >
       <MoreHorizontalIcon className="size-4" aria-hidden="true" />
-      <span className="sr-only">More pages</span>
+      <span className="sr-only">Mais páginas</span>
     </span>
   )
 }
