@@ -29,20 +29,17 @@ export function ScrambleText({
 
   const frameRef = useRef<number>(0);
   const startTimeRef = useRef<number>(0);
-  const [isReducedMotion, setIsReducedMotion] = useState(() => {
-    if (typeof window !== "undefined") {
-      return window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    }
-    return false;
-  });
+
+  // Initialize to false to match server rendering and avoid hydration mismatch.
+  // The correct value will be set in useEffect.
+  const [isReducedMotion, setIsReducedMotion] = useState(false);
 
   useEffect(() => {
     // Check for reduced motion preference
     const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
-    // Update state if it differs (e.g. hydration mismatch or preference change)
-    if (mediaQuery.matches !== isReducedMotion) {
-      setIsReducedMotion(mediaQuery.matches);
-    }
+
+    // Update state immediately. React will bail out if value is the same.
+    setIsReducedMotion(mediaQuery.matches);
 
     const handleMotionChange = (e: MediaQueryListEvent) => {
       setIsReducedMotion(e.matches);
@@ -67,8 +64,11 @@ export function ScrambleText({
   }, []);
 
   useEffect(() => {
-    // If reduced motion is preferred, ensure text is static and skip animation
-    if (isReducedMotion) {
+    // If reduced motion is preferred, ensure text is static and skip animation.
+    // We also check matchMedia directly to handle the initial client render where
+    // isReducedMotion state might still be false (to match SSR) but the user has the preference.
+    const mediaQuery = window.matchMedia("(prefers-reduced-motion: reduce)");
+    if (isReducedMotion || mediaQuery.matches) {
       if (spanRef.current) {
         spanRef.current.textContent = text;
       }
@@ -109,30 +109,32 @@ export function ScrambleText({
 
         lastFixedCharsCount = fixedCharsCount;
 
-        let result = "";
+        // Optimization: Use Array and join instead of string concatenation in a loop
+        // to reduce garbage collection of intermediate strings during animation frames
+        const result = new Array(targetLength);
 
-        // Optimization: Use loop and string concatenation instead of map/join
-        // to reduce garbage collection during animation frames
         for (let i = 0; i < targetLength; i++) {
           const char = targetChars[i];
 
           if (i < fixedCharsCount) {
-            result += char;
+            result[i] = char;
           } else if (char === " ") {
-            result += " ";
+            result[i] = " ";
           } else if (shouldUpdateScramble) {
-            result += CHARS[Math.floor(Math.random() * charsLength)];
+            result[i] = CHARS[Math.floor(Math.random() * charsLength)];
           } else {
             // Handle case where previous text length is different
-            result += currentTextRef.value[i] || CHARS[0];
+            result[i] = currentTextRef.value[i] || CHARS[0];
           }
         }
 
-        if (result !== currentTextRef.value) {
-          currentTextRef.value = result;
+        const finalResult = result.join("");
+
+        if (finalResult !== currentTextRef.value) {
+          currentTextRef.value = finalResult;
           // Direct DOM manipulation to avoid React re-renders
           if (spanRef.current) {
-            spanRef.current.textContent = result;
+            spanRef.current.textContent = finalResult;
           }
         }
 
