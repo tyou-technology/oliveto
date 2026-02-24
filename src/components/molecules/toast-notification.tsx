@@ -38,6 +38,7 @@ export function ToastNotification({ toast, onClose }: ToastNotificationProps) {
             <button
               onClick={onClose}
               className="text-gray-500 hover:text-white transition-colors"
+              aria-label="Fechar"
             >
               <X className="w-4 h-4" />
             </button>
