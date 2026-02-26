@@ -22,6 +22,22 @@ export function WhatsAppButton() {
   const message =
     "Olá! Gostaria de mais informações sobre os serviços da Oliveto.";
 
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsOpen(false);
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener("keydown", handleKeyDown);
+    }
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isOpen]);
+
   return (
     <div className="fixed bottom-6 right-6 z-50">
       {/* Popup */}
