@@ -1,11 +1,22 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { MessageCircle, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
 export function WhatsAppButton() {
   const [isOpen, setIsOpen] = useState(false);
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape" && isOpen) {
+        setIsOpen(false);
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [isOpen]);
 
   const phoneNumber = "5543991231726";
   const message =
@@ -76,7 +87,14 @@ export function WhatsAppButton() {
         onClick={() => setIsOpen(!isOpen)}
         className="w-14 h-14 bg-whatsapp rounded-full flex items-center justify-center shadow-lg hover:scale-110 transition-all duration-200 ease-in-out relative cursor-pointer"
         aria-label={
-          isOpen ? "Fechar chat do WhatsApp" : "Abrir chat do WhatsApp"
+          isOpen
+            ? "Fechar chat do WhatsApp"
+            : "Abrir chat do WhatsApp (Status: Online)"
+        }
+        title={
+          isOpen
+            ? "Fechar chat do WhatsApp"
+            : "Abrir chat do WhatsApp (Status: Online)"
         }
         aria-expanded={isOpen}
       >
@@ -84,7 +102,7 @@ export function WhatsAppButton() {
 
         {/* Pulse Animation */}
         <span
-          className="absolute w-full h-full rounded-full bg-whatsapp animate-ping opacity-30"
+          className="absolute w-full h-full rounded-full bg-whatsapp animate-ping opacity-30 motion-reduce:hidden"
           aria-hidden="true"
         />
 

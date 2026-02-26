@@ -7,7 +7,7 @@ describe('WhatsAppButton', () => {
   it('renders the floating button with accessible label', () => {
     render(<WhatsAppButton />)
 
-    const mainButton = screen.getByRole('button', { name: /Abrir chat do WhatsApp/i })
+    const mainButton = screen.getByRole('button', { name: /Abrir chat do WhatsApp \(Status: Online\)/i })
     expect(mainButton).toBeTruthy()
     expect(mainButton.getAttribute('aria-expanded')).toBe('false')
   })
@@ -39,6 +39,22 @@ describe('WhatsAppButton', () => {
     // Main button label should revert
     expect(screen.getByRole('button', { name: /Abrir chat do WhatsApp/i })).toBeTruthy()
     expect(mainButton.getAttribute('aria-expanded')).toBe('false')
+  })
+
+  it('closes the popup when Escape key is pressed', () => {
+    render(<WhatsAppButton />)
+
+    const mainButton = screen.getByRole('button', { name: /Abrir chat do WhatsApp/i })
+    fireEvent.click(mainButton)
+
+    // Verify it's open
+    expect(screen.getByRole('button', { name: /^Fechar chat do WhatsApp$/i })).toBeTruthy()
+
+    // Press Escape
+    fireEvent.keyDown(window, { key: 'Escape', code: 'Escape' })
+
+    // Verify it's closed
+    expect(screen.getByRole('button', { name: /Abrir chat do WhatsApp \(Status: Online\)/i })).toBeTruthy()
   })
 
   it('hides the popup content from accessibility tree when closed', () => {
