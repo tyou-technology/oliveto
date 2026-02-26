@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { MessageCircle, X } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -10,6 +10,22 @@ export function WhatsAppButton() {
   const phoneNumber = "5543991231726";
   const message =
     "Olá! Gostaria de mais informações sobre os serviços da Oliveto.";
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        setIsOpen(false);
+      }
+    };
+
+    if (isOpen) {
+      document.addEventListener("keydown", handleKeyDown);
+    }
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+  }, [isOpen]);
 
   return (
     <div className="fixed bottom-6 right-6 z-50">
@@ -84,7 +100,7 @@ export function WhatsAppButton() {
 
         {/* Pulse Animation */}
         <span
-          className="absolute w-full h-full rounded-full bg-whatsapp animate-ping opacity-30"
+          className="absolute w-full h-full rounded-full bg-whatsapp animate-ping opacity-30 motion-reduce:hidden"
           aria-hidden="true"
         />
 
