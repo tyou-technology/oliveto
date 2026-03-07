@@ -8,7 +8,6 @@ export enum ArticleStatus {
 
 export interface TagResponseDTO {
   id: string;
-  firmId: string;
   name: string;
   description?: string;
   color?: string;
@@ -19,8 +18,6 @@ export interface TagResponseDTO {
 
 export interface ArticleResponseDTO {
   id: string;
-  firmId?: string;
-  firm?: { id: string; displayName: string };
   authorId?: string;
   authorName?: string;
   author?: { id: string; fullName: string; email: string };
@@ -38,7 +35,6 @@ export interface ArticleResponseDTO {
 }
 
 export const CreateArticleSchema = z.object({
-  firmId: z.string().uuid(),
   authorId: z.string().uuid(),
   authorName: z.string().max(255).optional(),
   title: z.string().min(1, "Título é obrigatório").max(255),
@@ -83,7 +79,6 @@ export const UpdateArticleSchema = z.object({
 export type UpdateArticleDTO = z.infer<typeof UpdateArticleSchema>;
 
 export const CreateTagSchema = z.object({
-  firmId: z.string().uuid(),
   name: z.string().min(1, "Nome da tag é obrigatório").max(100),
   description: z.string().optional(),
   color: z.string().regex(/^#([A-Fa-f0-9]{6})$/, "Cor inválida").optional(),

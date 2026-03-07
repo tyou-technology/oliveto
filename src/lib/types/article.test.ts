@@ -7,7 +7,6 @@ describe('Article Schemas', () => {
   describe('CreateArticleSchema', () => {
     it('should validate a valid article', () => {
       const validData = {
-        firmId: validUUID,
         authorId: validUUID,
         title: 'Valid Title',
         content: 'Valid Content',
@@ -19,7 +18,6 @@ describe('Article Schemas', () => {
 
     it('should fail if content exceeds max length (16,777,215)', () => {
       const invalidData = {
-        firmId: validUUID,
         authorId: validUUID,
         title: 'Valid Title',
         content: 'a'.repeat(16777216), // Exceeds limit by 1
@@ -34,7 +32,6 @@ describe('Article Schemas', () => {
 
     it('should fail if briefing exceeds max length (500)', () => {
       const invalidData = {
-        firmId: validUUID,
         authorId: validUUID,
         title: 'Valid Title',
         content: 'Valid Content',

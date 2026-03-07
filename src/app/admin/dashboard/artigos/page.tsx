@@ -65,9 +65,7 @@ export default function ArtigosPage() {
     updateArticle,
   } = useArticles(1, 100); // Fetching first 100 articles for now
 
-  const { tags, isLoadingTags, createTag, deleteTag, updateTag } = useTags(
-    user?.firmId
-  );
+  const { tags, isLoadingTags, createTag, deleteTag, updateTag } = useTags();
 
   // Fetch full article details when an ID is selected
   const { article: fullArticle, isLoading: isLoadingFullArticle } = useArticle(selectedArticleId);
@@ -236,7 +234,6 @@ export default function ArtigosPage() {
           isPending={createArticle.isPending}
           tags={tags || []}
           authorId={user?.userId || ""}
-          firmId={user?.firmId || ""}
           authorName={user?.name || "Usuário"}
           onCancel={() => setActiveTab("list")}
         />
@@ -269,7 +266,6 @@ export default function ArtigosPage() {
             isPending={updateArticle.isPending}
             tags={tags || []}
             authorId={fullArticle.authorId || ""}
-            firmId={fullArticle.firmId || ""}
             authorName={fullArticle.authorName || "Usuário"}
             initialData={fullArticle}
             onCancel={() => {

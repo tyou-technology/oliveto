@@ -11,15 +11,14 @@ const STALE_TIME = 1000 * 60 * 5; // 5 minutes
 // Performance: Stable empty array reference to prevent unnecessary re-renders in memoized consumers
 const EMPTY_ARRAY: TagResponseDTO[] = [];
 
-export const useTags = (firmId?: string, publishedOnly = false, initialData?: { content: TagResponseDTO[] }) => {
+export const useTags = (publishedOnly = false, initialData?: { content: TagResponseDTO[] }) => {
   const queryClient = useQueryClient();
 
   const { data: tagsData, isLoading: isLoadingTags } = useQuery({
-    queryKey: ["tags", firmId, publishedOnly],
+    queryKey: ["tags", publishedOnly],
     queryFn: () => publishedOnly
-      ? articlesApi.getPublishedTagsByFirmId(firmId!)
-      : articlesApi.getAllTagsByFirmId(firmId!),
-    enabled: !!firmId,
+      ? articlesApi.getPublishedTags()
+      : articlesApi.getAllTags(),
     staleTime: QUERY_CONFIG.ARTICLES_STALE_TIME,
     initialData,
   });

@@ -19,7 +19,6 @@ interface ArticleFormProps {
   isPending: boolean;
   tags: TagResponseDTO[];
   authorId: string;
-  firmId: string;
   authorName: string;
   initialData?: ArticleResponseDTO;
   onCancel?: () => void;
@@ -31,7 +30,6 @@ export function ArticleForm({
   isPending,
   tags,
   authorId,
-  firmId,
   authorName,
   initialData,
   onCancel,
@@ -50,7 +48,6 @@ export function ArticleForm({
     defaultValues: {
       status: initialData?.status || ArticleStatus.DRAFT,
       authorId: initialData?.author?.id || initialData?.authorId || authorId,
-      firmId: initialData?.firm?.id || initialData?.firmId || firmId,
       content: initialData?.content || "",
       tagIds: initialData?.tags ? initialData.tags.map((t) => t.id) : (initialData?.tagIds || []),
       title: initialData?.title || "",
@@ -69,13 +66,12 @@ export function ArticleForm({
         content: initialData.content || "",
         status: initialData.status,
         authorId: initialData.author?.id || initialData.authorId || authorId,
-        firmId: initialData.firm?.id || initialData.firmId || firmId,
         tagIds: initialData.tags ? initialData.tags.map((t) => t.id) : (initialData.tagIds || []),
         imageUrl: initialData.imageUrl || "",
         authorName: initialData.author?.fullName || initialData.authorName || authorName,
       });
     }
-  }, [initialData, reset, authorId, firmId, authorName]);
+  }, [initialData, reset, authorId, authorName]);
 
   const handleStatusChange = (status: ArticleStatus) => {
     if (readOnly) return;

@@ -30,15 +30,13 @@ const createWrapper = () => {
 };
 
 describe('useArticles Integration Hook', () => {
-  const firmId = 'firm-123';
-
   beforeEach(() => {
     // server.resetHandlers() is called automatically by setup.ts
     vi.clearAllMocks();
   });
 
   it('should fetch articles successfully', async () => {
-    const { result } = renderHook(() => useArticles(firmId), {
+    const { result } = renderHook(() => useArticles(), {
       wrapper: createWrapper(),
     });
 
@@ -59,12 +57,12 @@ describe('useArticles Integration Hook', () => {
   it('should handle API errors', async () => {
     // Override handler to return 500
     server.use(
-      http.get(`${env.NEXT_PUBLIC_API_URL}/articles/by-firm/:firmId`, () => {
+      http.get(`${env.NEXT_PUBLIC_API_URL}/articles`, () => {
         return new HttpResponse(null, { status: 500 });
       })
     );
 
-    const { result } = renderHook(() => useArticles(firmId), {
+    const { result } = renderHook(() => useArticles(), {
       wrapper: createWrapper(),
     });
 
@@ -81,16 +79,16 @@ describe('useArticles Integration Hook', () => {
     let capturedHeader: string | null = null;
 
     server.use(
-      http.get(`${env.NEXT_PUBLIC_API_URL}/articles/by-firm/:firmId`, ({ request }) => {
+      http.get(`${env.NEXT_PUBLIC_API_URL}/articles`, ({ request }) => {
         capturedHeader = request.headers.get('X-Client-Token');
         return HttpResponse.json({
-          content: [],
-          page: { totalElements: 0, totalPages: 0 }
+          data: [],
+          meta: { total: 0, totalPages: 0 }
         });
       })
     );
 
-    const { result } = renderHook(() => useArticles(firmId), {
+    const { result } = renderHook(() => useArticles(), {
       wrapper: createWrapper(),
     });
 

@@ -15,8 +15,8 @@ vi.mock('@/lib/env', () => ({
 // Mock the API
 vi.mock('@/features/articles/api/articles.api', () => ({
   articlesApi: {
-    getAllByFirmId: vi.fn(),
-    getPublishedByFirmId: vi.fn(),
+    getAll: vi.fn(),
+    getPublished: vi.fn(),
   },
 }));
 
@@ -43,20 +43,20 @@ describe('useInfiniteArticles Hook', () => {
   // re-renders in downstream components.
   it('should return a stable articles array reference when data has not changed', async () => {
     const mockPage = {
-      content: [{ id: '1', title: 'Article 1' }],
-      page: {
-        size: 10,
-        number: 0,
-        totalElements: 1,
+      data: [{ id: '1', title: 'Article 1' }],
+      meta: {
+        limit: 10,
+        page: 1,
+        total: 1,
         totalPages: 1,
       },
     };
 
     // @ts-ignore
-    articlesApi.getAllByFirmId.mockResolvedValue(mockPage);
+    articlesApi.getAll.mockResolvedValue(mockPage);
 
     const { result, rerender } = renderHook(
-      () => useInfiniteArticles('test-firm-id', 10, false),
+      () => useInfiniteArticles(10, false),
       {
         wrapper: createWrapper(),
       }
@@ -74,6 +74,6 @@ describe('useInfiniteArticles Hook', () => {
 
     // Verify referential stability of the 'articles' property
     expect(secondResult.articles).toBe(firstResult.articles);
-    expect(secondResult.articles).toEqual(mockPage.content);
+    expect(secondResult.articles).toEqual(mockPage.data);
   });
 });

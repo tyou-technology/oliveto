@@ -20,7 +20,6 @@ describe("Auth API Sanitization", () => {
       type: "Bearer",
       email: "test@example.com",
       userId: "123",
-      firmId: "firm-1",
       role: "admin",
       // Sensitive fields that should be removed
       internal_secret: "secret-123",
@@ -38,7 +37,6 @@ describe("Auth API Sanitization", () => {
     expect(response).toHaveProperty("type", "Bearer");
     expect(response).toHaveProperty("email", "test@example.com");
     expect(response).toHaveProperty("userId", "123");
-    expect(response).toHaveProperty("firmId", "firm-1");
     expect(response).toHaveProperty("role", "admin");
 
     // Sensitive fields should be removed
@@ -56,7 +54,6 @@ describe("Auth API Sanitization", () => {
       name: "Test User",
       email: "test@example.com",
       userId: "123",
-      firmId: "firm-1",
       role: "admin",
       message: "Valid token",
       // Sensitive fields
