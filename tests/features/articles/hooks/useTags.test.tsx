@@ -15,8 +15,8 @@ vi.mock('@/lib/env', () => ({
 // Mock the API
 vi.mock('@/features/articles/api/articles.api', () => ({
   articlesApi: {
-    getAllTagsByFirmId: vi.fn(),
-    getPublishedTagsByFirmId: vi.fn(),
+    getAllTags: vi.fn(),
+    getPublishedTags: vi.fn(),
     createTag: vi.fn(),
     updateTag: vi.fn(),
     deleteTag: vi.fn(),
@@ -42,11 +42,11 @@ describe('useTags Hook', () => {
   });
 
   it('should return a stable tags array reference when data has not changed', async () => {
-    const mockTags = { content: [{ id: '1', name: 'Tag 1' }] };
+    const mockTags = [{ id: '1', name: 'Tag 1' }];
     // @ts-ignore
-    articlesApi.getAllTagsByFirmId.mockResolvedValue(mockTags);
+    articlesApi.getAllTags.mockResolvedValue(mockTags);
 
-    const { result, rerender } = renderHook(() => useTags('test-firm-id'), {
+    const { result, rerender } = renderHook(() => useTags(), {
       wrapper: createWrapper(),
     });
 
@@ -62,6 +62,6 @@ describe('useTags Hook', () => {
 
     // Verify referential stability of the 'tags' property
     expect(secondResult.tags).toBe(firstResult.tags);
-    expect(secondResult.tags).toEqual(mockTags.content);
+    expect(secondResult.tags).toEqual(mockTags);
   });
 });

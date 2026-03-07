@@ -7,13 +7,12 @@ import { env } from "@/lib/env";
 // keeping default behavior (static with revalidation time defined in api call)
 
 export default async function ArticlesPage() {
-  const firmId = env.NEXT_PUBLIC_FIRM_ID;
   const size = 6;
 
   try {
     const [initialArticlesPage, initialTags] = await Promise.all([
-      articlesApi.getPublicPublishedByFirmId(firmId, 0, size),
-      articlesApi.getPublishedTagsByFirmId(firmId),
+      articlesApi.getPublicPublished(0, size),
+      articlesApi.getPublishedTags(),
     ]);
 
     const initialArticles = {

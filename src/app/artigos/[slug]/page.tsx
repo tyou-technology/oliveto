@@ -17,15 +17,10 @@ import { ReadingProgress } from "@/components/atoms/reading-progress";
  * NOTE: Your backend API must be accessible during the build process for this to work.
  */
 export async function generateStaticParams(): Promise<{ slug: string }[]> {
-  const firmId = env.NEXT_PUBLIC_FIRM_ID;
-  if (!firmId) {
-    throw new Error("FIRM_ID is not defined. Cannot generate static params.");
-  }
-
   // We intentionally allow this to throw if the API fails, ensuring the build fails
   // instead of silently generating 0 pages.
-  // Performance: Using fetch-based 'getPublicPublishedByFirmId' to enable Data Cache
-  const response = await articlesApi.getPublicPublishedByFirmId(firmId, 0, 1000);
+  // Performance: Using fetch-based 'getPublicPublished' to enable Data Cache
+  const response = await articlesApi.getPublicPublished(0, 1000);
 
   if (!response || !Array.isArray(response.content)) {
     throw new Error("Invalid API response format: 'content' array missing.");

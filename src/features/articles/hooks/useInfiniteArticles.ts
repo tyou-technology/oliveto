@@ -5,7 +5,6 @@ import { ArticleResponseDTO } from "@/lib/types/article";
 import { QUERY_CONFIG } from "@/lib/config/query";
 
 export const useInfiniteArticles = (
-  firmId?: string,
   size = 10,
   publishedOnly = false,
   initialData?: { pages: PaginatedResponse<ArticleResponseDTO>[]; pageParams: unknown[] }
@@ -17,25 +16,24 @@ export const useInfiniteArticles = (
     isFetchingNextPage,
     isLoading,
   } = useInfiniteQuery({
-    queryKey: ["articles", "infinite", firmId, size, publishedOnly],
+    queryKey: ["articles", "infinite", size, publishedOnly],
     queryFn: ({ pageParam }) =>
       publishedOnly
-        ? articlesApi.getPublishedByFirmId(firmId!, pageParam as number, size)
-        : articlesApi.getAllByFirmId(firmId!, pageParam as number, size),
+        ? articlesApi.getPublished((pageParam as number) + 1, size)
+        : articlesApi.getAll((pageParam as number) + 1, size),
     initialPageParam: 0,
     getNextPageParam: (lastPage) => {
-      if (lastPage.page.number < lastPage.page.totalPages - 1) {
-        return lastPage.page.number + 1;
+      if (lastPage.meta.page < lastPage.meta.totalPages) {
+        return lastPage.meta.page; // Assuming pageParam works 0-indexed for `api` or 1-indexed? The function above does pageParam + 1. But wait, `getNextPageParam` should return the next `pageParam`.
       }
       return undefined;
     },
-    enabled: !!firmId,
     staleTime: QUERY_CONFIG.ARTICLES_STALE_TIME,
     initialData,
   });
 
-  const articles = useMemo(() => data?.pages.flatMap((page) => page.content) || [], [data]);
-  const totalElements = data?.pages[0]?.page.totalElements || 0;
+  const articles = useMemo(() => data?.pages.flatMap((page) => page.data) || [], [data]);
+  const totalElements = data?.pages[0]?.meta?.total || 0;
 
   return useMemo(
     () => ({

@@ -22,7 +22,6 @@ export const handlers = [
         type: 'Bearer',
         email: 'test@example.com',
         userId: 'user-123',
-        firmId: 'firm-123',
         role: 'ADMIN',
       };
 
@@ -38,18 +37,15 @@ export const handlers = [
   }),
 
   // Article Handlers
-  http.get(apiUrl('/articles/by-firm/:firmId'), ({ params, request }) => {
+  http.get(apiUrl('/articles'), ({ request }) => {
     if (!request.headers.get('X-Client-Token')) {
       return new HttpResponse(null, { status: 400, statusText: 'Missing X-Client-Token' });
     }
 
-    const { firmId } = params;
-
-    const mockArticles: { content: ArticleResponseDTO[]; page: any } = {
-      content: [
+    const mockArticles = {
+      data: [
         {
           id: 'article-1',
-          firmId: firmId as string,
           title: 'Test Article 1',
           content: 'Content 1',
           status: ArticleStatus.PUBLISHED,
@@ -58,7 +54,6 @@ export const handlers = [
         },
         {
           id: 'article-2',
-          firmId: firmId as string,
           title: 'Test Article 2',
           content: 'Content 2',
           status: ArticleStatus.DRAFT,
@@ -66,10 +61,10 @@ export const handlers = [
           updatedAt: new Date().toISOString(),
         }
       ],
-      page: {
-        size: 10,
-        number: 0,
-        totalElements: 2,
+      meta: {
+        limit: 10,
+        page: 1,
+        total: 2,
         totalPages: 1
       }
     };

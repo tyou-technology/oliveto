@@ -15,7 +15,6 @@ describe('ArticleList', () => {
         updatedAt: '2023-01-01T00:00:00Z',
         content: 'Content 1',
         authorId: 'author1',
-        firmId: 'firm1',
         tags: [],
       },
       {
@@ -27,7 +26,6 @@ describe('ArticleList', () => {
         updatedAt: '2023-01-02T00:00:00Z',
         content: 'Content 2',
         authorId: 'author1',
-        firmId: 'firm1',
         tags: [],
       },
     ];

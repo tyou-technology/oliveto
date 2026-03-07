@@ -17,7 +17,6 @@ describe("ArticleGridItem Performance", () => {
   it("should memoize visibleTags and not call slice on re-renders with stable props", () => {
     const createTag = (id: string): TagResponseDTO => ({
       id,
-      firmId: "firm1",
       name: `Tag ${id}`,
       color: "#ff0000",
       createdAt: "2023-01-01",

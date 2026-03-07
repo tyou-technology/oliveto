@@ -45,6 +45,40 @@ export const articlesApi = {
     return response.data;
   },
 
+  getPublicPublished: async (page = 0, size = 10): Promise<any> => {
+    // For app router static generation + fetch cache
+    const response = await fetch(
+      `${env.NEXT_PUBLIC_API_URL}/articles?page=${page + 1}&limit=${size}&status=PUBLISHED`,
+      {
+        next: { revalidate: 3600 },
+      }
+    );
+    if (!response.ok) {
+      throw new Error(`Failed to fetch public published articles: ${response.statusText}`);
+    }
+    return response.json();
+  },
+
+  getPublicById: async (id: string): Promise<ArticleResponseDTO> => {
+    const response = await fetch(`${env.NEXT_PUBLIC_API_URL}/articles/${id}`, {
+      next: { revalidate: 3600 },
+    });
+    if (!response.ok) {
+      throw new Error(`Failed to fetch public article: ${response.statusText}`);
+    }
+    return response.json();
+  },
+
+  getPublishedTags: async (): Promise<TagResponseDTO[]> => {
+    const response = await fetch(`${env.NEXT_PUBLIC_API_URL}/tags`, {
+      next: { revalidate: 3600 },
+    });
+    if (!response.ok) {
+      throw new Error(`Failed to fetch published tags: ${response.statusText}`);
+    }
+    return response.json();
+  },
+
   getBySlug: async (slug: string): Promise<ArticleResponseDTO> => {
     const response = await api.get<ArticleResponseDTO>(`/articles/slug/${slug}`);
     return response.data;

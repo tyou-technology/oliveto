@@ -25,7 +25,6 @@ const createMockArticle = (): ArticleResponseDTO => ({
   tags: [
     {
       id: "tag-1",
-      firmId: "firm-1",
       name: "Tax",
       color: "#FF0000",
       createdAt: new Date().toISOString(),
@@ -33,7 +32,6 @@ const createMockArticle = (): ArticleResponseDTO => ({
     },
     {
       id: "tag-2",
-      firmId: "firm-1",
       name: "Business",
       color: "#00FF00",
       createdAt: new Date().toISOString(),

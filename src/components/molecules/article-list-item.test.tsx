@@ -23,7 +23,6 @@ describe("ArticleListItem", () => {
     publishedAt: "2023-01-01T00:00:00Z",
     createdAt: "2023-01-01T00:00:00Z",
     updatedAt: "2023-01-01T00:00:00Z",
-    firmId: "firm-1",
     readingTime: 5,
     authorId: "author-1",
     author: {
