@@ -61,7 +61,6 @@ describe('Auth Security', () => {
       type: 'Bearer',
       email: 'test@example.com',
       userId: '123',
-      firmId: undefined,
       role: undefined,
     });
     expect((response as any).token).toBeUndefined();

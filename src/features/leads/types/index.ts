@@ -2,9 +2,17 @@ import { z } from "zod";
 
 export enum LeadOrigin {
   NEWSLETTER = "NEWSLETTER",
-  CONTACT = "CONTACT",
+  CONTACT_FORM = "CONTACT_FORM",
   RICH_MATERIAL = "RICH_MATERIAL",
   OTHER = "OTHER",
+}
+
+export enum LeadStatus {
+  NEW = "NEW",
+  CONTACTED = "CONTACTED",
+  QUALIFIED = "QUALIFIED",
+  LOST = "LOST",
+  CONVERTED = "CONVERTED",
 }
 
 export interface LeadResponseDTO {
@@ -14,7 +22,9 @@ export interface LeadResponseDTO {
   phone: string;
   message: string;
   origin: LeadOrigin;
+  status: LeadStatus;
   isRead: boolean;
+  notes?: string;
   createdAt: string; // ISO string
 }
 
@@ -41,6 +51,8 @@ export interface CreateLeadDTO {
   phone: string;
   message?: string;
   origin: LeadOrigin;
+  company?: string;
+  service?: string;
 }
 
 export const NewsletterSchema = z.object({

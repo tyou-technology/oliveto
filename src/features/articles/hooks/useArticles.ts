@@ -8,15 +8,14 @@ import { QUERY_CONFIG } from "@/lib/config/query";
 
 const EMPTY_ARRAY: ArticleResponseDTO[] = [];
 
-export const useArticles = (firmId?: string, page = 0, size = 10, publishedOnly = false) => {
+export const useArticles = (page = 1, size = 10, publishedOnly = false) => {
   const queryClient = useQueryClient();
 
   const { data: articlesData, isLoading: isLoadingArticles } = useQuery({
-    queryKey: ["articles", firmId, page, size, publishedOnly],
+    queryKey: ["articles", page, size, publishedOnly],
     queryFn: () => publishedOnly 
-      ? articlesApi.getPublishedByFirmId(firmId!, page, size)
-      : articlesApi.getAllByFirmId(firmId!, page, size),
-    enabled: !!firmId,
+      ? articlesApi.getPublished(page, size)
+      : articlesApi.getAll(page, size),
     staleTime: QUERY_CONFIG.ARTICLES_STALE_TIME,
   });
 
@@ -55,9 +54,9 @@ export const useArticles = (firmId?: string, page = 0, size = 10, publishedOnly 
   });
 
   return useMemo(() => ({
-    articles: articlesData?.content || EMPTY_ARRAY,
-    totalPages: articlesData?.page?.totalPages || 0,
-    totalElements: articlesData?.page?.totalElements || 0,
+    articles: articlesData?.data || EMPTY_ARRAY,
+    totalPages: articlesData?.meta?.totalPages || 0,
+    totalElements: articlesData?.meta?.total || 0,
     isLoadingArticles,
     createArticle,
     updateArticle,

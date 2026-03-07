@@ -10,11 +10,11 @@ import {
 } from "@/lib/types/article";
 
 export interface PaginatedResponse<T> {
-  content: T[];
-  page: {
-    size: number;
-    number: number;
-    totalElements: number;
+  data: T[];
+  meta: {
+    page: number;
+    limit: number;
+    total: number;
     totalPages: number;
   };
 }
@@ -26,38 +26,28 @@ export const articlesApi = {
     return response.data;
   },
 
-  count: async (): Promise<number> => {
-    const response = await api.get<number>("/articles/count");
+  getAll: async (page = 1, limit = 10, status?: string, tagId?: string, search?: string): Promise<PaginatedResponse<ArticleResponseDTO>> => {
+    const params: any = { page, limit };
+    if (status) params.status = status;
+    if (tagId) params.tagId = tagId;
+    if (search) params.search = search;
+
+    const response = await api.get<PaginatedResponse<ArticleResponseDTO>>("/articles", { params });
     return response.data;
   },
 
-  getAllByFirmId: async (firmId: string, page = 0, size = 10): Promise<PaginatedResponse<ArticleResponseDTO>> => {
-    const response = await api.get<PaginatedResponse<ArticleResponseDTO>>(`/articles/by-firm/${firmId}`, {
-      params: { page, size },
-    });
+  getPublished: async (page = 1, limit = 10, tagId?: string, search?: string): Promise<PaginatedResponse<ArticleResponseDTO>> => {
+    const params: any = { page, limit, status: "PUBLISHED" };
+    if (tagId) params.tagId = tagId;
+    if (search) params.search = search;
+
+    const response = await api.get<PaginatedResponse<ArticleResponseDTO>>("/articles", { params });
     return response.data;
   },
 
-  getPublishedByFirmId: async (firmId: string, page = 0, size = 10): Promise<PaginatedResponse<ArticleResponseDTO>> => {
-    const response = await api.get<PaginatedResponse<ArticleResponseDTO>>(`/articles/published/by-firm/${firmId}`, {
-      params: { page, size },
-    });
+  getBySlug: async (slug: string): Promise<ArticleResponseDTO> => {
+    const response = await api.get<ArticleResponseDTO>(`/articles/slug/${slug}`);
     return response.data;
-  },
-
-  getPublicPublishedByFirmId: async (firmId: string, page = 0, size = 10): Promise<PaginatedResponse<ArticleResponseDTO>> => {
-    const url = new URL(`${env.NEXT_PUBLIC_API_URL}/articles/published/by-firm/${firmId}`);
-    url.searchParams.set("page", page.toString());
-    url.searchParams.set("size", size.toString());
-
-    const response = await fetch(url.toString(), {
-      next: { revalidate: 3600 },
-    });
-
-    if (!response.ok) {
-      throw new Error(`Failed to fetch published articles: ${response.statusText}`);
-    }
-    return response.json();
   },
 
   getById: async (id: string): Promise<ArticleResponseDTO> => {
@@ -65,34 +55,21 @@ export const articlesApi = {
     return response.data;
   },
 
-  getPublicById: async (id: string): Promise<ArticleResponseDTO> => {
-    const response = await fetch(`${env.NEXT_PUBLIC_API_URL}/articles/${id}`, {
-      next: { revalidate: 3600 },
-    });
-
-    if (!response.ok) {
-      throw new Error(`Failed to fetch article ${id}: ${response.statusText}`);
-    }
-    return response.json();
+  update: async (id: string, data: UpdateArticleDTO): Promise<ArticleResponseDTO> => {
+    const response = await api.patch<ArticleResponseDTO>(`/articles/${id}`, data);
+    return response.data;
   },
 
-  update: async (id: string, data: UpdateArticleDTO): Promise<ArticleResponseDTO> => {
-    const response = await api.put<ArticleResponseDTO>(`/articles/${id}`, data);
-    return response.data;
+  publish: async (id: string): Promise<void> => {
+    await api.patch(`/articles/${id}/publish`);
+  },
+
+  archive: async (id: string): Promise<void> => {
+    await api.patch(`/articles/${id}/archive`);
   },
 
   delete: async (id: string): Promise<void> => {
     await api.delete(`/articles/${id}`);
-  },
-
-  addTag: async (articleId: string, tagId: string): Promise<ArticleResponseDTO> => {
-    const response = await api.post<ArticleResponseDTO>(`/articles/${articleId}/tags`, { tagId });
-    return response.data;
-  },
-
-  removeTag: async (articleId: string, tagId: string): Promise<ArticleResponseDTO> => {
-    const response = await api.delete<ArticleResponseDTO>(`/articles/${articleId}/tags/${tagId}`);
-    return response.data;
   },
 
   // Tags
@@ -101,30 +78,18 @@ export const articlesApi = {
     return response.data;
   },
 
-  getAllTagsByFirmId: async (firmId: string, page = 0, size = 100): Promise<{ content: TagResponseDTO[] }> => {
-    const response = await api.get<{ content: TagResponseDTO[] }>(`/tags/by-firm/${firmId}`, {
-      params: { page, size },
-    });
+  getAllTags: async (): Promise<TagResponseDTO[]> => {
+    const response = await api.get<TagResponseDTO[]>("/tags");
     return response.data;
   },
 
-  getPublishedTagsByFirmId: async (firmId: string, page = 0, size = 100): Promise<{ content: TagResponseDTO[] }> => {
-    const url = new URL(`${env.NEXT_PUBLIC_API_URL}/tags/published/by-firm/${firmId}`);
-    url.searchParams.set("page", page.toString());
-    url.searchParams.set("size", size.toString());
-
-    const response = await fetch(url.toString(), {
-      next: { revalidate: 3600 },
-    });
-
-    if (!response.ok) {
-      throw new Error(`Failed to fetch published tags: ${response.statusText}`);
-    }
-    return response.json();
+  getTagById: async (id: string): Promise<TagResponseDTO> => {
+    const response = await api.get<TagResponseDTO>(`/tags/${id}`);
+    return response.data;
   },
 
   updateTag: async (id: string, data: UpdateTagDTO): Promise<TagResponseDTO> => {
-    const response = await api.put<TagResponseDTO>(`/tags/${id}`, data);
+    const response = await api.patch<TagResponseDTO>(`/tags/${id}`, data);
     return response.data;
   },
 

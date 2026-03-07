@@ -3,7 +3,6 @@ import { CreateArticleSchema, UpdateArticleSchema } from "@/lib/types/article";
 
 describe("Article Schema Security", () => {
   const validArticle = {
-    firmId: "123e4567-e89b-12d3-a456-426614174000",
     authorId: "123e4567-e89b-12d3-a456-426614174000",
     title: "Valid Title",
     content: "Valid Content",

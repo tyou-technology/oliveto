@@ -27,7 +27,6 @@ export function TagForm({ onSubmit, isPending, initialData, onCancel }: TagFormP
   } = useForm<CreateTagDTO>({
     resolver: zodResolver(CreateTagSchema),
     defaultValues: {
-      firmId: user?.firmId || "00000000-0000-0000-0000-000000000000",
       color: DEFAULT_TAG_COLOR,
     },
   });
@@ -37,7 +36,6 @@ export function TagForm({ onSubmit, isPending, initialData, onCancel }: TagFormP
   useEffect(() => {
     if (initialData) {
       reset({
-        firmId: initialData.firmId,
         name: initialData.name,
         description: initialData.description || "",
         color: initialData.color || DEFAULT_TAG_COLOR,

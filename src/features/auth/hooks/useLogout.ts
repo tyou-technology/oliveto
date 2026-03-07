@@ -8,19 +8,22 @@ import { getFriendlyErrorMessage } from "@/lib/utils/error-handler";
 
 export const useLogout = () => {
   const router = useRouter();
-  const { clearUser } = useUserStore();
+  const { clearAuth, refreshToken } = useUserStore();
 
   return useMutation({
     mutationFn: async () => {
-      return authApi.logout();
+      if (refreshToken) {
+        return authApi.logout(refreshToken);
+      }
+      return Promise.resolve();
     },
     onSuccess: () => {
-      clearUser();
+      clearAuth();
       router.push(ROUTES.ADMIN.LOGIN);
     },
     onError: (error) => {
       // Even if logout API fails, we should clear local state
-      clearUser();
+      clearAuth();
       router.push(ROUTES.ADMIN.LOGIN);
       toast.error(getFriendlyErrorMessage(error));
     },

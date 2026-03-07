@@ -28,7 +28,6 @@ const mockArticle: ArticleResponseDTO = {
   tags: [{
     id: 'tag-1',
     name: 'Tech',
-    firmId: 'firm-1',
     createdAt: new Date().toISOString(),
     updatedAt: new Date().toISOString(),
   }],

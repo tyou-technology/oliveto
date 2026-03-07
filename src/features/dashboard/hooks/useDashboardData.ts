@@ -47,11 +47,10 @@ const getLeadStatus = (lead: LeadResponseDTO): LeadStatus => {
 };
 
 export const useDashboardData = () => {
-  const firmId = env.NEXT_PUBLIC_FIRM_ID;
 
   // 1. Fetch Recent Leads (Page 0, Size 5)
   const { data: leadsData, isLoading: isLoadingLeads } = useLeads({
-    page: 0,
+    page: 1,
     size: 5,
   });
 
@@ -60,7 +59,6 @@ export const useDashboardData = () => {
 
   // 3. Fetch Recent Articles (Page 0, Size 4, Published only)
   const { articles: articlesList, isLoadingArticles } = useArticles(
-    firmId,
     0,
     4,
     true

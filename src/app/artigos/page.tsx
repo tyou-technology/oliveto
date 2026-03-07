@@ -18,7 +18,7 @@ export default async function ArticlesPage() {
 
     const initialArticles = {
       pages: [initialArticlesPage],
-      pageParams: [0], // Initial page param is 0
+      pageParams: [1], // Initial page param is 0
     };
 
     return (

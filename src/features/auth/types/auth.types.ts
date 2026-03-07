@@ -21,11 +21,8 @@ export const LoginSchema = z.object({
 export type LoginRequest = z.infer<typeof LoginSchema>;
 
 export interface LoginResponse {
-  type: string;
-  email: string;
-  userId: string;
-  firmId?: string;
-  role?: string;
+  accessToken: string;
+  refreshToken: string;
 }
 
 export interface TokenValidationResponse {
@@ -33,9 +30,8 @@ export interface TokenValidationResponse {
   name: string;
   email: string;
   userId: string;
-  firmId?: string;
-  role?: string;
-  message: string;
+  role: string;
+  avatarUrl?: string;
 }
 
 export interface ConfirmRegistrationRequest {
@@ -46,4 +42,33 @@ export interface ConfirmRegistrationResponse {
   type: string;
   email: string;
   userId: string;
+}
+
+export const RegisterSchema = z.object({
+  name: z.string().min(1, "Nome é obrigatório").max(255),
+  email: z.string().email("Email inválido").max(255),
+  password: z
+    .string()
+    .min(8, "A senha deve ter no mínimo 8 caracteres")
+    .max(100, "A senha deve ter no máximo 100 caracteres")
+    .regex(
+      PASSWORD_REGEX,
+      "A senha deve conter pelo menos uma letra maiúscula, uma minúscula, um número e um caractere especial"
+    ),
+});
+
+export type RegisterRequest = z.infer<typeof RegisterSchema>;
+
+export interface RegisterResponse {
+  accessToken: string;
+  refreshToken: string;
+}
+
+export interface RefreshTokenRequest {
+  refreshToken: string;
+}
+
+export interface RefreshTokenResponse {
+  accessToken: string;
+  refreshToken: string;
 }

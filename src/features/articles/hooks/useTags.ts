@@ -16,7 +16,7 @@ export const useTags = (firmId?: string, publishedOnly = false, initialData?: { 
 
   const { data: tagsData, isLoading: isLoadingTags } = useQuery({
     queryKey: ["tags", firmId, publishedOnly],
-    queryFn: () => publishedOnly 
+    queryFn: () => publishedOnly
       ? articlesApi.getPublishedTagsByFirmId(firmId!)
       : articlesApi.getAllTagsByFirmId(firmId!),
     enabled: !!firmId,

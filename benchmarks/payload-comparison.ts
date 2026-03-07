@@ -4,7 +4,6 @@ import { ArticleResponseDTO, ArticleStatus } from "../src/lib/types/article";
 // Mock data generation
 const createMockArticle = (): ArticleResponseDTO => ({
   id: "550e8400-e29b-41d4-a716-446655440000",
-  firmId: "550e8400-e29b-41d4-a716-446655440000",
   title: "Understanding Tax Implications for Small Businesses in 2024",
   subtitle: "A comprehensive guide to the new fiscal regulations and how they affect your bottom line.",
   briefing: "Key changes in tax laws include adjustments to deductions, new reporting requirements, and shifts in corporate tax rates.",

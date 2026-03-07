@@ -12,35 +12,98 @@ export const api = axios.create({
   timeout: 30000, // 30 seconds timeout
 });
 
-// Request interceptor to attach mandatory X-Client-Token
+// Request interceptor to attach mandatory X-Client-Token and Authorization header
 api.interceptors.request.use((config) => {
   // Attach the client token to every request.
-  // This token is required by the backend security layer to identify the client application.
-  // It is safe to expose in the client bundle (NEXT_PUBLIC_) as it validates the application source,
-  // not a specific user. User authentication (JWT) happens after this check.
   config.headers['X-Client-Token'] = env.NEXT_PUBLIC_CLIENT_TOKEN;
+
+  // Attach Access Token if available
+  const accessToken = useUserStore.getState().accessToken;
+  if (accessToken) {
+    config.headers['Authorization'] = `Bearer ${accessToken}`;
+  }
+
   return config;
 });
 
+let isRefreshing = false;
+let failedQueue: any[] = [];
+
+const processQueue = (error: any, token: string | null = null) => {
+  failedQueue.forEach((prom) => {
+    if (error) {
+      prom.reject(error);
+    } else {
+      prom.resolve(token);
+    }
+  });
+
+  failedQueue = [];
+};
+
 api.interceptors.response.use(
   (response) => response,
-  (error) => {
-    if (error.response?.status === 401) {
-      useUserStore.getState().clearUser();
+  async (error) => {
+    const originalRequest = error.config;
 
-      if (typeof window !== "undefined") {
-        const currentPath = window.location.pathname;
-        const loginPath = ROUTES.ADMIN.LOGIN;
+    if (error.response?.status === 401 && !originalRequest._retry) {
+      if (isRefreshing) {
+        return new Promise(function (resolve, reject) {
+          failedQueue.push({ resolve, reject });
+        })
+          .then((token) => {
+            originalRequest.headers['Authorization'] = 'Bearer ' + token;
+            return api(originalRequest);
+          })
+          .catch((err) => {
+            return Promise.reject(err);
+          });
+      }
 
-        // Prevent redirect loop if already on login page
-        // Check for exact match or trailing slash
-        const isLoginPage = currentPath === loginPath || currentPath === `${loginPath}/`;
+      originalRequest._retry = true;
+      isRefreshing = true;
 
-        if (!isLoginPage) {
-          window.location.href = loginPath;
+      const refreshToken = useUserStore.getState().refreshToken;
+
+      if (!refreshToken) {
+        useUserStore.getState().clearAuth();
+        if (typeof window !== "undefined" && !window.location.pathname.includes(ROUTES.ADMIN.LOGIN)) {
+           window.location.href = ROUTES.ADMIN.LOGIN;
         }
+        return Promise.reject(error);
+      }
+
+      try {
+        const response = await axios.post(`${env.NEXT_PUBLIC_API_URL}/auth/refresh`, {
+          refreshToken,
+        }, {
+            headers: {
+                'X-Client-Token': env.NEXT_PUBLIC_CLIENT_TOKEN
+            }
+        });
+
+        const { accessToken: newAccessToken, refreshToken: newRefreshToken } = response.data.data;
+
+        useUserStore.getState().setTokens(newAccessToken, newRefreshToken);
+
+        api.defaults.headers.common['Authorization'] = 'Bearer ' + newAccessToken;
+        originalRequest.headers['Authorization'] = 'Bearer ' + newAccessToken;
+
+        processQueue(null, newAccessToken);
+        isRefreshing = false;
+
+        return api(originalRequest);
+      } catch (err) {
+        processQueue(err, null);
+        useUserStore.getState().clearAuth();
+        if (typeof window !== "undefined" && !window.location.pathname.includes(ROUTES.ADMIN.LOGIN)) {
+           window.location.href = ROUTES.ADMIN.LOGIN;
+        }
+        isRefreshing = false;
+        return Promise.reject(err);
       }
     }
+
     return Promise.reject(error);
   }
 );

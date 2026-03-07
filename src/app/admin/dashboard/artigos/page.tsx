@@ -63,7 +63,7 @@ export default function ArtigosPage() {
     createArticle,
     deleteArticle,
     updateArticle,
-  } = useArticles(user?.firmId);
+  } = useArticles(1, 100); // Fetching first 100 articles for now
 
   const { tags, isLoadingTags, createTag, deleteTag, updateTag } = useTags(
     user?.firmId

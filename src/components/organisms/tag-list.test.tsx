@@ -8,7 +8,6 @@ describe('TagList', () => {
     const tags: TagResponseDTO[] = [
       {
         id: '1',
-        firmId: 'firm1',
         name: 'Tag 1',
         description: 'Description 1',
         color: '#ff0000',
@@ -17,7 +16,6 @@ describe('TagList', () => {
       },
       {
         id: '2',
-        firmId: 'firm1',
         name: 'Tag 2',
         description: 'Description 2',
         color: '#00ff00',

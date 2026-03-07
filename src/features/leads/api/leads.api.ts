@@ -2,11 +2,11 @@ import { api } from "@/lib/api-client";
 import { LeadResponseDTO, UnreadLeadsCountDTO, CreateLeadDTO, LeadQueryParams, UpdateLeadDTO } from "../types";
 
 export interface PaginatedResponse<T> {
-  content: T[];
-  page: {
-    size: number;
-    number: number;
-    totalElements: number;
+  data: T[];
+  meta: {
+    page: number;
+    limit: number;
+    total: number;
     totalPages: number;
   };
 }
@@ -17,15 +17,17 @@ export const leadsApi = {
     return response.data;
   },
 
-  findAll: async (page = 0, size = 10, isRead?: boolean | null): Promise<PaginatedResponse<LeadResponseDTO>> => {
-    const params: LeadQueryParams = {
+  findAll: async (page = 1, limit = 10, isRead?: boolean | null, status?: string, origin?: string): Promise<PaginatedResponse<LeadResponseDTO>> => {
+    const params: any = {
       page,
-      size,
-      sort: "createdAt,desc"
+      limit,
     };
     if (isRead !== undefined && isRead !== null) {
       params.isRead = isRead;
     }
+    if (status) params.status = status;
+    if (origin) params.origin = origin;
+
     const response = await api.get<PaginatedResponse<LeadResponseDTO>>("/leads", { params });
     return response.data;
   },
@@ -39,12 +41,17 @@ export const leadsApi = {
     await api.patch(`/leads/${id}/read`);
   },
 
-  update: async (id: string, data: UpdateLeadDTO): Promise<LeadResponseDTO> => {
-    const response = await api.put<LeadResponseDTO>(`/leads/${id}`, data);
-    return response.data;
+  updateStatus: async (id: string, status: string): Promise<void> => {
+    await api.patch(`/leads/${id}/status`, { status });
+  },
+
+  updateNotes: async (id: string, notes: string): Promise<void> => {
+    await api.patch(`/leads/${id}/notes`, { notes });
   },
 
   countUnread: async (): Promise<UnreadLeadsCountDTO> => {
+    // Note: The backend collection doesn't explicitly show this endpoint, but it was in the previous version.
+    // If it's removed, we should remove it here too. I'll keep it for now but mark it as potentially deprecated.
     const response = await api.get<UnreadLeadsCountDTO>("/leads/unread/count");
     return response.data;
   },

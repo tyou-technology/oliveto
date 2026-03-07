@@ -29,7 +29,7 @@ export function LeadsTable({
     [onViewDetails]
   );
 
-  if (isLoading) {
+  if (isLoading && leads.length === 0) {
     return (
       <div className="flex justify-center items-center h-64 border border-white/10 rounded-xl bg-white/5">
         <Loader2 className="w-8 h-8 animate-spin text-primary" />

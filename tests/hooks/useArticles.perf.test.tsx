@@ -16,8 +16,6 @@ vi.mock('@tanstack/react-query', async () => {
 
 vi.mock('@/features/articles/api/articles.api', () => ({
   articlesApi: {
-    getAllByFirmId: vi.fn(),
-    getPublishedByFirmId: vi.fn(),
     create: vi.fn(),
     update: vi.fn(),
     delete: vi.fn(),

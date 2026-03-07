@@ -9,19 +9,20 @@ import { PaginationState } from "@tanstack/react-table";
 
 export default function LeadsPage() {
   const [pagination, setPagination] = useState<PaginationState>({
-    pageIndex: 0,
+    pageIndex: 0, // TanStack Table is 0-indexed
     pageSize: 10,
   });
   const [filterStatus, setFilterStatus] = useState<boolean | null>(null); // null = All, false = Unread, true = Read
   const [selectedLead, setSelectedLead] = useState<LeadResponseDTO | null>(null);
 
+  // API expects 1-based page index
   const { data, isLoading } = useLeads({
-    page: pagination.pageIndex,
+    page: pagination.pageIndex + 1,
     size: pagination.pageSize,
     isRead: filterStatus
   });
 
-  const pageCount = data?.page.totalPages || 0;
+  const pageCount = data?.meta.totalPages || 0;
 
   return (
     <div className="p-6 lg:p-8 space-y-6 max-w-[1600px] mx-auto">
@@ -53,7 +54,7 @@ export default function LeadsPage() {
 
       {/* Table */}
       <LeadsTable
-        leads={data?.content || []}
+        leads={data?.data || []}
         isLoading={isLoading}
         onViewDetails={setSelectedLead}
         pageCount={pageCount}
