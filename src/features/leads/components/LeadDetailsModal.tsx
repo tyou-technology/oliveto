@@ -82,7 +82,7 @@ function InfoItem({ icon: Icon, label, value }: InfoItemProps) {
 function formatOrigin(origin: string) {
   const map: Record<string, string> = {
     NEWSLETTER: "Newsletter",
-    CONTACT: "Formulário de Contato",
+    CONTACT_FORM: "Formulário de Contato",
     RICH_MATERIAL: "Material Rico",
     OTHER: "Outros",
   };

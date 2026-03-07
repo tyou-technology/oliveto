@@ -44,7 +44,7 @@ describe('useTags Hook', () => {
   it('should return a stable tags array reference when data has not changed', async () => {
     const mockTags = [{ id: '1', name: 'Tag 1' }];
     // @ts-ignore
-    articlesApi.getAllTags.mockResolvedValue(mockTags);
+    articlesApi.getAllTags.mockResolvedValue({ data: mockTags });
 
     const { result, rerender } = renderHook(() => useTags(), {
       wrapper: createWrapper(),

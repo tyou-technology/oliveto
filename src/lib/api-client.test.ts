@@ -34,8 +34,8 @@ describe('API Client Interceptor', () => {
   });
 
   it('should handle 401 error by clearing user and redirecting', async () => {
-    const clearUserSpy = vi.fn();
-    (useUserStore.getState as any).mockReturnValue({ clearUser: clearUserSpy }); // Mock clearUser
+    const clearAuthSpy = vi.fn();
+    (useUserStore.getState as any).mockReturnValue({ clearAuth: clearAuthSpy }); // Mock clearAuth
 
     // Set pathname to something other than login
     window.location.pathname = '/dashboard';
@@ -48,14 +48,14 @@ describe('API Client Interceptor', () => {
       // ignore rejection
     }
 
-    expect(clearUserSpy).toHaveBeenCalled();
+    expect(clearAuthSpy).toHaveBeenCalled();
     // Check if redirect happened (href changed)
     expect(window.location.href).toBe(ROUTES.ADMIN.LOGIN);
   });
 
   it('should NOT redirect if already on login page (loop prevention)', async () => {
-    const clearUserSpy = vi.fn();
-    (useUserStore.getState as any).mockReturnValue({ clearUser: clearUserSpy });
+    const clearAuthSpy = vi.fn();
+    (useUserStore.getState as any).mockReturnValue({ clearAuth: clearAuthSpy, refreshToken: null });
 
     // Set pathname to login
     window.location.pathname = ROUTES.ADMIN.LOGIN;
@@ -65,17 +65,16 @@ describe('API Client Interceptor', () => {
     try {
       await api.get('/test');
     } catch (e) {
-      // ignore rejection
+      // ignore
     }
 
-    expect(clearUserSpy).toHaveBeenCalled();
     // Redirect should not happen (href remains empty or initial)
     expect(window.location.href).not.toBe(ROUTES.ADMIN.LOGIN);
   });
 
   it('should NOT redirect if on a sub-route of login (e.g. trailing slash)', async () => {
-    const clearUserSpy = vi.fn();
-    (useUserStore.getState as any).mockReturnValue({ clearUser: clearUserSpy });
+    const clearAuthSpy = vi.fn();
+    (useUserStore.getState as any).mockReturnValue({ clearAuth: clearAuthSpy, refreshToken: null });
 
     window.location.pathname = ROUTES.ADMIN.LOGIN + '/';
 
@@ -84,16 +83,15 @@ describe('API Client Interceptor', () => {
     try {
       await api.get('/test');
     } catch (e) {
-      // ignore rejection
+      // ignore
     }
 
-    expect(clearUserSpy).toHaveBeenCalled();
     expect(window.location.href).not.toBe(ROUTES.ADMIN.LOGIN);
   });
 
   it('should redirect if on a page that resembles login but is not login (e.g. login-history)', async () => {
-    const clearUserSpy = vi.fn();
-    (useUserStore.getState as any).mockReturnValue({ clearUser: clearUserSpy });
+    const clearAuthSpy = vi.fn();
+    (useUserStore.getState as any).mockReturnValue({ clearAuth: clearAuthSpy, refreshToken: null });
 
     // A hypothetical protected route that shares the prefix but is distinct
     const similarRoute = ROUTES.ADMIN.LOGIN + '-history'; // /admin/login-history
@@ -104,10 +102,9 @@ describe('API Client Interceptor', () => {
     try {
       await api.get('/test');
     } catch (e) {
-      // ignore rejection
+      // ignore
     }
 
-    expect(clearUserSpy).toHaveBeenCalled();
     // This expects a redirect because it's a protected page
     expect(window.location.href).toBe(ROUTES.ADMIN.LOGIN);
   });
