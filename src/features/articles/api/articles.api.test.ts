@@ -22,4 +22,7 @@ describe("articlesApi", () => {
     vi.clearAllMocks();
   });
 
+  it("should be defined", () => {
+    expect(articlesApi).toBeDefined();
+  });
 });
