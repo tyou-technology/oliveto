@@ -1,14 +1,21 @@
-import { useMutation } from "@tanstack/react-query";
+import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { authService } from "@/services/auth.service";
 import { useAuthStore } from "@/store/auth.store";
-import { useRouter } from "next/navigation";
 import { ROUTES } from "@/lib/config/routes";
 import { toast } from "sonner";
 import { getFriendlyErrorMessage } from "@/lib/utils/error-handler";
 
 export const useLogout = () => {
-  const router = useRouter();
+  const queryClient = useQueryClient();
   const { clearSession, tokens } = useAuthStore();
+
+  const handleLogout = () => {
+    clearSession();
+    queryClient.clear();
+    // Hard redirect clears all in-memory React/React Query state reliably.
+    // router.push() leaves stale query state that can cause the loader to get stuck.
+    window.location.href = ROUTES.ADMIN.LOGIN;
+  };
 
   return useMutation({
     mutationFn: async () => {
@@ -16,14 +23,9 @@ export const useLogout = () => {
         return authService.logout(tokens.refreshToken);
       }
     },
-    onSuccess: () => {
-      clearSession();
-      router.push(ROUTES.ADMIN.LOGIN);
-    },
+    onSuccess: handleLogout,
     onError: (error) => {
-      // Clear local state even if the API call fails
-      clearSession();
-      router.push(ROUTES.ADMIN.LOGIN);
+      handleLogout();
       toast.error(getFriendlyErrorMessage(error));
     },
   });

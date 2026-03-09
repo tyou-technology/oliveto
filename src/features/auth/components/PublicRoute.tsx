@@ -26,11 +26,9 @@ export const PublicRoute = ({ children }: { children: React.ReactNode }) => {
     }
   }, [isSuccess, data, tokens, router, setSession]);
 
-  if (isLoading) {
-    return <FullPageLoader />;
-  }
-
-  if (isSuccess && data) {
+  // Show loader while fetching OR while we have confirmed auth and are about to redirect.
+  // Guard with `tokens` so that after clearSession() we don't stay stuck here.
+  if (isLoading || (isSuccess && data && !!tokens?.accessToken)) {
     return <FullPageLoader />;
   }
 
