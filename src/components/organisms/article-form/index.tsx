@@ -9,6 +9,7 @@ import {
   ArticleStatus,
   TagResponseDTO,
   ArticleResponseDTO,
+  getArticleTags,
 } from "@/lib/types/article";
 import { useEffect } from "react";
 import { ArticleMainContent } from "./article-main-content";
@@ -16,7 +17,7 @@ import { ArticleSidebar } from "./article-sidebar";
 import { toast } from "sonner";
 
 interface ArticleFormProps {
-  onSubmit: (data: CreateArticleDTO, shouldPublish?: boolean) => void;
+  onSubmit: (data: CreateArticleDTO) => void;
   isPending: boolean;
   tags: TagResponseDTO[];
   authorId: string;
@@ -48,37 +49,38 @@ export function ArticleForm({
     resolver: zodResolver(CreateArticleSchema),
     defaultValues: {
       content: initialData?.content || "",
-      tagIds: initialData?.tags ? initialData.tags.map((t) => t.id) : (initialData?.tagIds || []),
+      tagIds: initialData
+        ? (getArticleTags(initialData).map((t) => t.id).length > 0
+            ? getArticleTags(initialData).map((t) => t.id)
+            : (initialData.tagIds || []))
+        : [],
       title: initialData?.title || "",
       briefing: initialData?.briefing || "",
       coverUrl: initialData?.coverUrl || "",
       readingTime: initialData?.readingTime || 1,
       seoTitle: initialData?.seoTitle || "",
       seoDescription: initialData?.seoDescription || "",
+      status: initialData?.status ?? ArticleStatus.DRAFT,
     },
   });
 
-  // Update values if initialData changes after mount
   useEffect(() => {
     if (initialData) {
       reset({
         title: initialData.title,
         briefing: initialData.briefing || "",
         content: initialData.content || "",
-        tagIds: initialData.tags ? initialData.tags.map((t) => t.id) : (initialData.tagIds || []),
+        tagIds: getArticleTags(initialData).map((t) => t.id).length > 0
+          ? getArticleTags(initialData).map((t) => t.id)
+          : (initialData.tagIds || []),
         coverUrl: initialData.coverUrl || "",
         readingTime: initialData.readingTime || 1,
         seoTitle: initialData.seoTitle || "",
         seoDescription: initialData.seoDescription || "",
+        status: initialData.status ?? ArticleStatus.DRAFT,
       });
     }
   }, [initialData, reset]);
-
-  const handleStatusChange = (status: ArticleStatus) => {
-    if (readOnly) return;
-    const shouldPublish = status === ArticleStatus.PUBLISHED;
-    handleSubmit((data) => onSubmit(data, shouldPublish))();
-  };
 
   const getTitle = () => {
     if (readOnly) return "Visualizar Artigo";
@@ -86,14 +88,12 @@ export function ArticleForm({
     return "Novo Artigo";
   };
 
-  const onInvalid = (errors: any) => {
-    console.error("Form errors:", errors);
+  const onInvalid = () => {
     toast.error("Por favor, corrija os erros no formulário antes de enviar.");
   };
 
   return (
-    <form onSubmit={handleSubmit((data) => onSubmit(data, false), onInvalid)} className="space-y-6">
-      {/* Header with Back Button if onCancel is provided */}
+    <form onSubmit={handleSubmit(onSubmit, onInvalid)} className="space-y-6">
       {onCancel && (
         <div className="flex items-center gap-4 mb-2">
           <button
@@ -108,7 +108,6 @@ export function ArticleForm({
       )}
 
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        {/* Main Form */}
         <ArticleMainContent
           register={register}
           errors={errors}
@@ -118,7 +117,6 @@ export function ArticleForm({
           control={control}
         />
 
-        {/* Sidebar */}
         <ArticleSidebar
           register={register}
           watch={watch}
@@ -130,7 +128,6 @@ export function ArticleForm({
           onCancel={onCancel}
           tags={tags}
           authorName={authorName}
-          onStatusChange={handleStatusChange}
         />
       </div>
     </form>

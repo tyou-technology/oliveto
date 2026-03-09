@@ -1,29 +1,28 @@
 import { useMutation } from "@tanstack/react-query";
-import { authApi } from "../api/auth.api";
+import { authService } from "@/services/auth.service";
+import { useAuthStore } from "@/store/auth.store";
 import { useRouter } from "next/navigation";
 import { ROUTES } from "@/lib/config/routes";
-import { useUserStore } from "@/stores/useUserStore";
 import { toast } from "sonner";
 import { getFriendlyErrorMessage } from "@/lib/utils/error-handler";
 
 export const useLogout = () => {
   const router = useRouter();
-  const { clearAuth, refreshToken } = useUserStore();
+  const { clearSession, tokens } = useAuthStore();
 
   return useMutation({
     mutationFn: async () => {
-      if (refreshToken) {
-        return authApi.logout(refreshToken);
+      if (tokens?.refreshToken) {
+        return authService.logout(tokens.refreshToken);
       }
-      return Promise.resolve();
     },
     onSuccess: () => {
-      clearAuth();
+      clearSession();
       router.push(ROUTES.ADMIN.LOGIN);
     },
     onError: (error) => {
-      // Even if logout API fails, we should clear local state
-      clearAuth();
+      // Clear local state even if the API call fails
+      clearSession();
       router.push(ROUTES.ADMIN.LOGIN);
       toast.error(getFriendlyErrorMessage(error));
     },

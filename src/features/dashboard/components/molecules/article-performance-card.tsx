@@ -13,9 +13,9 @@ export function ArticlePerformanceCard({ article }: ArticlePerformanceCardProps)
   return (
     <div className="group bg-surface border border-white/10 rounded-2xl overflow-hidden hover:border-primary/30 transition-all duration-300">
       <div className="relative aspect-video w-full overflow-hidden bg-neutral-900">
-        {article.imageUrl ? (
+        {article.coverUrl ? (
           <Image
-            src={article.imageUrl}
+            src={article.coverUrl}
             alt={article.title}
             fill
             className="object-cover transition-transform duration-500 group-hover:scale-105"

@@ -1,6 +1,6 @@
 import Image from "next/image";
 import Link from "next/link";
-import { ArticleResponseDTO, TagResponseDTO } from "@/lib/types/article";
+import { ArticleResponseDTO, TagResponseDTO, getArticleTags } from "@/lib/types/article";
 import { CategoryBadge } from "@/components/atoms/category-badge";
 import { useState, memo, useMemo } from "react";
 
@@ -12,12 +12,11 @@ interface ArticleGridItemProps {
 export const ArticleGridItem = memo(function ArticleGridItem({ article, tagsMap }: Readonly<ArticleGridItemProps>) {
   const [isExpanded, setIsExpanded] = useState(false);
 
-  // Resolve tags: prefer article.tags (populated), fallback to lookup in tagsMap
   const resolvedTags = useMemo(() => {
-    return article.tags && article.tags.length > 0
-      ? article.tags
-      : (article.tagIds?.map(id => tagsMap.get(id)).filter(Boolean) as TagResponseDTO[]) || [];
-  }, [article.tags, article.tagIds, tagsMap]);
+    const fromRelation = getArticleTags(article);
+    if (fromRelation.length > 0) return fromRelation;
+    return (article.tagIds?.map((id) => tagsMap.get(id)).filter(Boolean) as TagResponseDTO[]) || [];
+  }, [article, tagsMap]);
 
   const visibleTags = useMemo(() => {
     return isExpanded ? resolvedTags : resolvedTags.slice(0, 3);
@@ -33,10 +32,10 @@ export const ArticleGridItem = memo(function ArticleGridItem({ article, tagsMap 
 
   return (
     <div className="flex flex-col h-full group">
-      <Link href={`/artigos/${article.id}`} className="cursor-pointer block">
+      <Link href={`/artigos/${article.slug || article.id}`} className="cursor-pointer block">
         <div className="relative aspect-[4/3] overflow-hidden rounded mb-4">
           <Image
-            src={article.imageUrl || "/placeholder.svg"}
+            src={article.coverUrl || "/placeholder.svg"}
             alt={article.title}
             fill
             sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
@@ -70,7 +69,7 @@ export const ArticleGridItem = memo(function ArticleGridItem({ article, tagsMap 
         )}
       </div>
 
-      <Link href={`/artigos/${article.id}`} className="cursor-pointer block">
+      <Link href={`/artigos/${article.slug || article.id}`} className="cursor-pointer block">
         <p className="text-sm text-white mt-1 leading-relaxed group-hover:text-primary transition-colors">
           {article.title}
         </p>

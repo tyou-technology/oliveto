@@ -1,10 +1,10 @@
 "use client";
 
 import { User } from "lucide-react";
-import { useUserStore } from "@/stores/useUserStore";
+import { useAuthStore } from "@/store/auth.store";
 
 export function SidebarUserInfo() {
-  const { user } = useUserStore();
+  const { user } = useAuthStore();
 
   return (
     <div className="p-4 border-b border-white/10">

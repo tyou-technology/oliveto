@@ -1,14 +1,11 @@
-import {useMutation, useQuery, useQueryClient} from "@tanstack/react-query";
-import {articlesApi} from "../api/articles.api";
-import {UpdateTagDTO, TagResponseDTO} from "@/lib/types/article";
-import {toast} from "sonner";
-import {getFriendlyErrorMessage} from "@/lib/utils/error-handler";
-import {QUERY_CONFIG} from "@/lib/config/query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { useMemo } from "react";
+import { articlesService } from "@/services/articles.service";
+import { UpdateTagDTO, TagResponseDTO } from "@/lib/types/article";
+import { toast } from "sonner";
+import { getFriendlyErrorMessage } from "@/lib/utils/error-handler";
+import { QUERY_CONFIG } from "@/lib/config/query";
 
-const STALE_TIME = 1000 * 60 * 5; // 5 minutes
-
-// Performance: Stable empty array reference to prevent unnecessary re-renders in memoized consumers
 const EMPTY_ARRAY: TagResponseDTO[] = [];
 
 export const useTags = (publishedOnly = false, initialData?: TagResponseDTO[]) => {
@@ -16,15 +13,14 @@ export const useTags = (publishedOnly = false, initialData?: TagResponseDTO[]) =
 
   const { data: tagsData, isLoading: isLoadingTags } = useQuery({
     queryKey: ["tags", publishedOnly],
-    queryFn: () => publishedOnly
-      ? articlesApi.getPublishedTags()
-      : articlesApi.getAllTags(),
+    queryFn: () =>
+      publishedOnly ? articlesService.getPublishedTags() : articlesService.getAllTags(),
     staleTime: QUERY_CONFIG.ARTICLES_STALE_TIME,
     initialData,
   });
 
   const createTag = useMutation({
-    mutationFn: articlesApi.createTag,
+    mutationFn: articlesService.createTag,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["tags"] });
       toast.success("Tag criada com sucesso!");
@@ -36,7 +32,7 @@ export const useTags = (publishedOnly = false, initialData?: TagResponseDTO[]) =
 
   const updateTag = useMutation({
     mutationFn: ({ id, data }: { id: string; data: UpdateTagDTO }) =>
-      articlesApi.updateTag(id, data),
+      articlesService.updateTag(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["tags"] });
       toast.success("Tag atualizada com sucesso!");
@@ -47,7 +43,7 @@ export const useTags = (publishedOnly = false, initialData?: TagResponseDTO[]) =
   });
 
   const deleteTag = useMutation({
-    mutationFn: articlesApi.deleteTag,
+    mutationFn: articlesService.deleteTag,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["tags"] });
       toast.success("Tag excluída com sucesso!");
@@ -58,13 +54,7 @@ export const useTags = (publishedOnly = false, initialData?: TagResponseDTO[]) =
   });
 
   return useMemo(
-    () => ({
-      tags: tagsData || EMPTY_ARRAY,
-      isLoadingTags,
-      createTag,
-      updateTag,
-      deleteTag,
-    }),
+    () => ({ tags: tagsData ?? EMPTY_ARRAY, isLoadingTags, createTag, updateTag, deleteTag }),
     [tagsData, isLoadingTags, createTag, updateTag, deleteTag]
   );
 };

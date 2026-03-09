@@ -2,7 +2,7 @@
 
 import { useState, useCallback } from "react";
 import { Plus, Tag, Loader2 } from "lucide-react";
-import { useUserStore } from "@/stores/useUserStore";
+import { useAuthStore } from "@/store/auth.store";
 import { ArticleList } from "@/components/organisms/article-list";
 import dynamic from "next/dynamic";
 import { useArticles } from "@/features/articles/hooks/useArticles";
@@ -14,7 +14,6 @@ import {
   TagResponseDTO,
   UpdateArticleDTO,
   UpdateTagDTO,
-  ArticleStatus,
 } from "@/lib/types/article";
 import { useTags } from "@/features/articles/hooks/useTags";
 import { TagList } from "@/components/organisms/tag-list";
@@ -30,7 +29,6 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/atoms/alert-dialog";
-import { articlesApi } from "@/features/articles/api/articles.api";
 import { toast } from "sonner";
 
 // Optimization: Lazy load ArticleForm to split the heavy TiptapEditor dependency from the main bundle
@@ -49,7 +47,7 @@ type TabType = "list" | "create" | "tags" | "create-tag" | "edit" | "view" | "ed
 
 export default function ArtigosPage() {
   const [activeTab, setActiveTab] = useState<TabType>("list");
-  const { user } = useUserStore();
+  const { user } = useAuthStore();
 
   // State for selection
   const [selectedArticleId, setSelectedArticleId] = useState<string | null>(null);
@@ -74,48 +72,21 @@ export default function ArtigosPage() {
   const { article: fullArticle, isLoading: isLoadingFullArticle } = useArticle(selectedArticleId);
 
   // Article Handlers
-  const handleCreateArticle = (data: CreateArticleDTO, shouldPublish: boolean = false) => {
-    // If shouldPublish is true, we override the status in the DTO
-    const articleData = {
-      ...data,
-      status: shouldPublish ? ArticleStatus.PUBLISHED : ArticleStatus.DRAFT
-    };
-
-    createArticle.mutate(articleData, {
+  const handleCreateArticle = (data: CreateArticleDTO) => {
+    createArticle.mutate(data, {
       onSuccess: () => {
         setActiveTab("list");
       },
     });
   };
 
-  const handleUpdateArticle = (data: CreateArticleDTO, shouldPublish?: boolean) => {
+  const handleUpdateArticle = (data: CreateArticleDTO) => {
     if (selectedArticleId) {
-      // Map CreateArticleDTO to UpdateArticleDTO
-      const updateData: UpdateArticleDTO = {
-        ...data,
-      };
-      
-      // First update the article content
+      const updateData: UpdateArticleDTO = { ...data };
       updateArticle.mutate(
         { id: selectedArticleId, data: updateData },
         {
-          onSuccess: async () => {
-            // Handle status change if requested
-            if (shouldPublish !== undefined) {
-              try {
-                if (shouldPublish) {
-                  await articlesApi.publish(selectedArticleId);
-                  toast.success("Artigo publicado com sucesso!");
-                } else {
-                  await articlesApi.archive(selectedArticleId);
-                  toast.success("Artigo arquivado com sucesso!");
-                }
-              } catch (error) {
-                console.error("Failed to update status", error);
-                toast.error("Conteúdo salvo, mas falha ao atualizar status.");
-              }
-            }
-
+          onSuccess: () => {
             setActiveTab("list");
             setSelectedArticleId(null);
           },

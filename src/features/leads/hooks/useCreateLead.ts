@@ -1,14 +1,13 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
-import { leadsApi } from "../api/leads.api";
-import { CreateLeadDTO } from "../types";
+import { leadsService } from "@/services/leads.service";
+import { CreateLeadDTO } from "@/lib/types/lead";
 
 export function useCreateLead() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: (data: CreateLeadDTO) => leadsApi.create(data),
+    mutationFn: (data: CreateLeadDTO) => leadsService.create(data),
     onSuccess: () => {
-      // Invalidate relevant queries
       queryClient.invalidateQueries({ queryKey: ["leads"] });
     },
   });

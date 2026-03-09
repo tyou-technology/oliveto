@@ -4,9 +4,9 @@ import {
   UseFormSetValue,
   FieldErrors,
 } from "react-hook-form";
+
 import {
   CreateArticleDTO,
-  ArticleStatus,
   TagResponseDTO,
   ArticleResponseDTO,
 } from "@/lib/types/article";
@@ -27,7 +27,6 @@ interface ArticleSidebarProps {
   onCancel?: () => void;
   tags: TagResponseDTO[];
   authorName: string;
-  onStatusChange: (status: ArticleStatus) => void;
 }
 
 export function ArticleSidebar({
@@ -41,16 +40,15 @@ export function ArticleSidebar({
   onCancel,
   tags,
   authorName,
-  onStatusChange,
 }: ArticleSidebarProps) {
   return (
     <div className="space-y-6">
       <SidebarPublishSection
         watch={watch}
+        setValue={setValue}
         isPending={isPending}
         initialData={initialData}
         onCancel={onCancel}
-        onStatusChange={onStatusChange}
         readOnly={readOnly}
       />
 

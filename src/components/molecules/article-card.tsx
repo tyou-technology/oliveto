@@ -3,8 +3,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import type { ArticleResponseDTO } from "@/lib/types/article";
+import { getArticleTags } from "@/lib/types/article";
 import { CategoryBadge } from "@/components/atoms/category-badge";
-import { Key } from "react";
 import { IMAGES } from "@/lib/constants/images";
 
 interface ArticleCardProps {
@@ -16,14 +16,14 @@ interface ArticleCardProps {
 export const ArticleCard = memo(function ArticleCard({article, className}: Readonly<ArticleCardProps>) {
   return (
       <Link
-          href={`/artigos/${article.id}`}
+          href={`/artigos/${article.slug || article.id}`}
           className={`min-w-[calc(33.333%-16px)] group transition-all duration-200 ease-in-out hover:-translate-y-1 hover:shadow-lg focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none rounded-xl p-2 ${className || ""}`}
       >
         <article className="relative h-full">
           {/* Image */}
           <div className="relative h-56 overflow-hidden mb-4">
             <Image
-                src={article.imageUrl || IMAGES.PLACEHOLDER}
+                src={article.coverUrl || IMAGES.PLACEHOLDER}
                 alt={article.title}
                 fill
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
@@ -34,9 +34,9 @@ export const ArticleCard = memo(function ArticleCard({article, className}: Reado
           </div>
 
           {/* Content */}
-          {article.tags && article.tags.length > 0 && (
+          {getArticleTags(article).length > 0 && (
               <div className="flex flex-wrap gap-2">
-                {article.tags.map((tag: { id: Key | null | undefined; name: string; }) => (
+                {getArticleTags(article).map((tag) => (
               <CategoryBadge key={tag.id} category={tag.name} />
             ))}
           </div>

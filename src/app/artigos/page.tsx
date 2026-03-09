@@ -1,5 +1,5 @@
 import { ArticlesView } from "./articles-view";
-import { articlesApi } from "@/features/articles/api/articles.api";
+import { articlesService } from "@/services/articles.service";
 import { env } from "@/lib/env";
 
 // Ensure the page is dynamically rendered to fetch fresh data on request
@@ -11,8 +11,8 @@ export default async function ArticlesPage() {
 
   try {
     const [initialArticlesPage, initialTags] = await Promise.all([
-      articlesApi.getPublicPublished(0, size),
-      articlesApi.getPublishedTags(),
+      articlesService.getPublicPublished(0, size),
+      articlesService.getPublishedTags(),
     ]);
 
     const initialArticles = {

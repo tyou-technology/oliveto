@@ -15,6 +15,9 @@ export const envSchema = z.object({
   
 
   NEXT_PUBLIC_CLIENT_TOKEN: z.string().min(1),
+  // Optional server-only override for server-side fetches (e.g. WSL2 / Docker
+  // where the Next.js Node process can't reach the public API URL via localhost).
+  API_INTERNAL_URL: z.string().url().optional(),
 });
 
 const _env = envSchema.safeParse({
@@ -22,6 +25,7 @@ const _env = envSchema.safeParse({
   NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
   NEXT_PUBLIC_APP_ENV: process.env.NEXT_PUBLIC_APP_ENV,
   NEXT_PUBLIC_CLIENT_TOKEN: process.env.NEXT_PUBLIC_CLIENT_TOKEN,
+  API_INTERNAL_URL: process.env.API_INTERNAL_URL,
 });
 
 if (!_env.success) {

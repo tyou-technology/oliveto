@@ -1,6 +1,6 @@
 import { useMemo } from "react";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { articlesApi } from "../api/articles.api";
+import { articlesService } from "@/services/articles.service";
 import { UpdateArticleDTO, ArticleResponseDTO } from "@/lib/types/article";
 import { toast } from "sonner";
 import { getFriendlyErrorMessage } from "@/lib/utils/error-handler";
@@ -13,14 +13,15 @@ export const useArticles = (page = 1, size = 10, publishedOnly = false) => {
 
   const { data: articlesData, isLoading: isLoadingArticles } = useQuery({
     queryKey: ["articles", page, size, publishedOnly],
-    queryFn: () => publishedOnly 
-      ? articlesApi.getPublished(page, size)
-      : articlesApi.getAll(page, size),
+    queryFn: () =>
+      publishedOnly
+        ? articlesService.getPublished(page, size)
+        : articlesService.getAll(page, size),
     staleTime: QUERY_CONFIG.ARTICLES_STALE_TIME,
   });
 
   const createArticle = useMutation({
-    mutationFn: articlesApi.create,
+    mutationFn: articlesService.create,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["articles"] });
       toast.success("Artigo criado com sucesso!");
@@ -32,7 +33,7 @@ export const useArticles = (page = 1, size = 10, publishedOnly = false) => {
 
   const updateArticle = useMutation({
     mutationFn: ({ id, data }: { id: string; data: UpdateArticleDTO }) =>
-      articlesApi.update(id, data),
+      articlesService.update(id, data),
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["articles"] });
       toast.success("Artigo atualizado com sucesso!");
@@ -43,7 +44,7 @@ export const useArticles = (page = 1, size = 10, publishedOnly = false) => {
   });
 
   const deleteArticle = useMutation({
-    mutationFn: articlesApi.delete,
+    mutationFn: articlesService.delete,
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["articles"] });
       toast.success("Artigo excluído com sucesso!");
@@ -53,19 +54,16 @@ export const useArticles = (page = 1, size = 10, publishedOnly = false) => {
     },
   });
 
-  return useMemo(() => ({
-    articles: articlesData?.data || EMPTY_ARRAY,
-    totalPages: articlesData?.meta?.totalPages || 0,
-    totalElements: articlesData?.meta?.total || 0,
-    isLoadingArticles,
-    createArticle,
-    updateArticle,
-    deleteArticle,
-  }), [
-    articlesData,
-    isLoadingArticles,
-    createArticle,
-    updateArticle,
-    deleteArticle
-  ]);
+  return useMemo(
+    () => ({
+      articles: articlesData?.data ?? EMPTY_ARRAY,
+      totalPages: articlesData?.meta?.totalPages ?? 0,
+      totalElements: articlesData?.meta?.total ?? 0,
+      isLoadingArticles,
+      createArticle,
+      updateArticle,
+      deleteArticle,
+    }),
+    [articlesData, isLoadingArticles, createArticle, updateArticle, deleteArticle]
+  );
 };

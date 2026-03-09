@@ -20,21 +20,6 @@ export const LoginSchema = z.object({
 
 export type LoginRequest = z.infer<typeof LoginSchema>;
 
-export interface LoginResponse {
-  accessToken: string;
-  refreshToken: string;
-}
-
-export interface UserProfile {
-  id: string;
-  name: string;
-  email: string;
-  role: string;
-  avatarUrl?: string;
-  createdAt?: string;
-  updatedAt?: string;
-}
-
 export const RegisterSchema = z.object({
   name: z.string().min(1, "Nome é obrigatório").max(255),
   email: z.string().email("Email inválido").max(255),
@@ -49,17 +34,3 @@ export const RegisterSchema = z.object({
 });
 
 export type RegisterRequest = z.infer<typeof RegisterSchema>;
-
-export interface RegisterResponse {
-  accessToken: string;
-  refreshToken: string;
-}
-
-export interface RefreshTokenRequest {
-  refreshToken: string;
-}
-
-export interface RefreshTokenResponse {
-  accessToken: string;
-  refreshToken: string;
-}

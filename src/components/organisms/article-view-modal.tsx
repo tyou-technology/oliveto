@@ -5,7 +5,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/atoms/dialog";
-import { ArticleResponseDTO, ArticleStatus } from "@/lib/types/article";
+import { ArticleResponseDTO, ArticleStatus, getArticleTags } from "@/lib/types/article";
 import { sanitizeHtml } from "@/lib/utils/sanitizer";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
@@ -61,9 +61,9 @@ export function ArticleViewModal({
 
         <div className="space-y-6 mt-4">
           {/* Tags */}
-          {article.tags && article.tags.length > 0 && (
+          {getArticleTags(article).length > 0 && (
             <div className="flex flex-wrap gap-2">
-              {article.tags.map((tag) => (
+              {getArticleTags(article).map((tag) => (
                 <span
                   key={tag.id}
                   className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary border border-primary/20"

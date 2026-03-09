@@ -15,7 +15,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/atoms/popover";
-import { useUserStore } from "@/stores/useUserStore";
+import { useAuthStore } from "@/store/auth.store";
 import { useUnreadLeadsCount } from "@/features/leads/hooks";
 import Link from "next/link";
 import { Button } from "@/components/atoms/button";
@@ -33,7 +33,7 @@ export function DashboardHeader({
   title,
   subtitle,
 }: DashboardHeaderProps) {
-  const { user } = useUserStore();
+  const { user } = useAuthStore();
   const { data: unreadData } = useUnreadLeadsCount();
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const { mutate: logout } = useLogout();

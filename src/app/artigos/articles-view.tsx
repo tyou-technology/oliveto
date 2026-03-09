@@ -14,10 +14,10 @@ import { useTags } from "@/features/articles/hooks/useTags";
 import { env } from "@/lib/env";
 import { Loader2 } from "lucide-react";
 import { TagResponseDTO, ArticleResponseDTO } from "@/lib/types/article";
-import { PaginatedResponse } from "@/features/articles/api/articles.api";
+import { ApiListResponse } from "@/lib/types/api.types";
 
 interface ArticlesViewProps {
-  initialArticles?: { pages: PaginatedResponse<ArticleResponseDTO>[]; pageParams: unknown[] };
+  initialArticles?: { pages: ApiListResponse<ArticleResponseDTO>[]; pageParams: unknown[] };
   initialTags?: TagResponseDTO[];
 }
 

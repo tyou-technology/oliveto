@@ -29,7 +29,7 @@ export function SidebarTagsSection({
     } else {
       newTags = [...currentTags, tagId];
     }
-    setValue("tagIds", newTags, { shouldValidate: true });
+    setValue("tagIds", newTags, { shouldValidate: true, shouldDirty: true });
   };
 
   const getSelectedTags = () => {

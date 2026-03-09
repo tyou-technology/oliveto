@@ -16,6 +16,12 @@ export interface TagResponseDTO {
   updatedAt: string;
 }
 
+export interface ArticleTagRelation {
+  articleId: string;
+  tagId: string;
+  tag: TagResponseDTO;
+}
+
 export interface ArticleResponseDTO {
   id: string;
   slug?: string;
@@ -30,10 +36,18 @@ export interface ArticleResponseDTO {
   seoDescription?: string;
   status: ArticleStatus;
   publishedAt?: string;
-  tags?: TagResponseDTO[];
+  articleTags?: ArticleTagRelation[];
   tagIds?: string[];
   createdAt: string;
   updatedAt: string;
+}
+
+/** Extracts a flat array of tags from an article, regardless of API shape. */
+export function getArticleTags(article: ArticleResponseDTO): TagResponseDTO[] {
+  if (article.articleTags && article.articleTags.length > 0) {
+    return article.articleTags.map((at) => at.tag);
+  }
+  return [];
 }
 
 export const CreateArticleSchema = z.object({
@@ -63,6 +77,7 @@ export const UpdateArticleSchema = z.object({
   content: z.string().max(16777215).optional(),
   briefing: z.string().max(500).optional(),
   readingTime: z.number().int().min(1).optional(),
+  status: z.nativeEnum(ArticleStatus).optional(),
   tagIds: z.array(z.string()).optional(),
   coverUrl: z
     .string()

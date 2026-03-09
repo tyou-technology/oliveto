@@ -1,39 +1,36 @@
 "use client";
 
 import { useQuery } from "@tanstack/react-query";
-import { authApi } from "../api/auth.api";
+import { authService } from "@/services/auth.service";
+import { useAuthStore } from "@/store/auth.store";
 import { useRouter } from "next/navigation";
 import { ROUTES } from "@/lib/config/routes";
 import { FullPageLoader } from "@/components/molecules/FullPageLoader";
 import { useEffect } from "react";
-import { useUserStore } from "@/stores/useUserStore";
 
 export const PublicRoute = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
-  const { setUser } = useUserStore();
-  
-  // Always check validation
+  const { setSession, tokens } = useAuthStore();
+
   const { data, isLoading, isSuccess } = useQuery({
-    queryKey: ["validateTokenPublic"],
-    queryFn: authApi.validateToken,
+    queryKey: ["auth", "me", "public"],
+    queryFn: authService.getMe,
     retry: 0,
-    // We expect 401 if not logged in, which will be handled by isSuccess being false
-    enabled: true,
+    enabled: !!tokens?.accessToken,
   });
 
   useEffect(() => {
-    if (isSuccess && data?.valid) {
-      setUser(data);
+    if (isSuccess && data && tokens) {
+      setSession(data, tokens);
       router.push(ROUTES.ADMIN.DASHBOARD.HOME);
     }
-  }, [isSuccess, data, router, setUser]);
+  }, [isSuccess, data, tokens, router, setSession]);
 
   if (isLoading) {
     return <FullPageLoader />;
   }
 
-  // If authenticated, we are redirecting, so don't show content
-  if (isSuccess && data?.valid) {
+  if (isSuccess && data) {
     return <FullPageLoader />;
   }
 

@@ -4,7 +4,7 @@ import { useState } from "react";
 import { AuthGuard } from "@/features/auth/components/AuthGuard";
 import { DashboardSidebar } from "@/components/organisms/dashboard-sidebar";
 import { DashboardHeader } from "@/components/organisms/dashboard-header";
-import { useUserStore } from "@/stores/useUserStore";
+import { useAuthStore } from "@/store/auth.store";
 
 export default function DashboardLayout({
   children,
@@ -12,7 +12,7 @@ export default function DashboardLayout({
   children: React.ReactNode;
 }) {
   const [sidebarOpen, setSidebarOpen] = useState(false);
-  const { user } = useUserStore();
+  const { user } = useAuthStore();
 
   const getFormattedName = (fullName: string | undefined) => {
     if (!fullName) return "Usuário";

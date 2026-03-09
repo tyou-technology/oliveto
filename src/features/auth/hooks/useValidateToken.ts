@@ -1,33 +1,32 @@
 import { useQuery } from "@tanstack/react-query";
-import { authApi } from "../api/auth.api";
+import { authService } from "@/services/auth.service";
 import { useEffect } from "react";
-import { useUserStore } from "@/stores/useUserStore";
+import { useAuthStore } from "@/store/auth.store";
 
 export const useValidateToken = () => {
-  const { setUser, clearUser } = useUserStore();
+  const { setSession, clearSession, tokens } = useAuthStore();
 
   const { data, isError, isLoading, error, isSuccess } = useQuery({
-    queryKey: ["validateToken"],
-    queryFn: authApi.validateToken,
+    queryKey: ["auth", "me"],
+    queryFn: authService.getMe,
     retry: false,
     refetchOnWindowFocus: false,
-    // Always try to validate session on load
-    enabled: true,
+    enabled: !!tokens?.accessToken,
   });
 
   useEffect(() => {
-    if (isSuccess && data) {
-      setUser(data);
+    if (isSuccess && data && tokens) {
+      setSession(data, tokens);
     } else if (isSuccess && !data) {
-      clearUser();
+      clearSession();
     }
-  }, [isSuccess, data, setUser, clearUser]);
+  }, [isSuccess, data, tokens, setSession, clearSession]);
 
   useEffect(() => {
     if (isError) {
-      clearUser();
+      clearSession();
     }
-  }, [isError, clearUser]);
+  }, [isError, clearSession]);
 
   return {
     isAuthenticated: !!data,

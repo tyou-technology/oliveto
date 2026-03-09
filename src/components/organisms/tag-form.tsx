@@ -4,7 +4,6 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ArrowLeft, Save } from "lucide-react";
 import { CreateTagDTO, CreateTagSchema, TagResponseDTO } from "@/lib/types/article";
-import { useUserStore } from "@/stores/useUserStore";
 import { useEffect } from "react";
 import { DEFAULT_TAG_COLOR } from "@/lib/constants/colors";
 
@@ -16,7 +15,6 @@ interface TagFormProps {
 }
 
 export function TagForm({ onSubmit, isPending, initialData, onCancel }: TagFormProps) {
-  const { user } = useUserStore();
   const {
     register,
     handleSubmit,
