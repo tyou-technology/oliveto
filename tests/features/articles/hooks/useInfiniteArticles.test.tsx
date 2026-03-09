@@ -7,7 +7,6 @@ import { articlesApi } from '@/features/articles/api/articles.api';
 // Mock the environment variable to avoid runtime errors
 vi.mock('@/lib/env', () => ({
   env: {
-    NEXT_PUBLIC_FIRM_ID: 'test-firm-id',
     NEXT_PUBLIC_API_URL: 'http://localhost:3000/api',
   },
 }));

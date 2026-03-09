@@ -87,7 +87,7 @@ describe("NewsletterSection", () => {
         name: "John Doe",
         email: "john@example.com",
         phone: "123456789",
-        origin: "RICH_MATERIAL", // LeadOrigin.RICH_MATERIAL
+        origin: "NEWSLETTER",
       }));
     });
 

@@ -19,18 +19,11 @@ export const handlers = [
 
     if (email === 'test@example.com') {
       const mockResponse: LoginResponse = {
-        type: 'Bearer',
-        email: 'test@example.com',
-        userId: 'user-123',
-        role: 'ADMIN',
+        accessToken: 'mock-access-token',
+        refreshToken: 'mock-refresh-token',
       };
 
-      // Return a successful response with a cookie (simulating HttpOnly cookie)
-      return HttpResponse.json(mockResponse, {
-        headers: {
-          'Set-Cookie': 'auth_token=mock-jwt-token; Path=/; HttpOnly',
-        },
-      });
+      return HttpResponse.json(mockResponse);
     }
 
     return new HttpResponse(null, { status: 401 });

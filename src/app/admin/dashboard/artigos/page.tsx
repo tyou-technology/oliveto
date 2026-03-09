@@ -14,6 +14,7 @@ import {
   TagResponseDTO,
   UpdateArticleDTO,
   UpdateTagDTO,
+  ArticleStatus,
 } from "@/lib/types/article";
 import { useTags } from "@/features/articles/hooks/useTags";
 import { TagList } from "@/components/organisms/tag-list";
@@ -29,6 +30,8 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from "@/components/atoms/alert-dialog";
+import { articlesApi } from "@/features/articles/api/articles.api";
+import { toast } from "sonner";
 
 // Optimization: Lazy load ArticleForm to split the heavy TiptapEditor dependency from the main bundle
 const ArticleForm = dynamic(
@@ -71,24 +74,48 @@ export default function ArtigosPage() {
   const { article: fullArticle, isLoading: isLoadingFullArticle } = useArticle(selectedArticleId);
 
   // Article Handlers
-  const handleCreateArticle = (data: CreateArticleDTO) => {
-    createArticle.mutate(data, {
+  const handleCreateArticle = (data: CreateArticleDTO, shouldPublish: boolean = false) => {
+    // If shouldPublish is true, we override the status in the DTO
+    const articleData = {
+      ...data,
+      status: shouldPublish ? ArticleStatus.PUBLISHED : ArticleStatus.DRAFT
+    };
+
+    createArticle.mutate(articleData, {
       onSuccess: () => {
         setActiveTab("list");
       },
     });
   };
 
-  const handleUpdateArticle = (data: CreateArticleDTO) => {
+  const handleUpdateArticle = (data: CreateArticleDTO, shouldPublish?: boolean) => {
     if (selectedArticleId) {
       // Map CreateArticleDTO to UpdateArticleDTO
       const updateData: UpdateArticleDTO = {
         ...data,
       };
+      
+      // First update the article content
       updateArticle.mutate(
         { id: selectedArticleId, data: updateData },
         {
-          onSuccess: () => {
+          onSuccess: async () => {
+            // Handle status change if requested
+            if (shouldPublish !== undefined) {
+              try {
+                if (shouldPublish) {
+                  await articlesApi.publish(selectedArticleId);
+                  toast.success("Artigo publicado com sucesso!");
+                } else {
+                  await articlesApi.archive(selectedArticleId);
+                  toast.success("Artigo arquivado com sucesso!");
+                }
+              } catch (error) {
+                console.error("Failed to update status", error);
+                toast.error("Conteúdo salvo, mas falha ao atualizar status.");
+              }
+            }
+
             setActiveTab("list");
             setSelectedArticleId(null);
           },
@@ -233,7 +260,7 @@ export default function ArtigosPage() {
           onSubmit={handleCreateArticle}
           isPending={createArticle.isPending}
           tags={tags || []}
-          authorId={user?.userId || ""}
+          authorId={user?.id || ""}
           authorName={user?.name || "Usuário"}
           onCancel={() => setActiveTab("list")}
         />
@@ -266,7 +293,7 @@ export default function ArtigosPage() {
             isPending={updateArticle.isPending}
             tags={tags || []}
             authorId={fullArticle.authorId || ""}
-            authorName={fullArticle.authorName || "Usuário"}
+            authorName={fullArticle.author?.name || "Usuário"}
             initialData={fullArticle}
             onCancel={() => {
               setActiveTab("list");

@@ -23,14 +23,13 @@ export function SidebarTagsSection({
   const toggleTag = (tagId: string) => {
     if (readOnly) return;
     const currentTags = watch("tagIds") || [];
+    let newTags;
     if (currentTags.includes(tagId)) {
-      setValue(
-        "tagIds",
-        currentTags.filter((id) => id !== tagId)
-      );
+      newTags = currentTags.filter((id) => id !== tagId);
     } else {
-      setValue("tagIds", [...currentTags, tagId]);
+      newTags = [...currentTags, tagId];
     }
+    setValue("tagIds", newTags, { shouldValidate: true });
   };
 
   const getSelectedTags = () => {
@@ -83,7 +82,7 @@ export function SidebarTagsSection({
         <div className="relative">
           <button
             type="button"
-            onClick={() => setShowCategoryDropdown(!showCategoryDropdown)}
+            onClick={() => setShowCategoryDropdown((prev) => !prev)}
             className="w-full flex items-center justify-between px-4 py-3 bg-white/5 border border-white/10 rounded-xl hover:border-white/20 transition-colors"
           >
             <span className="text-neutral-500">Selecione as tags</span>
@@ -94,7 +93,7 @@ export function SidebarTagsSection({
             />
           </button>
           {showCategoryDropdown && (
-            <div className="absolute top-full left-0 right-0 mt-2 bg-surface-highlight border border-white/10 rounded-xl overflow-hidden z-10 max-h-60 overflow-y-auto">
+            <div className="absolute top-full left-0 right-0 mt-2 bg-black border border-white/10 rounded-xl overflow-hidden z-10 max-h-60 overflow-y-auto shadow-xl">
               {tags.length === 0 ? (
                 <div className="px-4 py-3 text-sm text-neutral-500">
                   Nenhuma tag encontrada. Crie uma nova tag primeiro.

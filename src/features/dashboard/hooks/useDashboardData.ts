@@ -48,10 +48,10 @@ const getLeadStatus = (lead: LeadResponseDTO): LeadStatus => {
 
 export const useDashboardData = () => {
 
-  // 1. Fetch Recent Leads (Page 0, Size 5)
+  // 1. Fetch Recent Leads (Page 1, Limit 5)
   const { data: leadsData, isLoading: isLoadingLeads } = useLeads({
     page: 1,
-    size: 5,
+    limit: 5,
   });
 
   // 2. Fetch Unread Count
@@ -59,7 +59,7 @@ export const useDashboardData = () => {
 
   // 3. Fetch Recent Articles (Page 0, Size 4, Published only)
   const { articles: articlesList, isLoadingArticles } = useArticles(
-    0,
+    1,
     4,
     true
   );
@@ -67,7 +67,7 @@ export const useDashboardData = () => {
   // Process Data with Mocks
   const dashboardData = useMemo(() => {
     // Enrich Leads
-    const recentLeads: DashboardLead[] = (leadsData?.content || []).map((lead) => ({
+    const recentLeads: DashboardLead[] = (leadsData?.data || []).map((lead) => ({
       ...lead,
       status: getLeadStatus(lead),
     }));
@@ -96,8 +96,8 @@ export const useDashboardData = () => {
     const conversionRate = 2.4;
 
     const stats: DashboardStats = {
-      totalLeads: leadsData?.page?.totalElements || 0,
-      unreadLeads: unreadCountData?.count || 0,
+      totalLeads: leadsData?.meta?.total || 0,
+      unreadLeads: unreadCountData?.unread || 0,
       conversionRate,
       topArticle,
     };

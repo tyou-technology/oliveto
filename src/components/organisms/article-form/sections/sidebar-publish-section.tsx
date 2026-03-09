@@ -1,5 +1,5 @@
 import { UseFormWatch } from "react-hook-form";
-import { RotateCcw, Save, Send } from "lucide-react";
+import { RotateCcw, Save, Send, Archive } from "lucide-react";
 import {
   CreateArticleDTO,
   ArticleStatus,
@@ -30,7 +30,7 @@ export function SidebarPublishSection({
         <div className="flex items-center justify-between text-sm">
           <span className="text-neutral-400">Status:</span>
           <span className="text-amber-400">
-            {watch("status") === ArticleStatus.PUBLISHED
+            {initialData?.status === ArticleStatus.PUBLISHED
               ? "Publicado"
               : "Rascunho"}
           </span>
@@ -42,28 +42,44 @@ export function SidebarPublishSection({
         <div className="pt-4 border-t border-white/10 space-y-3">
           {!readOnly && (
             <>
-              {initialData?.status === ArticleStatus.PUBLISHED ? (
+              {initialData ? (
+                // Edit Mode
                 <>
                   <button
-                    type="button"
-                    onClick={() => onStatusChange(ArticleStatus.DRAFT)}
-                    disabled={isPending}
-                    className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-yellow-500/10 hover:bg-yellow-500/20 text-yellow-500 rounded-xl transition-colors disabled:opacity-50"
-                  >
-                    <RotateCcw className="w-4 h-4" />
-                    Despublicar
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => onStatusChange(ArticleStatus.PUBLISHED)}
+                    type="submit"
                     disabled={isPending}
                     className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-primary text-black font-medium rounded-xl hover:bg-primary/90 transition-colors disabled:opacity-50"
                   >
                     <Save className="w-4 h-4" />
                     Salvar Alterações
                   </button>
+                  
+                  {initialData.status !== ArticleStatus.PUBLISHED && (
+                    <button
+                      type="button"
+                      onClick={() => onStatusChange(ArticleStatus.PUBLISHED)}
+                      disabled={isPending}
+                      className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-green-500/10 hover:bg-green-500/20 text-green-500 rounded-xl transition-colors disabled:opacity-50"
+                    >
+                      <Send className="w-4 h-4" />
+                      Publicar Artigo
+                    </button>
+                  )}
+
+                  {initialData.status === ArticleStatus.PUBLISHED && (
+                    <button
+                      type="button"
+                      onClick={() => onStatusChange(ArticleStatus.ARCHIVED)}
+                      disabled={isPending}
+                      className="w-full flex items-center justify-center gap-2 px-4 py-3 bg-yellow-500/10 hover:bg-yellow-500/20 text-yellow-500 rounded-xl transition-colors disabled:opacity-50"
+                    >
+                      <Archive className="w-4 h-4" />
+                      Arquivar Artigo
+                    </button>
+                  )}
                 </>
               ) : (
+                // Create Mode
                 <>
                   <button
                     type="button"

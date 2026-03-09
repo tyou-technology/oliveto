@@ -13,9 +13,10 @@ import {
 import { useEffect } from "react";
 import { ArticleMainContent } from "./article-main-content";
 import { ArticleSidebar } from "./article-sidebar";
+import { toast } from "sonner";
 
 interface ArticleFormProps {
-  onSubmit: (data: CreateArticleDTO) => void;
+  onSubmit: (data: CreateArticleDTO, shouldPublish?: boolean) => void;
   isPending: boolean;
   tags: TagResponseDTO[];
   authorId: string;
@@ -46,14 +47,14 @@ export function ArticleForm({
   } = useForm<CreateArticleDTO>({
     resolver: zodResolver(CreateArticleSchema),
     defaultValues: {
-      status: initialData?.status || ArticleStatus.DRAFT,
-      authorId: initialData?.author?.id || initialData?.authorId || authorId,
       content: initialData?.content || "",
       tagIds: initialData?.tags ? initialData.tags.map((t) => t.id) : (initialData?.tagIds || []),
       title: initialData?.title || "",
       briefing: initialData?.briefing || "",
-      imageUrl: initialData?.imageUrl || "",
-      authorName: initialData?.author?.fullName || initialData?.authorName || authorName,
+      coverUrl: initialData?.coverUrl || "",
+      readingTime: initialData?.readingTime || 1,
+      seoTitle: initialData?.seoTitle || "",
+      seoDescription: initialData?.seoDescription || "",
     },
   });
 
@@ -64,19 +65,19 @@ export function ArticleForm({
         title: initialData.title,
         briefing: initialData.briefing || "",
         content: initialData.content || "",
-        status: initialData.status,
-        authorId: initialData.author?.id || initialData.authorId || authorId,
         tagIds: initialData.tags ? initialData.tags.map((t) => t.id) : (initialData.tagIds || []),
-        imageUrl: initialData.imageUrl || "",
-        authorName: initialData.author?.fullName || initialData.authorName || authorName,
+        coverUrl: initialData.coverUrl || "",
+        readingTime: initialData.readingTime || 1,
+        seoTitle: initialData.seoTitle || "",
+        seoDescription: initialData.seoDescription || "",
       });
     }
-  }, [initialData, reset, authorId, authorName]);
+  }, [initialData, reset]);
 
   const handleStatusChange = (status: ArticleStatus) => {
     if (readOnly) return;
-    setValue("status", status);
-    handleSubmit(onSubmit)();
+    const shouldPublish = status === ArticleStatus.PUBLISHED;
+    handleSubmit((data) => onSubmit(data, shouldPublish))();
   };
 
   const getTitle = () => {
@@ -85,8 +86,13 @@ export function ArticleForm({
     return "Novo Artigo";
   };
 
+  const onInvalid = (errors: any) => {
+    console.error("Form errors:", errors);
+    toast.error("Por favor, corrija os erros no formulário antes de enviar.");
+  };
+
   return (
-    <div className="space-y-6">
+    <form onSubmit={handleSubmit((data) => onSubmit(data, false), onInvalid)} className="space-y-6">
       {/* Header with Back Button if onCancel is provided */}
       {onCancel && (
         <div className="flex items-center gap-4 mb-2">
@@ -127,6 +133,6 @@ export function ArticleForm({
           onStatusChange={handleStatusChange}
         />
       </div>
-    </div>
+    </form>
   );
 }

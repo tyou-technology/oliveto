@@ -10,7 +10,6 @@ export default defineConfig({
     setupFiles: ['./tests/setup.ts'],
     env: {
       NEXT_PUBLIC_API_URL: 'http://localhost:3000',
-      NEXT_PUBLIC_FIRM_ID: '00000000-0000-0000-0000-000000000000',
       NEXT_PUBLIC_CLIENT_TOKEN: 'valid-token',
     },
   },

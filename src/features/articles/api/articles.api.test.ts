@@ -4,7 +4,6 @@ import { describe, it, expect, vi, beforeEach } from "vitest";
 vi.mock("@/lib/env", () => ({
   env: {
     NEXT_PUBLIC_API_URL: "https://api.example.com",
-    NEXT_PUBLIC_FIRM_ID: "00000000-0000-0000-0000-000000000000"
   }
 }));
 

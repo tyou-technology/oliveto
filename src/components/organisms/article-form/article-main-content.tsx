@@ -52,7 +52,7 @@ export const ArticleMainContent = memo(function ArticleMainContent({
       {/* Excerpt */}
       <div className="bg-surface border border-white/10 rounded-2xl p-6">
         <label className="block text-sm text-neutral-400 mb-3">
-          Resumo / Descrição Curta
+          Resumo / Descrição Curta (Briefing)
         </label>
         <textarea
           {...register("briefing")}

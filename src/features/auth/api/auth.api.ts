@@ -1,10 +1,8 @@
 import { api } from "@/lib/api-client";
 import {
-  ConfirmRegistrationRequest,
-  ConfirmRegistrationResponse,
   LoginRequest,
   LoginResponse,
-  TokenValidationResponse,
+  UserProfile,
   RegisterRequest,
   RegisterResponse,
   RefreshTokenRequest,
@@ -27,44 +25,12 @@ export const authApi = {
     const response = await api.post<{ data: RefreshTokenResponse }>("/auth/refresh", data);
     return response.data.data;
   },
-  validateToken: async (): Promise<TokenValidationResponse> => {
+  validateToken: async (): Promise<UserProfile | null> => {
     try {
-      const response = await api.get<{
-        id: string;
-        name: string;
-        email: string;
-        role: string;
-        avatarUrl?: string;
-      }>("/users/me");
-      
-      const { id, name, email, role, avatarUrl } = response.data;
-      
-      return {
-        valid: true,
-        userId: id,
-        name,
-        email,
-        role,
-        avatarUrl
-      };
+      const response = await api.get<{ data: UserProfile }>("/users/me");
+      return response.data.data;
     } catch (error) {
-      return {
-        valid: false,
-        userId: "",
-        name: "",
-        email: "",
-        role: "",
-      };
+      return null;
     }
-  },
-  confirmRegistration: async (
-    data: ConfirmRegistrationRequest
-  ): Promise<ConfirmRegistrationResponse> => {
-    const response = await api.post<ConfirmRegistrationResponse>(
-      "/auth/confirm-register",
-      data
-    );
-    const { type, email, userId } = response.data;
-    return { type, email, userId };
   },
 };

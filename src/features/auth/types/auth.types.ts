@@ -25,23 +25,14 @@ export interface LoginResponse {
   refreshToken: string;
 }
 
-export interface TokenValidationResponse {
-  valid: boolean;
+export interface UserProfile {
+  id: string;
   name: string;
   email: string;
-  userId: string;
   role: string;
   avatarUrl?: string;
-}
-
-export interface ConfirmRegistrationRequest {
-  verificationToken: string;
-}
-
-export interface ConfirmRegistrationResponse {
-  type: string;
-  email: string;
-  userId: string;
+  createdAt?: string;
+  updatedAt?: string;
 }
 
 export const RegisterSchema = z.object({

@@ -1,15 +1,25 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { leadsApi } from "../api/leads.api";
-import { UpdateLeadDTO } from "../types";
 
-export function useUpdateLead() {
+export function useUpdateLeadStatus() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ id, data }: { id: string; data: UpdateLeadDTO }) =>
-      leadsApi.update(id, data),
+    mutationFn: ({ id, status }: { id: string; status: string }) =>
+      leadsApi.updateStatus(id, status),
     onSuccess: () => {
-      // Invalidate relevant queries
+      queryClient.invalidateQueries({ queryKey: ["leads"] });
+    },
+  });
+}
+
+export function useUpdateLeadNotes() {
+  const queryClient = useQueryClient();
+
+  return useMutation({
+    mutationFn: ({ id, notes }: { id: string; notes: string }) =>
+      leadsApi.updateNotes(id, notes),
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["leads"] });
     },
   });

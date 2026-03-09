@@ -38,7 +38,7 @@ export function useContactForm() {
         email: data.email,
         phone: data.telefone,
         message: `${data.cidade ? `Cidade: ${data.cidade}\n` : ""}${data.mensagem}`,
-        origin: LeadOrigin.CONTACT,
+        origin: LeadOrigin.CONTACT_FORM,
       });
 
       toast.success("Mensagem enviada com sucesso!");

@@ -17,11 +17,9 @@ export const useValidateToken = () => {
 
   useEffect(() => {
     if (isSuccess && data) {
-      if (data.valid) {
-        setUser(data);
-      } else {
-        clearUser();
-      }
+      setUser(data);
+    } else if (isSuccess && !data) {
+      clearUser();
     }
   }, [isSuccess, data, setUser, clearUser]);
 
@@ -32,7 +30,7 @@ export const useValidateToken = () => {
   }, [isError, clearUser]);
 
   return {
-    isAuthenticated: data?.valid === true,
+    isAuthenticated: !!data,
     user: data,
     isLoading,
     isError,

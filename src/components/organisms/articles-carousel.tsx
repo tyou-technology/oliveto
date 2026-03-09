@@ -15,8 +15,7 @@ export function ArticlesCarousel() {
   const { itemsPerView, autoPlayInterval } = articlesCarouselContent;
 
   const { articles, isLoadingArticles } = useArticles(
-    env.NEXT_PUBLIC_FIRM_ID,
-    0,
+    1,
     10,
     true
   );

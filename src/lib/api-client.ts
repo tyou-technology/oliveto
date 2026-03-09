@@ -46,7 +46,17 @@ api.interceptors.response.use(
   async (error) => {
     const originalRequest = error.config;
 
-    if (error.response?.status === 401 && !originalRequest._retry) {
+    // If the error is 401
+    if (error.response?.status === 401) {
+      // If it was already a retry, it means refresh failed or token is still invalid -> Logout
+      if (originalRequest._retry) {
+        useUserStore.getState().clearAuth();
+        if (typeof window !== "undefined" && !window.location.pathname.includes(ROUTES.ADMIN.LOGIN)) {
+           window.location.href = ROUTES.ADMIN.LOGIN;
+        }
+        return Promise.reject(error);
+      }
+
       if (isRefreshing) {
         return new Promise(function (resolve, reject) {
           failedQueue.push({ resolve, reject });

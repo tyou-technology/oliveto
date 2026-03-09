@@ -30,7 +30,7 @@ export function NewsletterSection() {
         email: data.email,
         phone: data.phone || "",
         message: "Inscrição em Newsletter / Download E-book",
-        origin: LeadOrigin.RICH_MATERIAL,
+        origin: LeadOrigin.NEWSLETTER,
       });
 
       setIsSubmitted(true);

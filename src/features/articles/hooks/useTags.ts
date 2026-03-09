@@ -11,7 +11,7 @@ const STALE_TIME = 1000 * 60 * 5; // 5 minutes
 // Performance: Stable empty array reference to prevent unnecessary re-renders in memoized consumers
 const EMPTY_ARRAY: TagResponseDTO[] = [];
 
-export const useTags = (publishedOnly = false, initialData?: { content: TagResponseDTO[] }) => {
+export const useTags = (publishedOnly = false, initialData?: TagResponseDTO[]) => {
   const queryClient = useQueryClient();
 
   const { data: tagsData, isLoading: isLoadingTags } = useQuery({
@@ -59,12 +59,12 @@ export const useTags = (publishedOnly = false, initialData?: { content: TagRespo
 
   return useMemo(
     () => ({
-      tags: tagsData?.content || EMPTY_ARRAY,
+      tags: tagsData || EMPTY_ARRAY,
       isLoadingTags,
       createTag,
       updateTag,
       deleteTag,
     }),
-    [tagsData?.content, isLoadingTags, createTag, updateTag, deleteTag]
+    [tagsData, isLoadingTags, createTag, updateTag, deleteTag]
   );
 };

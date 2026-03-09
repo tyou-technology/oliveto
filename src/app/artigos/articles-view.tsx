@@ -18,7 +18,7 @@ import { PaginatedResponse } from "@/features/articles/api/articles.api";
 
 interface ArticlesViewProps {
   initialArticles?: { pages: PaginatedResponse<ArticleResponseDTO>[]; pageParams: unknown[] };
-  initialTags?: { content: TagResponseDTO[] };
+  initialTags?: TagResponseDTO[];
 }
 
 export function ArticlesView({ initialArticles, initialTags }: ArticlesViewProps) {
@@ -30,13 +30,11 @@ export function ArticlesView({ initialArticles, initialTags }: ArticlesViewProps
     isLoading: isLoadingArticles,
     totalElements,
   } = useInfiniteArticles(
-    env.NEXT_PUBLIC_FIRM_ID,
     6, // size
     true, // publishedOnly
-    initialArticles
   );
 
-  const { tags, isLoadingTags } = useTags(env.NEXT_PUBLIC_FIRM_ID, true, initialTags);
+  const { tags, isLoadingTags } = useTags(true, initialTags);
 
   const tagsMap = useMemo(() => {
     return new Map<string, TagResponseDTO>(tags.map((t) => [t.id, t]));

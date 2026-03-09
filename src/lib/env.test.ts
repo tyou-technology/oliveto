@@ -5,7 +5,6 @@ describe("Environment Variables Schema", () => {
   const validBase = {
     NODE_ENV: "test",
     NEXT_PUBLIC_APP_ENV: "test",
-    NEXT_PUBLIC_FIRM_ID: "00000000-0000-0000-0000-000000000000",
     NEXT_PUBLIC_CLIENT_TOKEN: "valid-token",
   };
 

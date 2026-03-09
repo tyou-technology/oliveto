@@ -14,6 +14,7 @@ import { SidebarPublishSection } from "./sections/sidebar-publish-section";
 import { SidebarTagsSection } from "./sections/sidebar-tags-section";
 import { SidebarCoverSection } from "./sections/sidebar-cover-section";
 import { SidebarAuthorSection } from "./sections/sidebar-author-section";
+import { SidebarSeoSection } from "./sections/sidebar-seo-section";
 
 interface ArticleSidebarProps {
   register: UseFormRegister<CreateArticleDTO>;
@@ -63,6 +64,12 @@ export function ArticleSidebar({
       <SidebarCoverSection
         register={register}
         watch={watch}
+        errors={errors}
+        readOnly={readOnly}
+      />
+
+      <SidebarSeoSection
+        register={register}
         errors={errors}
         readOnly={readOnly}
       />

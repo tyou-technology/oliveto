@@ -35,11 +35,11 @@ export function ArticleView({ article, onBack }: ArticleViewProps) {
         <div className="border-b border-white/10 pb-6 mb-6">
           <h1 className="text-3xl font-bold mb-4">{article.title}</h1>
           <div className="flex items-center gap-4 text-sm text-neutral-400">
-            {article.authorName && (
+            {article.author?.name && (
               <>
                 <span className="flex items-center gap-2">
                   <User className="w-4 h-4" />
-                  {article.authorName}
+                  {article.author.name}
                 </span>
                 <span className="w-1 h-1 rounded-full bg-neutral-600" />
               </>
@@ -68,11 +68,11 @@ export function ArticleView({ article, onBack }: ArticleViewProps) {
 
         <div className="space-y-6">
           {/* Cover Image */}
-          {article.imageUrl && (
+          {article.coverUrl && (
             <div className="relative w-full h-64 md:h-80 rounded-xl overflow-hidden border border-white/10">
               {/* Optimization: Use sizes to prevent downloading oversized images and priority for LCP */}
               <Image
-                src={article.imageUrl}
+                src={article.coverUrl}
                 alt={article.title}
                 fill
                 sizes="(max-width: 768px) 100vw, (max-width: 1200px) 80vw, 1200px"

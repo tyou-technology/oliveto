@@ -1,12 +1,12 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-import { TokenValidationResponse } from "@/features/auth/types/auth.types";
+import { UserProfile } from "@/features/auth/types/auth.types";
 
 interface UserState {
-  user: TokenValidationResponse | null;
+  user: UserProfile | null;
   accessToken: string | null;
   refreshToken: string | null;
-  setUser: (user: TokenValidationResponse) => void;
+  setUser: (user: UserProfile) => void;
   setTokens: (accessToken: string, refreshToken: string) => void;
   clearAuth: () => void;
 }

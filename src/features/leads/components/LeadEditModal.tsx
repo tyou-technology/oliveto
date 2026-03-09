@@ -9,8 +9,15 @@ import {
   DialogTitle,
   DialogDescription,
 } from "@/components/atoms/dialog";
-import { LeadResponseDTO, UpdateLeadDTO, UpdateLeadSchema } from "../types";
-import { useUpdateLead } from "../hooks";
+import {
+  LeadResponseDTO,
+  LeadStatus,
+  UpdateLeadNotesDTO,
+  UpdateLeadNotesSchema,
+  UpdateLeadStatusDTO,
+  UpdateLeadStatusSchema,
+} from "../types";
+import { useUpdateLeadNotes, useUpdateLeadStatus } from "../hooks";
 import { Save, X } from "lucide-react";
 import { useEffect } from "react";
 import { toast } from "sonner";
@@ -21,41 +28,50 @@ interface LeadEditModalProps {
 }
 
 export function LeadEditModal({ lead, onClose }: LeadEditModalProps) {
-  const { mutate: updateLead, isPending } = useUpdateLead();
+  const { mutate: updateStatus, isPending: isUpdatingStatus } = useUpdateLeadStatus();
+  const { mutate: updateNotes, isPending: isUpdatingNotes } = useUpdateLeadNotes();
+  const isPending = isUpdatingStatus || isUpdatingNotes;
 
-  const {
-    register,
-    handleSubmit,
-    reset,
-    formState: { errors },
-  } = useForm<UpdateLeadDTO>({
-    resolver: zodResolver(UpdateLeadSchema),
-    defaultValues: {
-      name: lead.name,
-      email: lead.email,
-      phone: lead.phone || "",
-    },
+  const statusForm = useForm<UpdateLeadStatusDTO>({
+    resolver: zodResolver(UpdateLeadStatusSchema),
+    defaultValues: { status: lead.status },
+  });
+
+  const notesForm = useForm<UpdateLeadNotesDTO>({
+    resolver: zodResolver(UpdateLeadNotesSchema),
+    defaultValues: { notes: lead.notes ?? "" },
   });
 
   useEffect(() => {
-    reset({
-      name: lead.name,
-      email: lead.email,
-      phone: lead.phone || "",
-    });
-  }, [lead, reset]);
+    statusForm.reset({ status: lead.status });
+    notesForm.reset({ notes: lead.notes ?? "" });
+  }, [lead, statusForm, notesForm]);
 
-  const onSubmit = (data: UpdateLeadDTO) => {
-    updateLead(
-      { id: lead.id, data },
+  const onSubmit = (statusData: UpdateLeadStatusDTO) => {
+    const notesData = notesForm.getValues();
+    let completed = 0;
+    const total = 2;
+    const finish = () => {
+      completed++;
+      if (completed === total) {
+        toast.success("Lead atualizado com sucesso!");
+        onClose();
+      }
+    };
+
+    updateStatus(
+      { id: lead.id, status: statusData.status },
       {
-        onSuccess: () => {
-          toast.success("Lead atualizado com sucesso!");
-          onClose();
-        },
-        onError: () => {
-          toast.error("Erro ao atualizar lead. Tente novamente.");
-        },
+        onSuccess: finish,
+        onError: () => toast.error("Erro ao atualizar status do lead."),
+      }
+    );
+
+    updateNotes(
+      { id: lead.id, notes: notesData.notes },
+      {
+        onSuccess: finish,
+        onError: () => toast.error("Erro ao atualizar notas do lead."),
       }
     );
   };
@@ -66,44 +82,38 @@ export function LeadEditModal({ lead, onClose }: LeadEditModalProps) {
         <DialogHeader>
           <DialogTitle className="text-xl font-bold">Editar Lead</DialogTitle>
           <DialogDescription className="text-neutral-400">
-            Atualize as informações de contato do lead.
+            Atualize o status e as notas internas do lead.
           </DialogDescription>
         </DialogHeader>
 
-        <form onSubmit={handleSubmit(onSubmit)} className="space-y-4 mt-4">
+        <form onSubmit={statusForm.handleSubmit(onSubmit)} className="space-y-4 mt-4">
           <div className="space-y-2">
-            <label className="text-sm font-medium text-neutral-400">Nome</label>
-            <input
-              {...register("name")}
-              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 focus:outline-none focus:border-primary/50 transition-colors"
-              placeholder="Nome do lead"
-            />
-            {errors.name && (
-              <p className="text-xs text-red-500">{errors.name.message}</p>
+            <label className="text-sm font-medium text-neutral-400">Status</label>
+            <select
+              {...statusForm.register("status")}
+              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 focus:outline-none focus:border-primary/50 transition-colors text-white"
+            >
+              {Object.values(LeadStatus).map((s) => (
+                <option key={s} value={s} className="bg-neutral-900">
+                  {s}
+                </option>
+              ))}
+            </select>
+            {statusForm.formState.errors.status && (
+              <p className="text-xs text-red-500">{statusForm.formState.errors.status.message}</p>
             )}
           </div>
 
           <div className="space-y-2">
-            <label className="text-sm font-medium text-neutral-400">Email</label>
-            <input
-              {...register("email")}
-              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 focus:outline-none focus:border-primary/50 transition-colors"
-              placeholder="Email do lead"
+            <label className="text-sm font-medium text-neutral-400">Notas internas</label>
+            <textarea
+              {...notesForm.register("notes")}
+              rows={4}
+              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 focus:outline-none focus:border-primary/50 transition-colors resize-none"
+              placeholder="Anotações internas sobre este lead..."
             />
-            {errors.email && (
-              <p className="text-xs text-red-500">{errors.email.message}</p>
-            )}
-          </div>
-
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-neutral-400">Telefone</label>
-            <input
-              {...register("phone")}
-              className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-2 focus:outline-none focus:border-primary/50 transition-colors"
-              placeholder="Telefone do lead"
-            />
-            {errors.phone && (
-              <p className="text-xs text-red-500">{errors.phone.message}</p>
+            {notesForm.formState.errors.notes && (
+              <p className="text-xs text-red-500">{notesForm.formState.errors.notes.message}</p>
             )}
           </div>
 

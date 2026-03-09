@@ -16,7 +16,7 @@ export function SidebarCoverSection({
   errors,
   readOnly = false,
 }: SidebarCoverSectionProps) {
-  const imageUrl = watch("imageUrl");
+  const coverUrl = watch("coverUrl");
 
   return (
     <div className="bg-surface border border-white/10 rounded-2xl p-6">
@@ -26,23 +26,23 @@ export function SidebarCoverSection({
       </h3>
       <input
         type="text"
-        {...register("imageUrl")}
+        {...register("coverUrl")}
         disabled={readOnly}
         placeholder="https://exemplo.com/imagem.jpg"
         className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm placeholder:text-neutral-600 focus:outline-none focus:border-primary/50 transition-colors disabled:opacity-50 disabled:cursor-not-allowed mb-4"
         maxLength={2048}
       />
-      {errors.imageUrl && (
+      {errors.coverUrl && (
         <p className="text-red-500 text-sm mt-1 mb-2">
-          {errors.imageUrl.message}
+          {errors.coverUrl.message}
         </p>
       )}
 
       {/* Image Preview */}
-      {imageUrl && (
+      {coverUrl && (
         <div className="relative w-full h-48 rounded-xl overflow-hidden border border-white/10">
           <Image
-            src={imageUrl}
+            src={coverUrl}
             alt="Preview da capa"
             fill
             className="object-cover"

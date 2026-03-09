@@ -25,7 +25,7 @@ const QUICK_LINKS = [
 
 export default function NotFound() {
   const [searchQuery, setSearchQuery] = useState("");
-  const { totalElements } = useArticles(env.NEXT_PUBLIC_FIRM_ID, 0, 1, true);
+  const { totalElements } = useArticles( 1, 1, true);
 
   const quickLinks = useMemo(() => {
     if (totalElements > 0) return QUICK_LINKS;

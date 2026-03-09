@@ -18,14 +18,16 @@ export interface TagResponseDTO {
 
 export interface ArticleResponseDTO {
   id: string;
+  slug?: string;
   authorId?: string;
-  authorName?: string;
-  author?: { id: string; fullName: string; email: string };
+  author?: { id: string; name: string; avatarUrl: string | null };
   title: string;
-  subtitle?: string;
   briefing?: string;
   content?: string;
-  imageUrl?: string;
+  coverUrl?: string;
+  readingTime?: number;
+  seoTitle?: string;
+  seoDescription?: string;
   status: ArticleStatus;
   publishedAt?: string;
   tags?: TagResponseDTO[];
@@ -35,13 +37,12 @@ export interface ArticleResponseDTO {
 }
 
 export const CreateArticleSchema = z.object({
-  authorId: z.string().uuid(),
-  authorName: z.string().max(255).optional(),
   title: z.string().min(1, "Título é obrigatório").max(255),
-  subtitle: z.string().max(255).optional(),
-  briefing: z.string().max(500).optional(),
   content: z.string().min(1, "Conteúdo é obrigatório").max(16777215),
-  imageUrl: z
+  briefing: z.string().max(500).optional(),
+  readingTime: z.number().int().min(1).optional(),
+  tagIds: z.array(z.string()).optional(),
+  coverUrl: z
     .string()
     .url()
     .refine(
@@ -50,19 +51,20 @@ export const CreateArticleSchema = z.object({
     )
     .optional()
     .or(z.literal("")),
-  status: z.nativeEnum(ArticleStatus).optional(),
-  publishedAt: z.string().datetime().optional(),
-  tagIds: z.array(z.string().uuid()).optional(),
+  seoTitle: z.string().max(255).optional(),
+  seoDescription: z.string().max(500).optional(),
+  status: z.nativeEnum(ArticleStatus).optional().default(ArticleStatus.DRAFT),
 });
 
 export type CreateArticleDTO = z.infer<typeof CreateArticleSchema>;
 
 export const UpdateArticleSchema = z.object({
   title: z.string().max(255).optional(),
-  subtitle: z.string().max(255).optional(),
-  briefing: z.string().max(500).optional(),
   content: z.string().max(16777215).optional(),
-  imageUrl: z
+  briefing: z.string().max(500).optional(),
+  readingTime: z.number().int().min(1).optional(),
+  tagIds: z.array(z.string()).optional(),
+  coverUrl: z
     .string()
     .url()
     .refine(
@@ -71,9 +73,8 @@ export const UpdateArticleSchema = z.object({
     )
     .optional()
     .or(z.literal("")),
-  status: z.nativeEnum(ArticleStatus).optional(),
-  publishedAt: z.string().datetime().optional(),
-  tagIds: z.array(z.string().uuid()).optional(),
+  seoTitle: z.string().max(255).optional(),
+  seoDescription: z.string().max(500).optional(),
 });
 
 export type UpdateArticleDTO = z.infer<typeof UpdateArticleSchema>;

@@ -22,25 +22,25 @@ export async function generateStaticParams(): Promise<{ slug: string }[]> {
   // Performance: Using fetch-based 'getPublicPublished' to enable Data Cache
   const response = await articlesApi.getPublicPublished(0, 1000);
 
-  if (!response || !Array.isArray(response.content)) {
-    throw new Error("Invalid API response format: 'content' array missing.");
+  if (!response || !Array.isArray(response.data)) {
+    throw new Error("Invalid API response format: 'data' array missing.");
   }
 
-  if (response.content.length === 0) {
+  if (response.data.length === 0) {
     console.warn("No articles found to generate static params.");
     return [];
   }
 
-  const paths = response.content
-    .filter((article) => {
-      if (!article.id) {
-        console.warn(`Article found without ID: ${article.title || "Unknown Title"}. Skipping.`);
+  const paths = response.data
+    .filter((article: any) => {
+      if (!article.slug && !article.id) {
+        console.warn(`Article found without Slug or ID: ${article.title || "Unknown Title"}. Skipping.`);
         return false;
       }
       return true;
     })
-    .map((article) => ({
-      slug: article.id,
+    .map((article: any) => ({
+      slug: article.slug || article.id, // Prefer slug, fallback to ID if slug is missing (though slug is preferred for SEO)
     }));
 
   return paths;
@@ -48,10 +48,10 @@ export async function generateStaticParams(): Promise<{ slug: string }[]> {
 
 async function getArticle(slug: string) {
   try {
-    // Performance: Using fetch-based 'getPublicById' to enable Request Memoization and Data Cache
-    return await articlesApi.getPublicById(slug);
+    // Performance: Using fetch-based 'getPublicBySlug' to enable Request Memoization and Data Cache
+    return await articlesApi.getPublicBySlug(slug);
   } catch (error) {
-    console.error(`Failed to fetch article with slug/id: ${slug}`, error);
+    console.error(`Failed to fetch article with slug: ${slug}`, error);
     return null;
   }
 }
@@ -73,14 +73,14 @@ export async function generateMetadata({
 
   return {
     title: `${article.title} | Oliveto Contabilidade`,
-    description: article.briefing || article.subtitle || `Leia o artigo completo sobre ${article.title}.`,
+    description: article.briefing || article.seoDescription || `Leia o artigo completo sobre ${article.title}.`,
     openGraph: {
-      title: article.title,
-      description: article.briefing || article.subtitle || "",
+      title: article.seoTitle || article.title,
+      description: article.seoDescription || article.briefing || "",
       type: "article",
-      authors: article.authorName ? [article.authorName] : undefined,
+      authors: article.author?.name ? [article.author.name] : undefined,
       publishedTime: article.publishedAt,
-      // images: article.imageUrl ? [{ url: article.imageUrl }] : undefined,
+      images: article.coverUrl ? [{ url: article.coverUrl }] : undefined,
     },
   };
 }
@@ -158,7 +158,7 @@ export default async function ArtigoPage({
             )}
             <div className={"flex  gap-4 items-center"}>
               <p>
-                Autor: <span className="text-primary">{article.author?.fullName || article.authorName}</span>
+                Autor: <span className="text-primary">{article.author?.name}</span>
               </p>
               {article.publishedAt && (
                   <>
@@ -172,18 +172,16 @@ export default async function ArtigoPage({
           </div>
 
 
-          {/*/!* Cover Image *!/*/}
-          {/*{article.imageUrl && (*/}
-          {/*  <div className="relative w-full aspect-video rounded-xl overflow-hidden mb-8">*/}
-          {/*    <Image*/}
-          {/*      src={article.imageUrl}*/}
-          {/*      alt={article.title}*/}
-          {/*      fill*/}
-          {/*      className="object-cover"*/}
-          {/*      priority*/}
-          {/*    />*/}
-          {/*  </div>*/}
-          {/*)}*/}
+          {/* Cover Image */}
+          {article.coverUrl && (
+           <div className="relative w-full aspect-video rounded-xl overflow-hidden mb-8">
+             <img
+               src={article.coverUrl}
+               alt={article.title}
+               className="object-cover w-full h-full"
+             />
+           </div>
+          )}
         </div>
       </section>
 
