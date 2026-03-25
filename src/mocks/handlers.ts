@@ -1,6 +1,5 @@
 import { http, HttpResponse } from 'msw';
 import { env } from '@/lib/env';
-import { LoginResponse } from '@/features/auth/types/auth.types';
 import { ArticleResponseDTO, ArticleStatus } from '@/lib/types/article';
 
 const apiUrl = (path: string) => {
@@ -10,23 +9,30 @@ const apiUrl = (path: string) => {
 export const handlers = [
   // Auth Handlers
   http.post(apiUrl('/auth/login'), async ({ request }) => {
-    // Validate that X-Client-Token is present (Integration/Contract Check)
-    if (!request.headers.get('X-Client-Token')) {
-      return new HttpResponse(null, { status: 400, statusText: 'Missing X-Client-Token' });
-    }
-
     const { email } = await request.json() as { email: string };
 
     if (email === 'test@example.com') {
-      const mockResponse: LoginResponse = {
+      return HttpResponse.json({
+        type: 'Bearer',
         accessToken: 'mock-access-token',
-        refreshToken: 'mock-refresh-token',
-      };
-
-      return HttpResponse.json(mockResponse);
+        expiresIn: 3600,
+      });
     }
 
     return new HttpResponse(null, { status: 401 });
+  }),
+
+  // Cookie-based refresh — no request body
+  http.post(apiUrl('/auth/refresh'), () => {
+    return HttpResponse.json({
+      type: 'Bearer',
+      accessToken: 'mock-refreshed-access-token',
+      expiresIn: 3600,
+    });
+  }),
+
+  http.post(apiUrl('/auth/logout'), () => {
+    return new HttpResponse(null, { status: 204 });
   }),
 
   // Article Handlers

@@ -22,9 +22,11 @@ export interface ApiListResponse<T> {
   _links?: Record<string, { href: string; method: string }>;
 }
 
-export interface TokenPair {
+/** Returned wrapped in ApiResponse ({ data: AuthTokenResponse }) by /auth/login, /auth/register, and /auth/refresh. */
+export interface AuthTokenResponse {
+  type: string;
   accessToken: string;
-  refreshToken: string;
+  expiresIn: number;
 }
 
 export interface User {

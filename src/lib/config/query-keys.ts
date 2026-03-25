@@ -12,6 +12,7 @@ export const QUERY_KEYS = {
   },
   AUTH: {
     ME: ["auth", "me"] as const,
+    REFRESH: ["auth", "refresh"] as const,
   },
   ARTICLES: {
     ALL: ["articles"] as const,

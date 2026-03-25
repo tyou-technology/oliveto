@@ -76,15 +76,18 @@ oliveto-contabilidade/
 
 ## Variáveis de Ambiente
 
-| Variável                         | Finalidade                               | Padrão / Exemplo            |
-| -------------------------------- | ---------------------------------------- | --------------------------- |
-| `NEXT_PUBLIC_API_URL`            | Base URL da Oliveto API                  | `http://localhost:3001`     |
-| `NEXT_PUBLIC_SITE_URL`           | URL canônica do site                     | `https://oliveto.com.br`    |
-| `NEXT_PUBLIC_GA_ID`              | Google Analytics 4 Measurement ID        | `G-XXXXXXXXXX`              |
-| `NEXT_PUBLIC_SENTRY_DSN`         | DSN público do Sentry (client-side)      | `https://xxx@sentry.io/yyy` |
-| `SENTRY_AUTH_TOKEN`              | Token do Sentry para upload de sourcemap | `sntrys_xxxxx`              |
-| `NEXT_PUBLIC_RECAPTCHA_SITE_KEY` | Google reCAPTCHA v3 site key             | `6LdXXXXXXXXXXXXXXXXX`      |
-| `REVALIDATE_SECRET`              | Token para revalidação on-demand         | min 32 chars                |
+| Variável                         | Finalidade                                | Padrão / Exemplo             |
+| -------------------------------- | ----------------------------------------- | ---------------------------- |
+| `NEXT_PUBLIC_API_URL`            | Base URL da Oliveto API                   | `http://localhost:3001`      |
+| `NEXT_PUBLIC_SITE_URL`           | URL canônica do site                      | `https://oliveto.com.br`     |
+| `NEXT_PUBLIC_CLIENT_TOKEN`       | Token de identificação do cliente na API  | `supersecretclienttoken`     |
+| `NEXT_PUBLIC_APP_ENV`            | Ambiente da aplicação                     | `development`                |
+| `NEXT_PUBLIC_GA_ID`              | Google Analytics 4 Measurement ID         | `G-XXXXXXXXXX`               |
+| `NEXT_PUBLIC_SENTRY_DSN`         | DSN público do Sentry (client-side)       | `https://xxx@sentry.io/yyy`  |
+| `SENTRY_AUTH_TOKEN`              | Token do Sentry para upload de sourcemap  | `sntrys_xxxxx`               |
+| `NEXT_PUBLIC_RECAPTCHA_SITE_KEY` | Google reCAPTCHA v3 site key              | `6LdXXXXXXXXXXXXXXXXX`       |
+| `REVALIDATE_SECRET`              | Token para revalidação on-demand          | min 32 chars                 |
+| `API_INTERNAL_URL`               | Override server-side da API (WSL2/Docker) | `http://api:3001` (opcional) |
 
 > Nunca comite valores sensíveis. Use `.env.local` localmente; variáveis de ambiente da plataforma em produção. Copie `.env.example` para `.env.local` ao fazer setup.
 
@@ -243,24 +246,24 @@ Apenas estado verdadeiramente global vive no Zustand (sessão de auth, preferên
 
 ```typescript
 // store/auth.store.ts
+// The access token lives in memory ONLY — never in localStorage or sessionStorage.
+// On page reload it is gone; a silent POST /auth/refresh restores it from the
+// HttpOnly refresh_token cookie that the browser sends automatically.
 interface AuthState {
   user: User | null;
-  tokens: TokenPair | null;
-  setSession: (user: User, tokens: TokenPair) => void;
+  accessToken: string | null;
+  setSession: (user: User, accessToken: string) => void;
+  setAccessToken: (accessToken: string) => void;
   clearSession: () => void;
 }
 
-export const useAuthStore = create<AuthState>()(
-  persist(
-    (set) => ({
-      user: null,
-      tokens: null,
-      setSession: (user, tokens) => set({ user, tokens }),
-      clearSession: () => set({ user: null, tokens: null }),
-    }),
-    { name: "oliveto-auth" },
-  ),
-);
+export const useAuthStore = create<AuthState>()((set) => ({
+  user: null,
+  accessToken: null,
+  setSession: (user, accessToken) => set({ user, accessToken }),
+  setAccessToken: (accessToken) => set({ accessToken }),
+  clearSession: () => set({ user: null, accessToken: null }),
+}));
 ```
 
 ### 7. Sanitização de HTML do Blog
@@ -282,30 +285,105 @@ Nunca crie `axios.create()` em componentes. Use apenas a instância de `@/lib/ap
 
 ```typescript
 // lib/api/client.ts
+
+// Auth endpoints never trigger a refresh retry — avoids infinite loops and
+// incorrect session clears (e.g. login with wrong credentials must not clear
+// an existing session).
+const AUTH_ENDPOINTS = [
+  "/auth/login",
+  "/auth/register",
+  "/auth/refresh",
+  "/auth/logout",
+];
+const isAuthEndpoint = (url?: string): boolean =>
+  !!url && AUTH_ENDPOINTS.some((path) => url.includes(path));
+
 export const apiClient = axios.create({
   baseURL: env.NEXT_PUBLIC_API_URL,
   withCredentials: true,
+  timeout: 30000,
 });
 
-// Interceptor de request: injeta access token
+// Request interceptor: inject access token from store
 apiClient.interceptors.request.use((config) => {
   const token = useAuthStore.getState().tokens?.accessToken;
   if (token) config.headers.Authorization = `Bearer ${token}`;
   return config;
 });
 
-// Interceptor de response: refresh automático em 401
+// Response interceptor: queue-based transparent token refresh on 401.
+// Uses a queue so concurrent requests that fail during a refresh are all
+// retried once the new tokens arrive, instead of each triggering a separate
+// refresh call.
+let isRefreshing = false;
+let failedQueue: Array<{
+  resolve: (t: string) => void;
+  reject: (e: unknown) => void;
+}> = [];
+
 apiClient.interceptors.response.use(
   (res) => res,
   async (err: AxiosError) => {
-    if (err.response?.status === 401) {
-      await refreshTokens();
-      return apiClient(err.config!);
+    const req = err.config as AxiosRequestConfig & { _retry?: boolean };
+
+    if (err.response?.status !== 401) return Promise.reject(err);
+
+    // Let auth-endpoint errors propagate directly — individual hooks handle them.
+    if (isAuthEndpoint(req?.url)) return Promise.reject(err);
+
+    // Already retried with a fresh token and still 401 → give up.
+    if (req._retry) {
+      useAuthStore.getState().clearSession();
+      window.location.href = ROUTES.ADMIN.LOGIN;
+      return Promise.reject(err);
     }
-    return Promise.reject(err);
+
+    // Queue this request while a refresh is already in flight.
+    if (isRefreshing) {
+      return new Promise<string>((resolve, reject) => {
+        failedQueue.push({ resolve, reject });
+      }).then((token) => {
+        req._retry = true; // prevent a second refresh if this retry also gets 401
+        req.headers!.Authorization = `Bearer ${token}`;
+        return apiClient(req);
+      });
+    }
+
+    req._retry = true;
+    isRefreshing = true;
+
+    try {
+      // Use raw axios (not apiClient) to bypass this interceptor.
+      // withCredentials sends the HttpOnly refresh_token cookie automatically —
+      // no refresh token in the request body is needed or possible.
+      const { data } = await axios.post<AuthTokenResponse>(
+        `${env.NEXT_PUBLIC_API_URL}/auth/refresh`,
+        undefined,
+        { withCredentials: true },
+      );
+      useAuthStore.getState().setAccessToken(data.accessToken);
+      req.headers!.Authorization = `Bearer ${data.accessToken}`;
+      processQueue(null, data.accessToken);
+      return apiClient(req);
+    } catch (refreshErr) {
+      processQueue(refreshErr, null);
+      useAuthStore.getState().clearSession();
+      window.location.href = ROUTES.ADMIN.LOGIN;
+      return Promise.reject(refreshErr);
+    } finally {
+      isRefreshing = false;
+    }
   },
 );
 ```
+
+**Regras-chave do interceptor:**
+
+- O refresh usa `axios.post` bruto (não `apiClient`) para não disparar o próprio interceptor.
+- O refresh token é um cookie **HttpOnly** — o browser o envia automaticamente; não há leitura nem envio manual no corpo da requisição.
+- Auth endpoints (`/auth/*`) têm `isAuthEndpoint` guard — erros neles propagam direto para o hook chamador, que lida com a resposta adequada (ex.: `useLogout` faz logout local mesmo se a API retornar 401).
+- Requests em fila marcam `_retry = true` antes do re-envio para garantir fail-fast caso o novo token também seja rejeitado.
+- Erros de negócio (400, 403, 404, 429…) e erros de rede nunca são tratados no interceptor — sobem para o `onError` de cada query/mutation via `getFriendlyErrorMessage()`.
 
 ### 9. Tipagem Explícita — Sem `any`
 
@@ -405,7 +483,7 @@ export function parseApiError(err: unknown): string { ... }
 
 ### Hydration mismatch com dados do servidor
 
-Dados do Zustand persistidos no `localStorage` causam mismatch. Use `useHydration()` e retorne `null` até o client estar hidratado.
+O `useAuthStore` não usa `persist` — o `accessToken` vive apenas em memória e não vai para o `localStorage`. Isso elimina a classe de mismatch causada por tokens persistidos. Se outros stores usarem `persist`, aplique `useHydration()`:
 
 ```typescript
 const [hydrated, setHydrated] = useState(false);
@@ -568,7 +646,7 @@ npm run dev                   # http://localhost:3000
 
 Base URL: `NEXT_PUBLIC_API_URL/api` (ex: `http://localhost:8080/api`)
 
-Todas as respostas bem-sucedidas seguem o envelope `{ data, _links }` (recurso único) ou `{ data, meta, _links }` (lista paginada). Erros retornam `{ error: { statusCode, code, message } }`. Endpoints de auth (`/auth/*`) retornam o token pair diretamente, sem envelope.
+Todas as respostas bem-sucedidas seguem o envelope `{ data, _links }` (recurso único) ou `{ data, meta, _links }` (lista paginada). Erros retornam `{ error: { statusCode, code, message } }`. Endpoints de auth (`/auth/*`) também seguem o envelope `{ data: AuthTokenResponse }`.
 
 ### Enums
 
@@ -629,9 +707,11 @@ export interface ApiListResponse<T> {
   meta: PaginationMeta;
   _links: ApiLinks;
 }
-export interface TokenPair {
+/** Returned directly (no envelope) by /auth/login, /auth/register, /auth/refresh. */
+export interface AuthTokenResponse {
+  type: string;
   accessToken: string;
-  refreshToken: string;
+  expiresIn: number;
 }
 ```
 
@@ -641,12 +721,14 @@ export interface TokenPair {
 
 > Todos os endpoints são públicos. Rate limit: 10 req / 60 s.
 
-| Método | Rota             | Corpo                       | Retorno       | Status |
-| ------ | ---------------- | --------------------------- | ------------- | ------ |
-| POST   | `/auth/register` | `{ name, email, password }` | `TokenPair`   | 201    |
-| POST   | `/auth/login`    | `{ email, password }`       | `TokenPair`   | 200    |
-| POST   | `/auth/refresh`  | `{ refreshToken }`          | `TokenPair`   | 200    |
-| POST   | `/auth/logout`   | `{ refreshToken }`          | _(sem corpo)_ | 204    |
+> O refresh token é gerenciado como cookie **HttpOnly** pelo servidor (`refresh_token`). O browser o envia automaticamente — nunca é lido ou enviado manualmente pelo frontend.
+
+| Método | Rota             | Corpo                       | Retorno              | Status |
+| ------ | ---------------- | --------------------------- | -------------------- | ------ |
+| POST   | `/auth/register` | `{ name, email, password }` | `AuthTokenResponse`  | 201    |
+| POST   | `/auth/login`    | `{ email, password }`       | `AuthTokenResponse`  | 200    |
+| POST   | `/auth/refresh`  | _(sem corpo — usa cookie)_  | `AuthTokenResponse`  | 200    |
+| POST   | `/auth/logout`   | _(sem corpo — limpa cookie)_| _(sem corpo)_        | 204    |
 
 ```typescript
 // services/auth.service.ts
@@ -659,15 +741,14 @@ interface LoginRequest {
   email: string;
   password: string;
 }
-interface RefreshRequest {
-  refreshToken: string;
-}
-interface LogoutRequest {
-  refreshToken: string;
-}
+// RefreshRequest e LogoutRequest removidos — sem corpo nas requisições.
 ```
 
-**Comportamento do cliente:** após login/register/refresh bem-sucedido, persiste `accessToken` e `refreshToken` no `useAuthStore`. No logout (204), limpa o store e redireciona para `/login`.
+**Comportamento do cliente:**
+- `login`/`register`: armazena `accessToken` em memória (`useAuthStore.setAccessToken`), depois busca o perfil com `GET /users/me` e chama `setSession`.
+- `refresh` (silencioso): chamado automaticamente pelo interceptor (401 em rota protegida) ou por `useValidateToken` no mount (page reload). O cookie `refresh_token` é enviado pelo browser; a resposta retorna um novo `accessToken`.
+- `logout`: POST limpa o cookie no servidor; o cliente chama `clearSession()` e redireciona para `/login`.
+- O `accessToken` **nunca** vai para `localStorage` ou `sessionStorage`. Em caso de page reload, é restaurado via `/auth/refresh`.
 
 ---
 
@@ -968,4 +1049,4 @@ export const QUERY_KEYS = {
 
 ---
 
-> **Última atualização:** 2026-03-09 · **Maintainer:** @caetanojpo
+> **Última atualização:** 2026-03-24 · **Maintainer:** @caetanojpo

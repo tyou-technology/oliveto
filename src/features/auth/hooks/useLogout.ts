@@ -7,24 +7,22 @@ import { getFriendlyErrorMessage } from "@/lib/utils/error-handler";
 
 export const useLogout = () => {
   const queryClient = useQueryClient();
-  const { clearSession, tokens } = useAuthStore();
+  const { clearSession } = useAuthStore();
 
   const handleLogout = () => {
     clearSession();
     queryClient.clear();
     // Hard redirect clears all in-memory React/React Query state reliably.
-    // router.push() leaves stale query state that can cause the loader to get stuck.
     window.location.href = ROUTES.ADMIN.LOGIN;
   };
 
   return useMutation({
-    mutationFn: async () => {
-      if (tokens?.refreshToken) {
-        return authService.logout(tokens.refreshToken);
-      }
-    },
+    // POST /auth/logout tells the server to clear the HttpOnly refresh_token cookie.
+    // We always attempt this even if we have no access token — the cookie might still be valid.
+    mutationFn: () => authService.logout(),
     onSuccess: handleLogout,
     onError: (error) => {
+      // Perform local logout regardless of API error (cookie may already be expired).
       handleLogout();
       toast.error(getFriendlyErrorMessage(error));
     },
