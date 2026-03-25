@@ -1,6 +1,6 @@
 import type React from "react";
 import type { Metadata } from "next";
-import { Golos_Text, Outfit } from "next/font/google";
+import localFont from "next/font/local";
 import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import { QueryProvider } from "@/components/providers/query-provider";
@@ -8,16 +8,18 @@ import { Toaster } from "@/components/atoms/sonner";
 import { getCsp } from "@/lib/config/csp";
 import { env } from "@/lib/env";
 
-const golos = Golos_Text({
-  subsets: ["latin"],
+const golos = localFont({
+  src: "../../public/fonts/golos-text-latin-wght-normal.woff2",
   variable: "--font-sans",
   display: "swap",
+  weight: "400 900",
 });
 
-const outfit = Outfit({
-  subsets: ["latin"],
+const outfit = localFont({
+  src: "../../public/fonts/outfit-latin-wght-normal.woff2",
   variable: "--font-heading",
   display: "swap",
+  weight: "100 900",
 });
 
 const isDev = process.env.NODE_ENV === "development";
