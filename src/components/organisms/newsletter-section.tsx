@@ -36,8 +36,6 @@ export function NewsletterSection() {
       setIsSubmitted(true);
       toast.success("Cadastro realizado com sucesso! Verifique seu e-mail.");
     } catch {
-      // Log a generic message to avoid exposing PII (name, email, phone) from the error object
-      console.error("Newsletter subscription failed");
       toast.error("Erro ao realizar inscrição. Tente novamente.");
     }
   };

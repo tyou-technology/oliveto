@@ -1,5 +1,6 @@
 import { useQuery } from "@tanstack/react-query";
 import { articlesService } from "@/services/articles.service";
+import { QUERY_KEYS } from "@/lib/config/query-keys";
 
 interface UseArticleCountOptions {
   enabled?: boolean;
@@ -7,7 +8,7 @@ interface UseArticleCountOptions {
 
 export const useArticleCount = ({ enabled = true }: UseArticleCountOptions = {}) => {
   const { data, isLoading } = useQuery({
-    queryKey: ["articles", "published", "count"],
+    queryKey: QUERY_KEYS.ARTICLES.COUNT,
     queryFn: () => articlesService.getPublished(1, 1),
     enabled,
     staleTime: 300000, // 5 minutes

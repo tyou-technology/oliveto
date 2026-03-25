@@ -716,6 +716,7 @@ interface ChangeRoleRequest {
 | GET    | `/articles/:id`         | ADMIN | —                                                      | `ApiResponse<Article>`       | 200    |
 | POST   | `/articles`             | ADMIN | `CreateArticleRequest`                                 | `ApiResponse<Article>`       | 201    |
 | PATCH  | `/articles/:id`         | ADMIN | `UpdateArticleRequest`                                 | `ApiResponse<Article>`       | 200    |
+| POST   | `/articles/:id/view`    | —     | —                                                      | _(sem corpo)_                | 204    |
 | PATCH  | `/articles/:id/publish` | ADMIN | —                                                      | `ApiResponse<ArticleStatus>` | 200    |
 | PATCH  | `/articles/:id/archive` | ADMIN | —                                                      | `ApiResponse<ArticleStatus>` | 200    |
 | DELETE | `/articles/:id`         | ADMIN | —                                                      | _(sem corpo)_                | 204    |

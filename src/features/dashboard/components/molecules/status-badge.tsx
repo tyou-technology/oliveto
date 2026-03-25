@@ -1,24 +1,22 @@
-import { Badge } from "@/components/atoms/badge";
 import { cn } from "@/lib/utils";
-import { LeadStatus } from "../../types";
+import { DashboardLeadStatus } from "../../types";
 
 interface StatusBadgeProps {
-  status: LeadStatus;
+  status: DashboardLeadStatus;
   className?: string;
 }
 
-export function StatusBadge({ status, className }: StatusBadgeProps) {
-  const styles = {
-    New: "bg-primary/15 text-primary border-primary/20 hover:bg-primary/25",
-    Contacted: "bg-amber-500/15 text-amber-500 border-amber-500/20 hover:bg-amber-500/25",
-    Qualified: "bg-blue-500/15 text-blue-500 border-blue-500/20 hover:bg-blue-500/25",
-  };
+const STATUS_STYLES: Record<DashboardLeadStatus, { label: string; className: string }> = {
+  New: { label: "Novo", className: "text-primary bg-primary/10" },
+  Contacted: { label: "Contactado", className: "text-blue-400 bg-blue-400/10" },
+  Qualified: { label: "Qualificado", className: "text-amber-400 bg-amber-400/10" },
+};
 
+export function StatusBadge({ status, className }: StatusBadgeProps) {
+  const { label, className: statusClass } = STATUS_STYLES[status];
   return (
-    <Badge variant="outline" className={cn("font-normal", styles[status], className)}>
-      {status === "New" && "Novo"}
-      {status === "Contacted" && "Contatado"}
-      {status === "Qualified" && "Qualificado"}
-    </Badge>
+    <span className={cn("text-xs px-2 py-1 rounded-full font-medium", statusClass, className)}>
+      {label}
+    </span>
   );
 }

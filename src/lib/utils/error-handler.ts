@@ -3,7 +3,7 @@ import { AxiosError } from "axios";
 export const getFriendlyErrorMessage = (error: unknown): string => {
   if (error instanceof AxiosError) {
     const status = error.response?.status;
-    const data = error.response?.data as any;
+    const data = error.response?.data as { message?: string } | undefined;
 
     // Prioritize backend specific messages for 400 errors as they often contain validation details
     if (status === 400 && data?.message) {

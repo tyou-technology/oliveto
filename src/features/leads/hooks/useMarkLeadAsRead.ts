@@ -1,5 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { leadsService } from "@/services/leads.service";
+import { QUERY_KEYS } from "@/lib/config/query-keys";
 
 export function useMarkLeadAsRead() {
   const queryClient = useQueryClient();
@@ -7,8 +8,8 @@ export function useMarkLeadAsRead() {
   return useMutation({
     mutationFn: (id: string) => leadsService.markAsRead(id),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["leads", "unread-count"] });
-      queryClient.invalidateQueries({ queryKey: ["leads"] });
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.LEADS.UNREAD_COUNT });
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.LEADS.ALL });
     },
   });
 }

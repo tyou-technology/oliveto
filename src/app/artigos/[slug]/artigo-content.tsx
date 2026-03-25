@@ -1,17 +1,19 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 import { format } from "date-fns";
 import { ptBR } from "date-fns/locale";
 import { Header } from "@/components/organisms/header";
 import { Footer } from "@/components/organisms/footer";
 import { CategoryBadge } from "@/components/atoms/category-badge";
 import { ReadingProgress } from "@/components/atoms/reading-progress";
-import { articlesService } from "@/services/articles.service";
+import { useArticle } from "@/features/articles/hooks/useArticle";
 import { sanitizeHtml } from "@/lib/utils/sanitizer";
-import { getArticleTags, type ArticleResponseDTO } from "@/lib/types/article";
+import { getArticleTags, type TagResponseDTO } from "@/lib/types/article";
+import { ROUTES } from "@/lib/config/routes";
+import { articlesService } from "@/services/articles.service";
 
 interface ArtigoContentProps {
   slug: string;
@@ -19,27 +21,21 @@ interface ArtigoContentProps {
 
 export function ArtigoContent({ slug }: ArtigoContentProps) {
   const router = useRouter();
-  const [article, setArticle] = useState<ArticleResponseDTO | null>(null);
-  const [loading, setLoading] = useState(true);
+  const { article, isLoading, error } = useArticle(slug);
 
   useEffect(() => {
-    async function load() {
-      try {
-        // Try by slug first, fall back to ID
-        const data = await articlesService.getBySlug(slug).catch(() =>
-          articlesService.getById(slug)
-        );
-        setArticle(data);
-      } catch {
-        router.replace("/artigos");
-      } finally {
-        setLoading(false);
-      }
+    if (!isLoading && (error || (!article && !isLoading))) {
+      router.replace(ROUTES.PUBLIC.ARTIGOS);
     }
-    load();
-  }, [slug, router]);
+  }, [isLoading, error, article, router]);
 
-  if (loading) {
+  useEffect(() => {
+    if (article?.id) {
+      articlesService.recordView(article.id);
+    }
+  }, [article?.id]);
+
+  if (isLoading) {
     return (
       <div className="min-h-screen bg-black text-white">
         <Header />
@@ -76,13 +72,19 @@ export function ArtigoContent({ slug }: ArtigoContentProps) {
           <nav className="mb-8">
             <ol className="flex items-center gap-1 text-sm text-muted-foreground">
               <li>
-                <Link href="/" className="hover:text-primary transition-colors">
+                <Link
+                  href={ROUTES.PUBLIC.HOME}
+                  className="hover:text-primary transition-colors"
+                >
                   Home
                 </Link>
               </li>
               <li>/</li>
               <li>
-                <Link href="/artigos" className="hover:text-primary transition-colors">
+                <Link
+                  href={ROUTES.PUBLIC.ARTIGOS}
+                  className="hover:text-primary transition-colors"
+                >
                   Artigos
                 </Link>
               </li>
@@ -92,8 +94,12 @@ export function ArtigoContent({ slug }: ArtigoContentProps) {
           {/* Tags */}
           {tags.length > 0 && (
             <div className="flex flex-wrap gap-2 mb-6">
-              {tags.map((tag) => (
-                <CategoryBadge key={tag.id} category={tag.name} color={tag.color} />
+              {tags.map((tag: TagResponseDTO) => (
+                <CategoryBadge
+                  key={tag.id}
+                  category={tag.name}
+                  color={tag.color}
+                />
               ))}
             </div>
           )}
@@ -106,27 +112,34 @@ export function ArtigoContent({ slug }: ArtigoContentProps) {
           {/* Briefing + Author + Date */}
           <div className="flex flex-col gap-4 text-sm text-muted-foreground mb-2">
             {article.briefing && (
-              <p className="text-lg mb-2 font-thin leading-relaxed">{article.briefing}</p>
+              <p className="text-lg mb-2 font-thin leading-relaxed">
+                {article.briefing}
+              </p>
             )}
             <div className="flex gap-4 items-center">
               <p>
-                Autor: <span className="text-primary">{article.author?.name}</span>
+                Autor:{" "}
+                <span className="text-primary">{article.author?.name}</span>
               </p>
               {article.publishedAt && (
                 <>
                   <span className="w-1 h-1 rounded-full bg-neutral-600" />
                   <p>
-                    {format(new Date(article.publishedAt), "dd 'de' MMMM 'de' yyyy", {
-                      locale: ptBR,
-                    })}
+                    {format(
+                      new Date(article.publishedAt),
+                      "dd 'de' MMMM 'de' yyyy",
+                      {
+                        locale: ptBR,
+                      },
+                    )}
                   </p>
                 </>
               )}
             </div>
           </div>
 
-          {/* Cover Image
-          {article.coverUrl && (
+          {/* Cover Image */}
+          {/* {article.coverUrl && (
             <div className="relative w-full aspect-video rounded-xl overflow-hidden mb-8">
               <img
                 src={article.coverUrl}
@@ -151,7 +164,7 @@ export function ArtigoContent({ slug }: ArtigoContentProps) {
           <div className="border-t border-gray-300 my-12" />
 
           <Link
-            href="/artigos"
+            href={ROUTES.PUBLIC.ARTIGOS}
             className="inline-block text-sm font-medium text-white hover:text-primary transition-colors"
           >
             VOLTAR

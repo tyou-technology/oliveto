@@ -5,6 +5,7 @@ import { UpdateTagDTO, TagResponseDTO } from "@/lib/types/article";
 import { toast } from "sonner";
 import { getFriendlyErrorMessage } from "@/lib/utils/error-handler";
 import { QUERY_CONFIG } from "@/lib/config/query";
+import { QUERY_KEYS } from "@/lib/config/query-keys";
 
 const EMPTY_ARRAY: TagResponseDTO[] = [];
 
@@ -12,7 +13,7 @@ export const useTags = (publishedOnly = false, initialData?: TagResponseDTO[]) =
   const queryClient = useQueryClient();
 
   const { data: tagsData, isLoading: isLoadingTags } = useQuery({
-    queryKey: ["tags", publishedOnly],
+    queryKey: QUERY_KEYS.TAGS.LIST(publishedOnly),
     queryFn: () =>
       publishedOnly ? articlesService.getPublishedTags() : articlesService.getAllTags(),
     staleTime: QUERY_CONFIG.ARTICLES_STALE_TIME,
@@ -22,7 +23,7 @@ export const useTags = (publishedOnly = false, initialData?: TagResponseDTO[]) =
   const createTag = useMutation({
     mutationFn: articlesService.createTag,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["tags"] });
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.TAGS.ALL });
       toast.success("Tag criada com sucesso!");
     },
     onError: (error) => {
@@ -34,7 +35,7 @@ export const useTags = (publishedOnly = false, initialData?: TagResponseDTO[]) =
     mutationFn: ({ id, data }: { id: string; data: UpdateTagDTO }) =>
       articlesService.updateTag(id, data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["tags"] });
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.TAGS.ALL });
       toast.success("Tag atualizada com sucesso!");
     },
     onError: (error) => {
@@ -45,7 +46,7 @@ export const useTags = (publishedOnly = false, initialData?: TagResponseDTO[]) =
   const deleteTag = useMutation({
     mutationFn: articlesService.deleteTag,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["tags"] });
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.TAGS.ALL });
       toast.success("Tag excluída com sucesso!");
     },
     onError: (error) => {

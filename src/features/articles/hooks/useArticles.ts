@@ -5,6 +5,7 @@ import { UpdateArticleDTO, ArticleResponseDTO } from "@/lib/types/article";
 import { toast } from "sonner";
 import { getFriendlyErrorMessage } from "@/lib/utils/error-handler";
 import { QUERY_CONFIG } from "@/lib/config/query";
+import { QUERY_KEYS } from "@/lib/config/query-keys";
 
 const EMPTY_ARRAY: ArticleResponseDTO[] = [];
 
@@ -12,7 +13,7 @@ export const useArticles = (page = 1, size = 10, publishedOnly = false) => {
   const queryClient = useQueryClient();
 
   const { data: articlesData, isLoading: isLoadingArticles } = useQuery({
-    queryKey: ["articles", page, size, publishedOnly],
+    queryKey: QUERY_KEYS.ARTICLES.LIST({ page, size, publishedOnly }),
     queryFn: () =>
       publishedOnly
         ? articlesService.getPublished(page, size)
@@ -23,7 +24,7 @@ export const useArticles = (page = 1, size = 10, publishedOnly = false) => {
   const createArticle = useMutation({
     mutationFn: articlesService.create,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["articles"] });
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.ARTICLES.ALL });
       toast.success("Artigo criado com sucesso!");
     },
     onError: (error) => {
@@ -35,7 +36,7 @@ export const useArticles = (page = 1, size = 10, publishedOnly = false) => {
     mutationFn: ({ id, data }: { id: string; data: UpdateArticleDTO }) =>
       articlesService.update(id, data),
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["articles"] });
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.ARTICLES.ALL });
       toast.success("Artigo atualizado com sucesso!");
     },
     onError: (error) => {
@@ -46,7 +47,7 @@ export const useArticles = (page = 1, size = 10, publishedOnly = false) => {
   const deleteArticle = useMutation({
     mutationFn: articlesService.delete,
     onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["articles"] });
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.ARTICLES.ALL });
       toast.success("Artigo excluído com sucesso!");
     },
     onError: (error) => {

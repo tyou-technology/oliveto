@@ -101,6 +101,10 @@ export const articlesService = {
     return response.data.data;
   },
 
+  recordView: async (id: string): Promise<void> => {
+    await fetch(`${env.NEXT_PUBLIC_API_URL}/articles/${id}/view`, { method: "POST" });
+  },
+
   publish: async (id: string): Promise<void> => {
     await apiClient.patch(`/articles/${id}/publish`);
   },

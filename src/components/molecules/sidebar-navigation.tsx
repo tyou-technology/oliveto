@@ -23,7 +23,7 @@ export function SidebarNavigation() {
         // Use the static badge from config, or the dynamic unread count for Contatos
         const badgeValue = isContatos && unreadCount > 0
           ? unreadCount
-          : (item as any).badge;
+          : item.badge;
 
         return (
           <Link

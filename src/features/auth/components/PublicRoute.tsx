@@ -7,13 +7,14 @@ import { useRouter } from "next/navigation";
 import { ROUTES } from "@/lib/config/routes";
 import { FullPageLoader } from "@/components/molecules/FullPageLoader";
 import { useEffect } from "react";
+import { QUERY_KEYS } from "@/lib/config/query-keys";
 
 export const PublicRoute = ({ children }: { children: React.ReactNode }) => {
   const router = useRouter();
   const { setSession, tokens } = useAuthStore();
 
   const { data, isLoading, isSuccess } = useQuery({
-    queryKey: ["auth", "me", "public"],
+    queryKey: QUERY_KEYS.AUTH.ME,
     queryFn: authService.getMe,
     retry: 0,
     enabled: !!tokens?.accessToken,

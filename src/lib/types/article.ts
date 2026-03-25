@@ -35,6 +35,8 @@ export interface ArticleResponseDTO {
   seoTitle?: string;
   seoDescription?: string;
   status: ArticleStatus;
+  views?: number;
+  viewsCount?: number;
   publishedAt?: string;
   articleTags?: ArticleTagRelation[];
   tagIds?: string[];

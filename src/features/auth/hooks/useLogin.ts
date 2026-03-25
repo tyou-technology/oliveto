@@ -7,6 +7,7 @@ import { toast } from "sonner";
 import { getFriendlyErrorMessage } from "@/lib/utils/error-handler";
 import { LoginRequest } from "../types/auth.types";
 import { TokenPair } from "@/lib/types/api.types";
+import { QUERY_KEYS } from "@/lib/config/query-keys";
 
 export const useLogin = () => {
   const router = useRouter();
@@ -26,7 +27,7 @@ export const useLogin = () => {
         // Tokens are still valid even if profile fetch fails
       }
 
-      queryClient.invalidateQueries({ queryKey: ["auth", "me"] });
+      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.AUTH.ME });
 
       toast.success("Login realizado com sucesso!");
       router.push(ROUTES.ADMIN.DASHBOARD.HOME);

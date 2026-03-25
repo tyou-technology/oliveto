@@ -1,6 +1,5 @@
 import { ArticlesView } from "./articles-view";
 import { articlesService } from "@/services/articles.service";
-import { env } from "@/lib/env";
 
 // Ensure the page is dynamically rendered to fetch fresh data on request
 // or remove this line to allow static generation with revalidation (preferred for performance)
@@ -26,12 +25,7 @@ export default async function ArticlesPage() {
         initialTags={initialTags}
       />
     );
-  } catch (error) {
-    console.error("Failed to fetch initial data for Articles Page:", error);
-    // If server fetch fails, we render the view without initial data,
-    // allowing the client to attempt fetching (and likely failing/showing error state)
-    // or we could throw error to show error boundary.
-    // For resilience, let's return without data so client can handle it (or show skeleton/error).
+  } catch {
     return <ArticlesView />;
   }
 }

@@ -44,7 +44,6 @@ export function useContactForm() {
       toast.success("Mensagem enviada com sucesso!");
       form.reset();
     } catch {
-      console.error("Error submitting contact form");
       toast.error("Erro ao enviar mensagem. Tente novamente.");
     }
   };

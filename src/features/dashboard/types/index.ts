@@ -1,20 +1,20 @@
-import { ArticleResponseDTO } from "@/lib/types/article";
 import { LeadResponseDTO } from "@/features/leads/types";
+import { AnalyticsTrendingTag, AnalyticsLeadsByStatus, AnalyticsStats } from "@/lib/types/analytics";
 
-export type LeadStatus = "New" | "Contacted" | "Qualified";
+export type DashboardLeadStatus = "New" | "Contacted" | "Qualified";
 
-export interface DashboardLead extends LeadResponseDTO {
-  status: LeadStatus;
-}
+export type DashboardLead = Omit<LeadResponseDTO, "status"> & {
+  status: DashboardLeadStatus;
+};
 
-export interface DashboardArticle extends ArticleResponseDTO {
+export interface DashboardArticle {
+  id: string;
+  title: string;
+  slug: string;
   views: number;
   readingTime: string;
+  publishedAt: string | null;
 }
 
-export interface DashboardStats {
-  totalLeads: number;
-  unreadLeads: number;
-  conversionRate: number; // Percentage
-  topArticle: DashboardArticle | null;
-}
+// Re-export analytics types used across dashboard components
+export type { AnalyticsTrendingTag as TrendingTag, AnalyticsLeadsByStatus as LeadsByStatus, AnalyticsStats as DashboardStats };

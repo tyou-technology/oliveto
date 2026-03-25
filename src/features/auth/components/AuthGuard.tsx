@@ -1,20 +1,20 @@
 "use client";
 
 import { useEffect } from "react";
-import { useRouter } from "next/navigation";
 import { useValidateToken } from "../hooks/useValidateToken";
 import { FullPageLoader } from "@/components/molecules/FullPageLoader";
 import { ROUTES } from "@/lib/config/routes";
 
 export const AuthGuard = ({ children }: { children: React.ReactNode }) => {
   const { isAuthenticated, isLoading } = useValidateToken();
-  const router = useRouter();
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
-      router.push(ROUTES.ADMIN.LOGIN);
+      // Hard redirect fully resets React/React Query state,
+      // preventing stale cache from keeping the user in a broken state.
+      window.location.href = ROUTES.ADMIN.LOGIN;
     }
-  }, [isLoading, isAuthenticated, router]);
+  }, [isLoading, isAuthenticated]);
 
   if (isLoading) {
     return <FullPageLoader />;

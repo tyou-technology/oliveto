@@ -4,6 +4,7 @@ import { articlesService } from "@/services/articles.service";
 import { ApiListResponse } from "@/lib/types/api.types";
 import { ArticleResponseDTO } from "@/lib/types/article";
 import { QUERY_CONFIG } from "@/lib/config/query";
+import { QUERY_KEYS } from "@/lib/config/query-keys";
 
 export const useInfiniteArticles = (
   size = 10,
@@ -12,7 +13,7 @@ export const useInfiniteArticles = (
 ) => {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
     useInfiniteQuery({
-      queryKey: ["articles", "infinite", size, publishedOnly],
+      queryKey: QUERY_KEYS.ARTICLES.INFINITE(size, publishedOnly),
       queryFn: ({ pageParam }) =>
         publishedOnly
           ? articlesService.getPublished((pageParam as number) + 1, size)

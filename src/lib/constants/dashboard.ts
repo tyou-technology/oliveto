@@ -1,3 +1,4 @@
+import type React from "react";
 import {
   Bell,
   ClipboardCheck,
@@ -11,7 +12,15 @@ import {
 } from "lucide-react";
 import { ROUTES } from "@/lib/config/routes";
 
-export const navigationItems = [
+interface NavigationItem {
+  icon: React.ElementType;
+  label: string;
+  href: string;
+  badge?: number;
+  active?: boolean;
+}
+
+export const navigationItems: NavigationItem[] = [
   {
     icon: LayoutDashboard,
     label: "Visão Geral",

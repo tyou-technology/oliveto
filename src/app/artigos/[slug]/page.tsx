@@ -15,8 +15,8 @@ export async function generateStaticParams(): Promise<{ slug: string }[]> {
     }
 
     return response.data
-      .filter((article: any) => article.slug || article.id)
-      .map((article: any) => ({ slug: article.slug || article.id }));
+      .filter((article) => article.slug || article.id)
+      .map((article) => ({ slug: article.slug ?? article.id }));
   } catch {
     return [];
   }
