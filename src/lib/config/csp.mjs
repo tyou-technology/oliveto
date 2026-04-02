@@ -6,10 +6,10 @@
  */
 export function getCsp(isDev, apiUrl) {
   const apiOrigin = apiUrl ? new URL(apiUrl).origin : "";
-  const connectSrc = `connect-src 'self' ${apiOrigin} https://*.olivetocontabilidade.com https://*.vercel-analytics.com https://*.vercel-insights.com${
+  const connectSrc = `connect-src 'self' ${apiOrigin}${
     isDev ? " http://localhost:8080 ws://localhost:*" : ""
   }`;
   return `default-src 'self'; script-src 'self' 'unsafe-inline'${
     isDev ? " 'unsafe-eval'" : ""
-  } https://va.vercel-scripts.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; ${connectSrc}; frame-ancestors 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;`;
+  }; style-src 'self' 'unsafe-inline'; img-src 'self' data: https:; font-src 'self' data:; ${connectSrc}; frame-ancestors 'none'; object-src 'none'; base-uri 'self'; form-action 'self'; upgrade-insecure-requests;`;
 }

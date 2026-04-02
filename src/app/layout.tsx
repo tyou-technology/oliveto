@@ -1,12 +1,9 @@
 import type React from "react";
 import type { Metadata } from "next";
 import localFont from "next/font/local";
-import { Analytics } from "@vercel/analytics/next";
 import "./globals.css";
 import { QueryProvider } from "@/components/providers/query-provider";
 import { Toaster } from "@/components/atoms/sonner";
-import { getCsp } from "@/lib/config/csp";
-import { env } from "@/lib/env";
 
 const golos = localFont({
   src: "../../public/fonts/golos-text-latin-wght-normal.woff2",
@@ -21,10 +18,6 @@ const outfit = localFont({
   display: "swap",
   weight: "100 900",
 });
-
-const isDev = process.env.NODE_ENV === "development";
-
-const CSP = getCsp(isDev, env.NEXT_PUBLIC_API_URL);
 
 export const metadata: Metadata = {
   metadataBase: new URL("https://olivetocontabilidade.com"),
@@ -109,9 +102,6 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="pt-BR" suppressHydrationWarning>
-      <head>
-        <meta httpEquiv="Content-Security-Policy" content={CSP} />
-      </head>
       <body
         className={`${golos.variable} ${outfit.variable} font-sans antialiased`}
       >
@@ -119,7 +109,6 @@ export default function RootLayout({
             {children}
             <Toaster />
         </QueryProvider>
-        <Analytics />
       </body>
     </html>
   );
