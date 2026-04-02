@@ -72,7 +72,7 @@ export function ArticleSidebar({
         readOnly={readOnly}
       />
 
-      <SidebarAuthorSection watch={watch} authorName={authorName} />
+      <SidebarAuthorSection authorName={authorName} />
     </div>
   );
 }

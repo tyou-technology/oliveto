@@ -1,17 +1,13 @@
-import { UseFormWatch } from "react-hook-form";
 import { User } from "lucide-react";
-import { CreateArticleDTO } from "@/lib/types/article";
 
 interface SidebarAuthorSectionProps {
-  watch: UseFormWatch<CreateArticleDTO>;
   authorName: string;
 }
 
 export function SidebarAuthorSection({
-  watch,
   authorName,
 }: SidebarAuthorSectionProps) {
-  const currentAuthorName = watch("authorName") || authorName;
+  const currentAuthorName = authorName;
 
   return (
     <div className="bg-surface border border-white/10 rounded-2xl p-6">

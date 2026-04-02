@@ -2,7 +2,7 @@
 // This hook is kept as a placeholder — the verify page will show a not-supported message.
 export const useConfirmRegistration = () => {
   return {
-    mutate: () => {},
+    mutate: (_args?: { verificationToken: string }) => {},
     isPending: false,
     isSuccess: false,
     isError: true,

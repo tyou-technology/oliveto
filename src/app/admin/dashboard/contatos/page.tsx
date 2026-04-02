@@ -18,7 +18,7 @@ export default function LeadsPage() {
   // API expects 1-based page index
   const { data, isLoading } = useLeads({
     page: pagination.pageIndex + 1,
-    size: pagination.pageSize,
+    limit: pagination.pageSize,
     isRead: filterStatus
   });
 
