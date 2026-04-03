@@ -38,7 +38,7 @@ export function DashboardHeader({
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const { mutate: logout } = useLogout();
 
-  const unreadCount = unreadData?.unread || 0;
+  const unreadCount = unreadData?.count || 0;
 
   return (
     <header className="sticky top-0 z-30 bg-neutral-950/80 backdrop-blur-xl border-b border-white/10">

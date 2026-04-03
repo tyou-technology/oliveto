@@ -32,7 +32,7 @@ export interface LeadResponseDTO {
 }
 
 export interface UnreadLeadsCountDTO {
-  unread: number;
+  count: number;
 }
 
 export interface LeadFilters {
