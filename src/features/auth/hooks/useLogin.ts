@@ -1,7 +1,6 @@
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import { authService } from "@/services/auth.service";
 import { useAuthStore } from "@/store/auth.store";
-import { useRouter } from "next/navigation";
 import { ROUTES } from "@/lib/config/routes";
 import { toast } from "sonner";
 import { getFriendlyErrorMessage } from "@/lib/utils/error-handler";
@@ -10,7 +9,6 @@ import { AuthTokenResponse } from "@/lib/types/api.types";
 import { QUERY_KEYS } from "@/lib/config/query-keys";
 
 export const useLogin = () => {
-  const router = useRouter();
   const { setAccessToken, setSession } = useAuthStore();
   const queryClient = useQueryClient();
 
@@ -23,14 +21,16 @@ export const useLogin = () => {
       try {
         const user = await authService.getMe();
         setSession(user, accessToken);
+        // Pre-populate the React Query cache so useValidateToken (AuthGuard) finds
+        // fresh data on mount and does not fire an immediate refetch. This prevents
+        // a race-condition in Safari where a failing ME refetch clears the session.
+        queryClient.setQueryData(QUERY_KEYS.AUTH.ME, user);
       } catch {
         // Access token is still valid even if profile fetch fails.
       }
 
-      queryClient.invalidateQueries({ queryKey: QUERY_KEYS.AUTH.ME });
-
       toast.success("Login realizado com sucesso!");
-      router.push(ROUTES.ADMIN.DASHBOARD.HOME);
+      window.location.href = ROUTES.ADMIN.DASHBOARD.HOME;
     },
     onError: (error) => {
       toast.error(getFriendlyErrorMessage(error));

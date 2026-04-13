@@ -3,6 +3,7 @@ import { authService } from "@/services/auth.service";
 import { useEffect } from "react";
 import { useAuthStore } from "@/store/auth.store";
 import { QUERY_KEYS } from "@/lib/config/query-keys";
+import { isAxiosError } from "axios";
 
 /**
  * Validates the current session and hydrates the auth store.
@@ -46,6 +47,7 @@ export const useValidateToken = () => {
   const {
     data: user,
     isError: meFailed,
+    error: meError,
     isLoading: isLoadingMe,
   } = useQuery({
     queryKey: QUERY_KEYS.AUTH.ME,
@@ -63,10 +65,18 @@ export const useValidateToken = () => {
   }, [user, effectiveToken, setSession]);
 
   useEffect(() => {
-    if (refreshFailed || meFailed) {
+    // Clear session only on definitive auth failures:
+    // - refresh failed (no valid cookie)
+    // - ME returned 401 (token rejected by server)
+    // Transient network errors on ME do NOT clear the session to avoid
+    // logging the user out due to temporary connectivity issues.
+    const isAuthFailure =
+      meFailed && isAxiosError(meError) && meError.response?.status === 401;
+
+    if (refreshFailed || isAuthFailure) {
       clearSession();
     }
-  }, [refreshFailed, meFailed, clearSession]);
+  }, [refreshFailed, meFailed, meError, clearSession]);
 
   // Show loading while refreshing (no token yet) or while fetching the profile.
   const isLoading = (!accessToken && isRefreshing) || (!!effectiveToken && isLoadingMe);
