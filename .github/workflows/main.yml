@@ -19,7 +19,6 @@ jobs:
           host: ${{ secrets.HOSTINGER_IP }}
           username: ${{ secrets.HOSTINGER_USER }}
           key: ${{ secrets.SSH_PRIVATE_KEY }}
-          passphrase: ${{ secrets.SSH_PASSPHRASE }}
           script: |
             # Navigate to your project directory (set your path here)
             cd ~/workarea/oliveto
