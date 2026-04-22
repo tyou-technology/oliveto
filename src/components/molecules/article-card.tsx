@@ -13,31 +13,37 @@ interface ArticleCardProps {
 }
 
 // Memoized to prevent unnecessary re-renders in the ArticlesCarousel autoplay loop
-export const ArticleCard = memo(function ArticleCard({article, className}: Readonly<ArticleCardProps>) {
+export const ArticleCard = memo(function ArticleCard({
+  article,
+  className,
+}: Readonly<ArticleCardProps>) {
   return (
-      <Link
-          href={`/artigos/${article.slug || article.id}`}
-          className={`min-w-[calc(33.333%-16px)] group transition-all duration-200 ease-in-out hover:-translate-y-1 hover:shadow-lg focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none rounded-xl p-2 ${className || ""}`}
-      >
-        <article className="relative h-full">
-          {/* Image */}
-          <div className="relative h-56 overflow-hidden mb-4">
-            <Image
-                src={article.coverUrl || IMAGES.PLACEHOLDER}
-                alt={article.title}
-                fill
-                sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                className="object-cover transition-transform duration-500 group-hover:scale-110 group-focus-visible:scale-110"
-            />
-            <div
-                className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity"/>
-          </div>
+    <Link
+      href={`/artigos/${article.slug || article.id}`}
+      className={`min-w-[calc(33.333%-16px)] group transition-all duration-200 ease-in-out hover:-translate-y-1 hover:shadow-lg focus-visible:ring-2 focus-visible:ring-primary focus-visible:outline-none rounded-xl p-2 ${className || ""}`}
+    >
+      <article className="relative h-full">
+        {/* Image */}
+        <div className="relative h-56 overflow-hidden mb-4">
+          <Image
+            src={article.coverUrl || IMAGES.PLACEHOLDER}
+            alt={article.title}
+            fill
+            sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+            className="object-cover transition-transform duration-500 group-hover:scale-110 group-focus-visible:scale-110"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent opacity-0 group-hover:opacity-100 group-focus-visible:opacity-100 transition-opacity" />
+        </div>
 
-          {/* Content */}
-          {getArticleTags(article).length > 0 && (
-              <div className="flex flex-wrap gap-2">
-                {getArticleTags(article).map((tag) => (
-              <CategoryBadge key={tag.id} category={tag.name} />
+        {/* Content */}
+        {getArticleTags(article).length > 0 && (
+          <div className="flex flex-wrap gap-2">
+            {getArticleTags(article).map((tag) => (
+              <CategoryBadge
+                key={tag.id}
+                category={tag.name}
+                color={tag.color}
+              />
             ))}
           </div>
         )}
