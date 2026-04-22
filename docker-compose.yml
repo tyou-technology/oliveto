@@ -42,9 +42,6 @@ services:
       - /etc/letsencrypt:/etc/letsencrypt:ro
       # Certbot webroot for ACME challenge
       - certbot-webroot:/var/www/certbot:ro
-    depends_on:
-      app:
-        condition: service_healthy
     restart: unless-stopped
     networks:
       - oliveto
