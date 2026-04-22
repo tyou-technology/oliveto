@@ -4,7 +4,6 @@ services:
       context: .
       dockerfile: Dockerfile
       args:
-        # NEXT_PUBLIC_* vars are baked in at build time — set them here or in .env
         NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
         NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL}
         NEXT_PUBLIC_CLIENT_TOKEN: ${NEXT_PUBLIC_CLIENT_TOKEN}
@@ -13,31 +12,42 @@ services:
         NEXT_PUBLIC_SENTRY_DSN: ${NEXT_PUBLIC_SENTRY_DSN:-}
         NEXT_PUBLIC_RECAPTCHA_SITE_KEY: ${NEXT_PUBLIC_RECAPTCHA_SITE_KEY:-}
         SENTRY_AUTH_TOKEN: ${SENTRY_AUTH_TOKEN:-}
+    image: oliveto-web:latest
+    container_name: oliveto_web
     environment:
-      # Server-only runtime vars (not exposed to the browser)
       NODE_ENV: production
       REVALIDATE_SECRET: ${REVALIDATE_SECRET:-}
-      API_INTERNAL_URL: ${API_INTERNAL_URL:-}
+      API_INTERNAL_URL: ${API_INTERNAL_URL:-http://oliveto_api:8080}
     restart: unless-stopped
     networks:
       - oliveto
     expose:
       - "3000"
-    healthcheck:
-      test: ["CMD", "node", "-e", "require('http').get('http://127.0.0.1:3000/',r=>process.exit(r.statusCode<500?0:1)).on('error',()=>process.exit(1))"]
-      interval: 30s
-      timeout: 10s
-      retries: 5
-      start_period: 30s
     labels:
       - traefik.enable=true
       - traefik.docker.network=oliveto
-      - traefik.http.routers.oliveto.rule=Host(`olivetocontabilidade.com`) || Host(`www.olivetocontabilidade.com`)
-      - traefik.http.routers.oliveto.entrypoints=websecure
-      - traefik.http.routers.oliveto.tls.certresolver=letsencrypt
-      - traefik.http.services.oliveto.loadbalancer.server.port=3000
+      # router dedicado do front
+      - traefik.http.routers.oliveto-web.rule=Host(`olivetocontabilidade.com`) || Host(`www.olivetocontabilidade.com`)
+      - traefik.http.routers.oliveto-web.entrypoints=websecure
+      - traefik.http.routers.oliveto-web.tls.certresolver=letsencrypt
+      - traefik.http.services.oliveto-web.loadbalancer.server.port=3000
+      # redireciona www → apex
+      - traefik.http.middlewares.www-redirect.redirectregex.regex=^https://www\.olivetocontabilidade\.com/(.*)
+      - traefik.http.middlewares.www-redirect.redirectregex.replacement=https://olivetocontabilidade.com/$${1}
+      - traefik.http.middlewares.www-redirect.redirectregex.permanent=true
+      # headers de segurança
+      - traefik.http.middlewares.oliveto-web-headers.headers.stsSeconds=31536000
+      - traefik.http.middlewares.oliveto-web-headers.headers.stsIncludeSubdomains=true
+      - traefik.http.middlewares.oliveto-web-headers.headers.contentTypeNosniff=true
+      - traefik.http.middlewares.oliveto-web-headers.headers.browserXssFilter=true
+      - traefik.http.routers.oliveto-web.middlewares=www-redirect,oliveto-web-headers
+    logging:
+      driver: json-file
+      options:
+        max-size: "10m"
+        max-file: "3"
 
 networks:
   oliveto:
     name: oliveto
-    driver: bridge
+    driver: bridge          # o front é o dono da rede; a API entra como external
