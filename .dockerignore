@@ -1,0 +1,46 @@
+# Version control
+.git
+.gitignore
+
+# Dependencies (reinstalled inside Docker)
+node_modules
+
+# Build outputs
+.next
+out
+build
+
+# Environment files — never bake secrets into the image
+.env
+.env.*
+!.env.example
+
+# Local dev / editor
+.vscode
+.idea
+*.swp
+*.swo
+
+# Logs
+*.log
+npm-debug.log*
+
+# Test artifacts
+coverage
+.nyc_output
+
+# Docker files themselves (no need to copy)
+Dockerfile
+docker-compose*.yml
+
+# OS artifacts
+.DS_Store
+Thumbs.db
+
+# CI
+.github
+
+# Docs
+README.md
+CHANGELOG.md
+CLAUDE.md

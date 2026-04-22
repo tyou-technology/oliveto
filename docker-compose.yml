@@ -1,0 +1,57 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        # NEXT_PUBLIC_* vars are baked in at build time — set them here or in .env
+        NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
+        NEXT_PUBLIC_SITE_URL: ${NEXT_PUBLIC_SITE_URL}
+        NEXT_PUBLIC_CLIENT_TOKEN: ${NEXT_PUBLIC_CLIENT_TOKEN}
+        NEXT_PUBLIC_APP_ENV: ${NEXT_PUBLIC_APP_ENV:-production}
+        NEXT_PUBLIC_GA_ID: ${NEXT_PUBLIC_GA_ID:-}
+        NEXT_PUBLIC_SENTRY_DSN: ${NEXT_PUBLIC_SENTRY_DSN:-}
+        NEXT_PUBLIC_RECAPTCHA_SITE_KEY: ${NEXT_PUBLIC_RECAPTCHA_SITE_KEY:-}
+        SENTRY_AUTH_TOKEN: ${SENTRY_AUTH_TOKEN:-}
+    environment:
+      # Server-only runtime vars (not exposed to the browser)
+      NODE_ENV: production
+      REVALIDATE_SECRET: ${REVALIDATE_SECRET}
+      API_INTERNAL_URL: ${API_INTERNAL_URL:-}
+    restart: unless-stopped
+    networks:
+      - oliveto
+    # Do not expose port 3000 to the host — nginx handles external traffic
+    expose:
+      - "3000"
+    healthcheck:
+      test: ["CMD-SHELL", "wget -qO- http://localhost:3000/ || exit 1"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+
+  nginx:
+    image: nginx:1.27-alpine
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/conf.d/default.conf:ro
+      # Let's Encrypt certificates — populated by certbot on the host
+      - /etc/letsencrypt:/etc/letsencrypt:ro
+      # Certbot webroot for ACME challenge
+      - certbot-webroot:/var/www/certbot:ro
+    depends_on:
+      app:
+        condition: service_healthy
+    restart: unless-stopped
+    networks:
+      - oliveto
+
+volumes:
+  certbot-webroot:
+
+networks:
+  oliveto:
+    driver: bridge
