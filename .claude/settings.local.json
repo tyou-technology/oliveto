@@ -1,0 +1,16 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(npx vitest:*)",
+      "Bash(npm run:*)",
+      "Bash(ls /workspace/node_modules/@fontsource*)",
+      "Bash(ls /workspace/node_modules/@fontsource-variable*)",
+      "Bash(npm install:*)",
+      "Bash(npm uninstall:*)",
+      "Bash(find /workspace -type f -path *dashboard* -name *.ts*)",
+      "Bash(npx tsc:*)",
+      "Bash(git add:*)",
+      "Bash(git commit:*)"
+    ]
+  }
+}
