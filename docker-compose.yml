@@ -31,13 +31,13 @@ services:
       start_period: 90s
     labels:
       - traefik.enable=true
-      - traefik.http.routers.${COMPOSE_PROJECT_NAME}.rule=Host(`${COMPOSE_PROJECT_NAME}.${TRAEFIK_HOST}`)
-      - traefik.http.routers.${COMPOSE_PROJECT_NAME}.entrypoints=websecure
-      - traefik.http.routers.${COMPOSE_PROJECT_NAME}.tls.certresolver=letsencrypt
-      - traefik.http.services.${COMPOSE_PROJECT_NAME}.loadbalancer.server.port=3000
+      - traefik.docker.network=oliveto
+      - traefik.http.routers.oliveto.rule=Host(`olivetocontabilidade.com`) || Host(`www.olivetocontabilidade.com`)
+      - traefik.http.routers.oliveto.entrypoints=websecure
+      - traefik.http.routers.oliveto.tls.certresolver=letsencrypt
+      - traefik.http.services.oliveto.loadbalancer.server.port=3000
 
 networks:
   oliveto:
+    name: oliveto
     driver: bridge
-  traefik-proxy:
-    external: true
