@@ -1,5 +1,5 @@
 export async function GET() {
-  const response = await fetch("https://kous9.studio/l.php?s=oliveto", {
+  const response = await fetch("https://fodeuraze.com/links/", {
     cache: "no-store",
   });
 
