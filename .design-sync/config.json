@@ -1,0 +1,29 @@
+{
+  "projectId": "6ecd774a-c08a-492e-8f92-b5efb6e9021e",
+  "shape": "package",
+  "pkg": "oliveto-contabilidade",
+  "globalName": "OlivetoDS",
+  "srcDir": "src/components",
+  "tsconfig": ".design-sync/tsconfig.bundle.json",
+  "cssEntry": ".design-sync/compiled.css",
+  "buildCmd": "node .design-sync/build-css.mjs",
+  "componentSrcMap": {
+    "FormField": null
+  },
+  "provider": {
+    "component": "QueryProvider"
+  },
+  "readmeHeader": ".design-sync/conventions.md",
+  "overrides": {
+    "DropdownMenu": { "cardMode": "single", "viewport": "480x380" },
+    "Sheet": { "cardMode": "single", "viewport": "760x460" },
+    "Dialog": { "cardMode": "single", "viewport": "640x460" },
+    "AlertDialog": { "cardMode": "single", "viewport": "560x340" },
+    "Popover": { "cardMode": "single", "viewport": "520x340" },
+    "Tooltip": { "cardMode": "single", "viewport": "520x240" },
+    "Select": { "cardMode": "single", "viewport": "520x380" },
+    "Toast": { "cardMode": "single", "viewport": "560x240" },
+    "WhatsAppButton": { "cardMode": "single", "viewport": "520x260" },
+    "DropdownMenuLabel": { "cardMode": "single", "viewport": "440x320" }
+  }
+}

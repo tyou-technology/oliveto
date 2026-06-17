@@ -1,0 +1,19 @@
+{
+  "_comment": "Dedicated tsconfig for the design-sync esbuild bundle. baseUrl is the repo root (../ from .design-sync/). Maps the @/ alias plus browser stubs for next/* so the component bundle resolves and renders outside Next.",
+  "compilerOptions": {
+    "baseUrl": "../",
+    "_comment_dirs": "Explicit file targets for @/ specifiers that resolve to a directory (or a file shadowed by a same-named dir). Must precede @/* so the esbuild paths plugin returns the file, not the directory.",
+    "paths": {
+      "@/lib/env": [".design-sync/next-stubs/env.ts"],
+      "@/lib/utils": ["./src/lib/utils.ts"],
+      "@/features/leads/hooks": ["./src/features/leads/hooks/index.ts"],
+      "@/features/leads/types": ["./src/features/leads/types/index.ts"],
+      "@/*": ["./src/*"],
+      "next/image": [".design-sync/next-stubs/image.tsx"],
+      "next/link": [".design-sync/next-stubs/link.tsx"],
+      "next/navigation": [".design-sync/next-stubs/navigation.ts"],
+      "next/font/local": [".design-sync/next-stubs/font.ts"],
+      "next/font/google": [".design-sync/next-stubs/font.ts"]
+    }
+  }
+}

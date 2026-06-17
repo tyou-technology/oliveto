@@ -15,6 +15,7 @@
     "valuation"
   ],
   "private": true,
+  "types": ".design-sync/types/index.d.ts",
   "scripts": {
     "build": "next build && cp -r public .next/standalone/public && cp -r .next/static .next/standalone/.next/static",
     "dev": "next dev",
