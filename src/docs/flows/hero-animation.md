@@ -15,20 +15,20 @@ sequenceDiagram
     participant U as User
     participant H as HeroSection (Client)
     participant S as ScrambleText (Atom)
-    participant T as Timer (7s)
+    participant T as Timer (9s)
 
     U->>H: Access Page
     H->>S: Render initial text
     S->>S: Perform initial decode animation
 
-    H->>T: Start Interval (7s)
+    H->>T: Start Interval (9s)
 
-    loop Every 7 Seconds
+    loop Every 9 Seconds
         T-->>H: Interval Triggered
         H->>H: setCurrentSlide((prev + 1) % length)
         H->>S: Update text prop
         S->>S: Decode animation (Random chars -> Target text)
-        Note over S: Staggered reveal (Prefix -> Highlight -> Suffix)
+        Note over S: Staggered reveal (Category -> Title -> Description)
     end
 ```
 
@@ -39,6 +39,6 @@ sequenceDiagram
 
 ## Data Dictionary
 
-- `prefix`: Text appearing before the highlighted word.
-- `highlight`: The key phrase styled with the brand's primary color (`var(--primary)`).
-- `suffix`: Text appearing after the highlighted word, usually on a new line.
+- `category`: Service area label shown above the title (Geral, Contabilidade, Perícia, Consultoria).
+- `title`: The main phrase, rendered as the `h1` in the brand's primary color (`var(--primary)`).
+- `description`: Supporting sentence shown below the title.

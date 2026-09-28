@@ -11,7 +11,7 @@ export function HeroSection() {
   useEffect(() => {
     const interval = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % heroContent.slides.length);
-    }, 7000);
+    }, 9000);
 
     return () => clearInterval(interval);
   }, []);
@@ -36,22 +36,20 @@ export function HeroSection() {
       </div>
 
       <div className="relative z-10 text-center max-w-4xl mx-auto mb-10 md:mb-20 lg:mb-40">
-        <p className="text-sm text-gray-400 animate-in fade-in duration-1000">
-          {heroContent.tagline}
+        <p className="text-sm uppercase tracking-widest text-gray-400">
+          <ScrambleText text={slide.category} duration={800} />
         </p>
-        <div className="min-h-[120px] md:min-h-[140px] flex items-center justify-center">
-          <h1 className="text-2xl md:text-4xl font-light leading-tight">
-            <ScrambleText text={slide.prefix} duration={1500} />{" "}
-            <span className="text-primary font-medium">
-              <ScrambleText
-                text={slide.highlight}
-                duration={2000}
-                delay={300}
-              />
-            </span>
-            <br />
-            <ScrambleText text={slide.suffix} duration={2500} delay={600} />
+        <div className="min-h-[200px] md:min-h-[220px] flex flex-col items-center justify-center gap-4">
+          <h1 className="text-2xl md:text-4xl text-primary font-medium leading-tight">
+            <ScrambleText text={slide.title} duration={2000} delay={200} />
           </h1>
+          <p className="text-base md:text-lg font-light text-gray-300 max-w-3xl">
+            <ScrambleText
+              text={slide.description}
+              duration={2500}
+              delay={600}
+            />
+          </p>
         </div>
       </div>
 
